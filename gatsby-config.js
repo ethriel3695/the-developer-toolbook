@@ -18,8 +18,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `the-developer-toolbook-landing`,
-        short_name: `dev-tool-landing`,
+        name: `the-developer-toolbook`,
+        short_name: `developer-toolbook`,
         start_url: `/`,
         background_color: `#663399`,
         theme_color: `#663399`,
@@ -28,7 +28,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
-    '@wapps/gatsby-plugin-material-ui'
+    'gatsby-plugin-material-ui'
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',

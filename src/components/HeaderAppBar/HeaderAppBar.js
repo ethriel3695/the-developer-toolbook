@@ -4,8 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import HeaderText from '../Text/TypographyH6';
 import Links from '../Link/Links';
 import SimpleAppBar from './SimpleAppBar';
-
-import IconButton from '@material-ui/core/IconButton';
+import HeaderButton from '../Button/HeaderButton';
 import MenuIcon from '@material-ui/icons/Menu';
 // import { Link } from 'gatsby';
 
@@ -70,13 +69,12 @@ class HeaderAppBar extends React.Component {
     return (
     <SimpleAppBar className={classes.root} 
       style={pageStyles.headerColor}>
-      <IconButton
-            color="inherit" 
-            aria-label="Open drawer"
-            onClick={this.handleDrawerOpen}
-            className={classes.menuButton}>
-            <MenuIcon />
-          </IconButton>
+        <HeaderButton 
+          className={classes.menuButton} 
+          aria-label="Menu"
+        >
+          <MenuIcon style={pageStyles.foregroundColor} />
+        </HeaderButton>
         <HeaderText className={classes.grow}>
             <Links
             to="/"

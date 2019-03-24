@@ -1,0 +1,68 @@
+{
+  "name": "the-developer-toolbook",
+  "private": true,
+  "description": "A growth and progress tool",
+  "version": "0.0.1",
+  "author": "Reuben Ellis",
+  "dependencies": {
+    "@material-ui/core": "^3.5.1",
+    "@material-ui/icons": "^3.0.1",
+    "auth0-js": "^9.8.2",
+    "axios": "^0.18.0",
+    "gatsby": "^2.2.8",
+    "gatsby-image": "^2.0.20",
+    "gatsby-plugin-manifest": "^2.0.5",
+    "gatsby-plugin-material-ui": "^1.2.4",
+    "gatsby-plugin-offline": "^2.0.5",
+    "gatsby-plugin-react-helmet": "^3.0.2",
+    "gatsby-plugin-sharp": "^2.0.19",
+    "gatsby-source-filesystem": "^2.0.25",
+    "gatsby-transformer-sharp": "^2.1.13",
+    "history": "^4.7.2",
+    "jwt-decode": "^2.2.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "keywords": [
+    "gatsby",
+    "react"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "start": "npm run docz:dev",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "format": "prettier --write \"src/**/*.js\"",
+    "source": "node ./source.js",
+    "add-commit": "git add . && git commit -m",
+    "push": "git push origin",
+    "pull": "git pull origin master",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^24.5.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-gatsby": "^0.1.4",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.5.0",
+    "prettier": "^1.15.2",
+    "react-test-renderer": "^16.6.3",
+    "redux-devtools-extension": "^2.13.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  }
+}

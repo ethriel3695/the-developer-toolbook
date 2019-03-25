@@ -7,6 +7,7 @@ import SimpleAppBar from './SimpleAppBar';
 import HeaderButton from '../Button/HeaderButton';
 import MenuIcon from '@material-ui/icons/Menu';
 // import { Link } from 'gatsby';
+const isBrowser = typeof window !== 'undefined';
 
 
 // import { connect } from "react-redux";
@@ -14,8 +15,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 // import { login } from '../../store/actions/index';
 // import { logout } from '../../store/actions/index';
 // import { renewSession } from '../../store/actions/index';
-
-window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+if (isBrowser) {
+  window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+}
 
 const styles = {
   root: {
@@ -45,26 +47,26 @@ const pageStyles = {
 
 class HeaderAppBar extends React.Component {
 
-  state = {
-    open: false,
-    anchor: 'right'
-  };
+  // state = {
+  //   open: false,
+  //   anchor: 'right'
+  // };
 
-  handleDrawerOpen = () => {
-    if (this.state.open) {
-      this.setState({ open: false });
-    } else {
-      this.setState({ open: true });
-    }
-  };
+  // handleDrawerOpen = () => {
+  //   if (this.state.open) {
+  //     this.setState({ open: false });
+  //   } else {
+  //     this.setState({ open: true });
+  //   }
+  // };
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
+  // handleDrawerClose = () => {
+  //   this.setState({ open: false });
+  // };
 
   render() {
     const { classes, siteTitle } = this.props;
-    const { open } = this.state;
+    // const { open } = this.state;
 
     return (
     <SimpleAppBar className={classes.root} 

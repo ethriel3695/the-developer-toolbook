@@ -35,17 +35,15 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "npm run docz:dev",
-    "docz:dev": "docz dev",
-    "docz:build": "docz build",
     "format": "prettier --write \"src/**/*.js\"",
     "source": "node ./source.js",
     "add-commit": "git add . && git commit -m",
     "push": "git push origin",
     "pull": "git pull origin master",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "gatsby build && surge ./public"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",

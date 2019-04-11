@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import CardMedia from '@material-ui/core/CardMedia';
-import Card from '@material-ui/core/Card';
-import Image from '../image'
-import RecipeReviewCard from '../Card/RecipeReviewCard'
-import { Link } from 'gatsby'
+// import CardMedia from '@material-ui/core/CardMedia';
+// import Card from '@material-ui/core/Card';
+// import Image from '../image'
+// import RecipeReviewCard from '../Card/RecipeReviewCard'
+// import { Link } from 'gatsby'
 
 const styles = theme => ({
   root: {

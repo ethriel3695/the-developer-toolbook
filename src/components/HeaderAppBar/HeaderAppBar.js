@@ -6,7 +6,11 @@ import Links from '../Link/Links';
 import SimpleAppBar from './SimpleAppBar';
 import HeaderButton from '../Button/HeaderButton';
 import MenuIcon from '@material-ui/icons/Menu';
-// import { Link } from 'gatsby';
+
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+
+import { Link } from 'gatsby';
 const isBrowser = typeof window !== 'undefined';
 
 
@@ -47,10 +51,9 @@ const pageStyles = {
 
 class HeaderAppBar extends React.Component {
 
-  // state = {
-  //   open: false,
-  //   anchor: 'right'
-  // };
+  state = {
+    anchorEl: null
+  };
 
   // handleDrawerOpen = () => {
   //   if (this.state.open) {
@@ -64,19 +67,25 @@ class HeaderAppBar extends React.Component {
   //   this.setState({ open: false });
   // };
 
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     const { classes, siteTitle } = this.props;
+    const { anchorEl } = this.state;
+
+    const open = Boolean(anchorEl);
     // const { open } = this.state;
 
     return (
     <SimpleAppBar className={classes.root} 
       style={pageStyles.headerColor}>
-        <HeaderButton 
-          className={classes.menuButton} 
-          aria-label="Menu"
-        >
-          <MenuIcon style={pageStyles.foregroundColor} />
-        </HeaderButton>
+        
         <HeaderText className={classes.grow}>
             <Links
             to="/"
@@ -84,6 +93,57 @@ class HeaderAppBar extends React.Component {
                 {siteTitle}
             </Links>
         </HeaderText>
+        <HeaderButton 
+          className={classes.menuButton} 
+          aria-label="Menu"
+          aria-owns={anchorEl ? 'menu-appbar' : undefined}
+              aria-haspopup="true"
+              onClick={this.handleMenu}
+        >
+            <MenuIcon 
+              style={pageStyles.foregroundColor} />
+              </HeaderButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            // anchorOrigin={{
+            //   vertical: 'top',
+            //   horizontal: 'right',
+            // }}
+            // transformOrigin={{
+            //   vertical: 'top',
+            //   horizontal: 'right',
+            // }}
+            open={open}
+            onClose={this.handleClose}
+          >
+            <MenuItem onClick={this.handleClose}>
+            <Link style={{ textDecoration: 'none' }} to="/auto-suggestion">Auto Suggestion</Link>
+            </MenuItem>
+            <MenuItem onClick={this.handleClose}>
+            <Link style={{ textDecoration: 'none' }} to="/self-confidence">Self Confidence</Link>
+            </MenuItem>
+            <MenuItem onClick={this.handleClose}>
+            <Link style={{ textDecoration: 'none' }} to="/commitment">Commitment</Link>
+            </MenuItem>
+            <MenuItem onClick={this.handleClose}>
+            <Link style={{ textDecoration: 'none' }} to="/faith">Faith</Link>
+            </MenuItem>
+          </Menu>
+          
+       
+        {
+        //   <Button style={pageStyles.foregroundColor}>
+        //   <Links to="/auto-suggestion" style={pageStyles.plainLink}>
+        //     Auto Suggestion
+        //   </Links>
+        // </Button>
+        // <Button style={pageStyles.foregroundColor}>
+        //   <Links to="/self-confidence" style={pageStyles.plainLink}>
+        //     Confidence
+        //   </Links>
+        // </Button>
+      }
     </SimpleAppBar>
     );
   }

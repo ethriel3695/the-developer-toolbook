@@ -6,6 +6,7 @@ import Links from '../Link/Links';
 import SimpleAppBar from './SimpleAppBar';
 import HeaderButton from '../Button/HeaderButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
@@ -17,16 +18,19 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Divider from '@material-ui/core/Divider';
 // import MenuItem from '@material-ui/core/MenuItem';
 // import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
 import { Link } from 'gatsby';
+
+import { connect } from "react-redux";
+
+import { login } from '../../store/actions/index';
+import { logout } from '../../store/actions/index';
+import { renewSession } from '../../store/actions/index';
+
 const isBrowser = typeof window !== 'undefined';
 
-
-// import { connect } from "react-redux";
-
-// import { login } from '../../store/actions/index';
-// import { logout } from '../../store/actions/index';
-// import { renewSession } from '../../store/actions/index';
 if (isBrowser) {
   window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 }
@@ -56,7 +60,10 @@ const pageStyles = {
     color: '#7b1bb3'
   },
   headerColor: {
-    background: '#FFD700'
+    background: 'linear-gradient(to bottom, #ffcc00 0%, #FFD700 35%, #ffe066 68%, #fff5cc 100%)',
+    boxShadow: 'inset 0px 1px 6px 0px #ffe066',
+	  margin: 'auto 0px',
+    // background: '#FFD700'
   }
 }
 
@@ -79,6 +86,17 @@ class HeaderAppBar extends React.Component {
   //   this.setState({ open: false });
   // };
 
+  componentDidMount () {
+    //   const { renewSession } = auth;
+      // console.log(isLoggedIn());
+      // if (this.props.isAuthenticated === true) {
+      //   renewSession();
+      // }
+      // if(localStorage.getItem('isLoggedIn') === 'true') {
+      //   renewSession();
+      // }
+    }
+
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -94,10 +112,10 @@ class HeaderAppBar extends React.Component {
   };
 
   render() {
-    const { classes, siteTitle } = this.props;
+    const { classes, siteTitle, isAuthenticated } = this.props;
     const { anchorEl } = this.state;
 
-    // const open = Boolean(anchorEl);
+    const open = Boolean(anchorEl);
 
     const sideList = (
       <div className={classes.list}>
@@ -126,6 +144,12 @@ class HeaderAppBar extends React.Component {
           <Link style={{ textDecoration: 'none' }} to="/faith">Faith</Link>
           {/* </ListItemText> */}
         </ListItem>
+        <ListItem button key={'Faith'}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          {/* <ListItemText primary={'Faith'}> */}
+          <Link style={{ textDecoration: 'none' }} to="/self-image">Self Image</Link>
+          {/* </ListItemText> */}
+        </ListItem>
           {/* {['Auto Suggestion', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon><InboxIcon /></ListItemIcon>
@@ -150,16 +174,18 @@ class HeaderAppBar extends React.Component {
     return (
     <SimpleAppBar className={classes.root} 
       style={pageStyles.headerColor}>
+      {/* {isAuthenticated && */}
          <HeaderButton 
           className={classes.menuButton} 
           aria-label="Menu"
-          aria-owns={anchorEl ? 'menu-appbar' : undefined}
+          aria-owns={anchorEl ? 'menu-sidebar' : undefined}
               aria-haspopup="true"
               onClick={this.toggleDrawer('left', true)}
         >
             <MenuIcon 
               style={pageStyles.foregroundColor} />
         </HeaderButton>
+      {/* } */}
         <HeaderText className={classes.grow}>
             <Links
             to="/"
@@ -167,9 +193,9 @@ class HeaderAppBar extends React.Component {
                 {siteTitle}
             </Links>
         </HeaderText>
-       
+        {/* {isAuthenticated && */}
         <SwipeableDrawer
-          id="menu-appbar"
+          id="menu-sidebar"
           // anchor="right"
           open={this.state.left}
           onClose={this.toggleDrawer('left', false)}
@@ -184,35 +210,53 @@ class HeaderAppBar extends React.Component {
             {sideList}
           </div>
         </SwipeableDrawer>
-          {/* <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            // anchorOrigin={{
-            //   vertical: 'top',
-            //   horizontal: 'right',
-            // }}
-            // transformOrigin={{
-            //   vertical: 'top',
-            //   horizontal: 'right',
-            // }}
-            open={open}
-            onClose={this.handleClose}
-          >
-            <MenuItem onClick={this.handleClose}>
-            <Link style={{ textDecoration: 'none' }} to="/auto-suggestion">Auto Suggestion</Link>
+         {/* } */}
+         {
+              //auth && (
+              <div>
+                <HeaderButton
+                  aria-owns={open ? 'menu-appbar' : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                >
+                  <AccountCircle style={pageStyles.foregroundColor} />
+                </HeaderButton>
+            {    
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={this.handleClose}
+            >
+            {
+              !isAuthenticated && (
+            <MenuItem
+              onClick={() => {login()}}>
+              <Link to="/">Log In</Link>
             </MenuItem>
-            <MenuItem onClick={this.handleClose}>
-            <Link style={{ textDecoration: 'none' }} to="/self-confidence">Self Confidence</Link>
-            </MenuItem>
-            <MenuItem onClick={this.handleClose}>
-            <Link style={{ textDecoration: 'none' }} to="/commitment">Commitment</Link>
-            </MenuItem>
-            <MenuItem onClick={this.handleClose}>
-            <Link style={{ textDecoration: 'none' }} to="/faith">Faith</Link>
-            </MenuItem>
-          </Menu> */}
-          
-       
+              )
+            }
+            {
+              isAuthenticated && (
+                  <MenuItem
+                    onClick={() => {logout()}}
+                  >
+                  <Link to="/">Log Out</Link>
+                  </MenuItem>
+                )
+            }
+            </Menu>
+            }
+            </div>
+                }
         {
         //   <Button style={pageStyles.foregroundColor}>
         //   <Links to="/auto-suggestion" style={pageStyles.plainLink}>
@@ -238,4 +282,21 @@ HeaderAppBar.defaultProps = {
     siteTitle: ``,
 }
 
-export default withStyles(styles)(HeaderAppBar);
+const mapStateToProps = (auth) => {
+  const { isAuthenticated, profile } = auth.auth
+  return {
+    isAuthenticated,
+    profile
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return { login: () => dispatch(login()),
+    logout: () => dispatch(logout()),
+    renewSession: () => dispatch(renewSession()) }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+) (withStyles(styles)(HeaderAppBar));

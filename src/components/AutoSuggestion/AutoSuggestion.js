@@ -1,8 +1,7 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import Layout from '../components/layout';
-import SEO from '../components/seo';
+import SEO from '../seo';
 
 const pageStyles = {
   textCenter: {
@@ -12,7 +11,7 @@ const pageStyles = {
 }
 
 const AutoSuggestion = () => (
-  <Layout>
+  <div>
     <SEO title="Auto Suggestion" />
     <Grid container>
       <Grid item sm={12}>
@@ -53,7 +52,7 @@ const AutoSuggestion = () => (
         </ol>
       </Grid>
     </Grid>
-  </Layout>
+  </div>
 )
 
 export default AutoSuggestion;

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import Layout from '../components/layout';
-import SEO from '../components/seo';
+// import Layout from '../layout';
+import SEO from '../seo';
 
 const pageStyles = {
   textCenter: {
@@ -12,7 +12,7 @@ const pageStyles = {
 }
 
 const Commitment = () => (
-  <Layout>
+  <div>
     <SEO title="Commitment" />
     <Grid container>
       <Grid item sm={12}>
@@ -31,7 +31,7 @@ const Commitment = () => (
         </ol>
       </Grid>
     </Grid>
-  </Layout>
+  </div>
 )
 
 export default Commitment;

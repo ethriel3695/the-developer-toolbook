@@ -123,31 +123,31 @@ class HeaderAppBar extends React.Component {
         <ListItem button key={'Auto Suggestion'}>
               <ListItemIcon><InboxIcon /></ListItemIcon>
               {/* <ListItemText primary={'Auto Suggestion'}> */}
-              <Link style={{ textDecoration: 'none' }} to="/auto-suggestion">Auto Suggestion</Link>
+              <Link style={{ textDecoration: 'none' }} to="/app/auto-suggestion">Auto Suggestion</Link>
               {/* </ListItemText> */}
         </ListItem>
         <ListItem button key={'Self Confidence'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Self Confidence'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/self-confidence">Self Confidence</Link>
+          <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
           {/* </ListItemText> */}
         </ListItem>
         <ListItem button key={'Commitment'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Commitment'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/commitment">Commitment</Link>
+          <Link style={{ textDecoration: 'none' }} to="/app/commitment">Commitment</Link>
           {/* </ListItemText> */}
         </ListItem>
         <ListItem button key={'Faith'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Faith'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/faith">Faith</Link>
+          <Link style={{ textDecoration: 'none' }} to="/app/faith">Faith</Link>
           {/* </ListItemText> */}
         </ListItem>
         <ListItem button key={'Faith'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Faith'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/self-image">Self Image</Link>
+          <Link style={{ textDecoration: 'none' }} to="/app/self-image">Self Image</Link>
           {/* </ListItemText> */}
         </ListItem>
           {/* {['Auto Suggestion', 'Starred', 'Send email', 'Drafts'].map((text, index) => (

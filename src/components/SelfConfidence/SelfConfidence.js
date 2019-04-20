@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import Layout from '../components/layout';
-import SEO from '../components/seo';
+// import Layout from '../layout';
+import SEO from '../seo';
 
 const pageStyles = {
   textCenter: {
@@ -12,7 +12,7 @@ const pageStyles = {
 }
 
 const SelfConfidence = () => (
-  <Layout>
+  <div>
     <SEO title="Self Confidence" />
     <Grid container>
       <Grid item sm={12}>
@@ -39,7 +39,7 @@ const SelfConfidence = () => (
         </ol>
       </Grid>
     </Grid>
-  </Layout>
+  </div>
 )
 
 export default SelfConfidence;

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import Layout from '../components/layout';
-import SEO from '../components/seo';
+// import Layout from '../layout';
+import SEO from '../seo';
 
 const pageStyles = {
   textCenter: {
@@ -12,7 +12,7 @@ const pageStyles = {
 }
 
 const Faith = () => (
-  <Layout>
+  <div>
     <SEO title="Faith" />
     <Grid container>
       <Grid item sm={12}>
@@ -44,7 +44,7 @@ const Faith = () => (
         </ol>
       </Grid>
     </Grid>
-  </Layout>
+  </div>
 )
 
 export default Faith;

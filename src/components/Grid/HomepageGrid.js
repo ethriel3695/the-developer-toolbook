@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import Card from '@material-ui/core/Card';
 // import Image from '../image'
@@ -29,6 +30,11 @@ const styles = theme => ({
       paddingRight: 0,
     },
   },
+  homeFlex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  }
 });
 
 class HomepageGrid extends React.Component {
@@ -42,25 +48,22 @@ class HomepageGrid extends React.Component {
 render () {
   const { classes } = this.props;
   return (
-        <Grid container>
-            <Grid item xs={12}>
-            <Paper className={classes.mainFeaturedPost}>
-            {/* <Card>
-            <h1>Hi people</h1> */
-            // <CardMedia
-            //     id="heroIFrame"
-            //     component="iframe"
-            //     height={400}
-            //     src=''
-            //     title="Gatsby Intro Video"
-            //     alt="Gatsby Intro Video"
-            // />}
-            /* </Card> */}
-            </Paper>
-            </Grid>
-            <Grid item sm={12}>
-            </Grid>
-        </Grid>
+        // <Grid container>
+        //     <Grid item sm={12} lg={4}>
+        //     <Typography variant='h4'> Redefine your reality </Typography><br/>
+        //     </Grid>
+        //     <Grid item sm={12} lg={4}>
+        //     <Typography variant='h4'>Elevate humanity </Typography><br/>
+        //     </Grid>
+        //     <Grid item sm={12} lg={4}>
+        //     <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
+        //     </Grid>
+        // </Grid>
+        <div className={classes.homeFlex}>
+        <Typography variant='h4'> Redefine your reality </Typography><br/>
+        <Typography variant='h4'>Elevate humanity </Typography><br/>
+        <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
+        </div>
   );
 }
 }

@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
 import Layout from '../components/layout';
 import LoadingProgress from '../components/Progress/LoadingProgress';
-import { handleAuthentication } from '../../src/store/actions/index';
+import { handleAuthentication } from '../store/actions/index';
+import { connect } from "react-redux";
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = {
+    root: {
+      flexGrow: 1
+    },
+    grow: {
+      flexGrow: 1
+    },
+    menuButton: {
+      marginLeft: -12,
+      marginRight: 20
+    },
+    list: {
+      width: 250,
+    },
+  };
 
 class Callback extends Component {
 
     componentDidMount() {
-        handleAuthentication();
+        this.props.handleAuthentication();
     }
     render () {
         return (
@@ -19,4 +37,19 @@ class Callback extends Component {
     }
 }
 
-export default Callback;
+const mapStateToProps = (auth) => {
+    const { isAuthenticated, profile } = auth.auth
+    return {
+      isAuthenticated,
+      profile
+    }
+  }
+
+const mapDispatchToProps = dispatch => {
+    return { handleAuthentication: () => dispatch(handleAuthentication()) }
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ) (withStyles(styles)(Callback));

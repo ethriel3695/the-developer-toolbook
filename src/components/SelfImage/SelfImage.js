@@ -13,7 +13,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 
-const isBrowser = typeof window !== 'undefined';
+// const isBrowser = typeof window !== 'undefined';
 
 const styles = theme => ({
   container: {

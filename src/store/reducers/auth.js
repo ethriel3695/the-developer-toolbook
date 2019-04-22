@@ -4,8 +4,6 @@ import jwtDecode from 'jwt-decode';
 const isBrowser = typeof window !== 'undefined';
 
 const initialState = {
-    // isAuthenticated: true,
-    // profile: null,
     isAuthenticated: checkTokenExpiry(),
     profile: getProfile(),
     error: ''
@@ -32,11 +30,11 @@ function checkTokenExpiry() {
 
 function getProfile() {
     if(!isBrowser) {
-        return;
+        return null;
     } else if (localStorage.getItem('profile') !== 'undefined') {
         return JSON.parse(localStorage.getItem('profile'));
     } else {
-        return;
+        return null;
     }
 }
 
@@ -45,16 +43,16 @@ switch (action.type) {
     case LOGIN_SUCCESS:
     return {
         ...state,
-        isAuthenticated: action.isAuthenticated,
-        profile: action.profile,
+        isAuthenticated: action.payload.isAuthenticated,
+        profile: action.payload.profile,
         error: ''
     }
     case LOGIN_ERROR:
     return {
         ...state,
-        isAuthenticated: action.isAuthenticated,
+        isAuthenticated: action.payload.isAuthenticated,
         profile: null,
-        error: action.error
+        error: action.payload.error
     }
     case LOGOUT_SUCCESS:
     return {

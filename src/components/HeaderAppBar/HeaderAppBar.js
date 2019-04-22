@@ -120,31 +120,31 @@ class HeaderAppBar extends React.Component {
     const sideList = (
       <div className={classes.list}>
         <List>
-        <ListItem button key={'Auto Suggestion'}>
+        <ListItem button key={'auto-suggestion'}>
               <ListItemIcon><InboxIcon /></ListItemIcon>
               {/* <ListItemText primary={'Auto Suggestion'}> */}
               <Link style={{ textDecoration: 'none' }} to="/app/auto-suggestion">Auto Suggestion</Link>
               {/* </ListItemText> */}
         </ListItem>
-        <ListItem button key={'Self Confidence'}>
+        <ListItem button key={'self-confidence'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Self Confidence'}> */}
           <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
           {/* </ListItemText> */}
         </ListItem>
-        <ListItem button key={'Commitment'}>
+        <ListItem button key={'commitment'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Commitment'}> */}
           <Link style={{ textDecoration: 'none' }} to="/app/commitment">Commitment</Link>
           {/* </ListItemText> */}
         </ListItem>
-        <ListItem button key={'Faith'}>
+        <ListItem button key={'faith'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Faith'}> */}
           <Link style={{ textDecoration: 'none' }} to="/app/faith">Faith</Link>
           {/* </ListItemText> */}
         </ListItem>
-        <ListItem button key={'Faith'}>
+        <ListItem button key={'self-image'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Faith'}> */}
           <Link style={{ textDecoration: 'none' }} to="/app/self-image">Self Image</Link>
@@ -239,7 +239,7 @@ class HeaderAppBar extends React.Component {
             {
               !isAuthenticated && (
             <MenuItem
-              onClick={() => {login()}}>
+              onClick={() => {this.props.login()}}>
               <Link to="/">Log In</Link>
             </MenuItem>
               )
@@ -247,7 +247,7 @@ class HeaderAppBar extends React.Component {
             {
               isAuthenticated && (
                   <MenuItem
-                    onClick={() => {logout()}}
+                    onClick={() => {this.props.logout()}}
                   >
                   <Link to="/">Log Out</Link>
                   </MenuItem>

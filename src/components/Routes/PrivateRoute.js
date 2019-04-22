@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-// import { navigate } from "gatsby"
+import { navigate } from "gatsby"
 
 const isBrowser = typeof window !== 'undefined';
 let isLoggedIn = true;
@@ -18,14 +18,14 @@ const loggedIn = () => {
   return isLoggedIn;
 }
 
-const redirect = 'http://tools.spudnik.com';
+// const redirect = 'http://tools.spudnik.com';
 
 const PrivateRoute = ({ component: Component, location, ...rest }) => {
-//   isLoggedIn = loggedIn();
-  isLoggedIn = true;
+  isLoggedIn = loggedIn();
+  // isLoggedIn = true;
   if (!isLoggedIn && location.pathname !== `/`) {
     // If we’re not logged in, redirect to the home page.
-    window.location.href= redirect;
+    navigate('/');
     return null
   }
 

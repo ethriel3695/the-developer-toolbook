@@ -22,22 +22,41 @@ let auth0 = isBrowser
     scope: 'openid'
 }) : {};
 
+// DISPATCHED ACTIONS
 const loginSuccess = (profile) => {
-    return {
-        type: LOGIN_SUCCESS,
+    let payload = {
         isAuthenticated: true,
         profile: profile
     }
+    return {
+        type: LOGIN_SUCCESS,
+        payload: payload
+    }
 }
 
-const loginError = (err) => {
+const logoutSuccess = () => {
+    let payload = {
+        isAuthenticated: false,
+        error: ''
+    }
+    return {
+        type: LOGOUT_SUCCESS,
+        payload: payload
+    }
+}
+
+const loginError = (error) => {
+    let payload = {
+        isAuthenticated: false,
+        error: error
+    }
     return {
         type: LOGIN_ERROR,
-        isAuthenticated: false,
-        error: err
+        payload: payload
     }
 }
   
+// AUTHORIZES THE AUTH0 PROFILE
 export const login = () => {
     if (!isBrowser) {
         return;
@@ -45,45 +64,55 @@ export const login = () => {
     auth0.authorize();
 }
 
+// DETERMINES IF THE AUTH0 PROFILE IS VALID
 export const handleAuthentication = () => {
-    if (!isBrowser) {
-        return;
-    }
-    auth0.parseHash((err, authResult) => {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-            setSession(authResult);
-            return true;
-        } else if (err) {
-            alert(`Error ${err.error}. Check console for further details.`);
-            return false;
-        } else {
-            return loginSuccess("");
+    return dispatch => {
+        if (!isBrowser) {
+            return;
         }
-    });
+        auth0.parseHash((err, authResult) => {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                setSession(authResult);
+                return true;
+            } else if (err) {
+                console.log(err);
+                alert(`Error ${err.error}. Check console for further details.`);
+                return false;
+            } else {
+                return dispatch(loginSuccess(""));
+            }
+        });
+    }
 }
 
+// SETS THE SESSION IF THE PROFILE IS VALID
 const setSession = (authResult) => {
-    let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-    accessToken = authResult.accessToken;
-    idToken = authResult.idToken;
-    expiresAt = currentExpiresAt;
-    if (!isBrowser) {
-        return;
+    return dispatch => {
+        let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+        accessToken = authResult.accessToken;
+        idToken = authResult.idToken;
+        expiresAt = currentExpiresAt;
+        console.log(accessToken);
+        if (!isBrowser) {
+            return;
+        }
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('access_token', accessToken);
+        localStorage.setItem('id_token', idToken);
+        localStorage.setItem('expires_at', expiresAt);
+        auth0.client.userInfo(accessToken, function(err, profile) {
+            localStorage.setItem('profile', JSON.stringify(profile));
+        if(err) {
+            return dispatch(loginError(err));
+        }
+        navigate('/');
+        console.log(profile);
+        return dispatch(loginSuccess(profile));
+        })
     }
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('id_token', idToken);
-    localStorage.setItem('expires_at', expiresAt);
-    auth0.client.userInfo(accessToken, function(err, profile) {
-        localStorage.setItem('profile', JSON.stringify(profile));
-    if(err) {
-        return loginError(err);
-    }
-    navigate('/');
-    return loginSuccess(profile);
-    })
 }
 
+// RENEWS THE SESSION WHEN THE USER RETURNS TO THE APPLICATION AND IF TOKEN IS NOT EXPIRED
 export const renewSession = () => {
     if (!isBrowser) {
         return;
@@ -99,14 +128,7 @@ export const renewSession = () => {
     });
 }
 
-const logoutSuccess = () => {
-    return {
-        type: LOGOUT_SUCCESS,
-        isAuthenticated: false,
-        error: ''
-    }
-}
-
+// LOGS THE USER OUT, DESTROYS THE SESSION AND RELEASES THE AUTH0 CONNECTION
 export const logout = () => {
     auth0.logout({
         returnTo: 'http://localhost:8000',
@@ -119,11 +141,6 @@ export const logout = () => {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('profile');
       }
-    // localStorage.removeItem('access_token');
-    // localStorage.removeItem('id_token');
-    // localStorage.removeItem('expires_at');
-    // localStorage.removeItem('isLoggedIn');
-    // localStorage.removeItem('profile');
     return dispatch => {
         return dispatch(logoutSuccess());
     }

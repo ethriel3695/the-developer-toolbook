@@ -4,11 +4,16 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import SEO from '../seo';
 import BasicImageCard from '../Card/BasicImageCard';
+import TextField from '@material-ui/core/TextField';
+import { Row, Col } from 'reactstrap';
+
+import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const pageStyles = {
@@ -53,14 +58,39 @@ class AutoSuggestion extends React.Component {
     this.state = {
       missionTitle: '',
       autoSuggestion: '',
+      archive: false,
       dueDate: new Date(),
-      visibleDialog: false
+      visibleDialog: false,
+      visibleInfo: false,
+      editAutoSuggestion: false
     }
   }
 
   toggleDialog = () => {
     this.setState({
         visibleDialog: !this.state.visibleDialog
+    });
+  }
+
+  toggleInfo = () => {
+    this.setState({
+      visibleInfo: !this.state.visibleInfo
+    });
+  }
+
+  toggleAutoSuggestion = () => {
+    this.setState({
+      editAutoSuggestion: !this.state.editAutoSuggestion
+    });
+  }
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+  toggleArchive = () => {
+    this.setState({
+      archive: !this.state.archive
     });
   }
 
@@ -75,29 +105,109 @@ class AutoSuggestion extends React.Component {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Request Confirmed"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{"Create Auto Suggestion Statement"}</DialogTitle>
             <DialogContent>
-              <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
-                {this.state.userMessage}
-              </DialogContentText>
+              {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
+              test
+              </DialogContentText> */}
+              <form className={classes.w100}>
+                    <Row>
+                    <Col xs="12">
+                    <TextField
+                      id="outlined-multiline-flexible-1"
+                      label="Goal/Mission"
+                      multiline
+                      rowsMax="8"
+                      value={this.state.missionTitle}
+                      onChange={this.handleChange('missionTitle')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      id="outlined-multiline-flexible-2"
+                      label="Auto Suggestion Statement"
+                      multiline
+                      rowsMax="8"
+                      value={this.state.autoSuggestion}
+                      onChange={this.handleChange('autoSuggestion')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </Col>
+                  <Col xs="12">
+                  <Row style={{textAlign: 'right'}}>
+                  <Col xs="6" style={{marginRight: 16}}>
+                  <Button
+                      variant="contained"
+                      id='submit-auto-suggestion'
+                      onClick={this.onFormSubmit}
+                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
+                        Create my new life!
+                      </Button>
+                  </Col>
+                  </Row>
+                  </Col>
+                  </Row>
+              </form>
             </DialogContent>
-            <DialogActions>
-              <Button onClick={this.toggleDialog} color="secondary" autoFocus>
-                Ok
-              </Button>
-            </DialogActions>
           </Dialog>
         }
-        <SEO title="Auto Suggestion" />
-        <Grid container>
-          <Grid item sm={12}>
-            <h1 style={pageStyles.textCenter}>AUTO-SUGGESTION</h1>
-            <Button variant="contained" color="primary" autoFocus>
-              Add New
-            </Button>
-          </Grid>
-          <Grid item sm={12}>
-          <BasicImageCard></BasicImageCard>
+        {this.state.editAutoSuggestion && 
+          <Dialog
+            open={this.state.editAutoSuggestion}
+            onClose={this.toggleAutoSuggestion}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Update Auto Suggestion Statement"}</DialogTitle>
+            <DialogContent>
+              {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
+              test
+              </DialogContentText> */}
+              <form className={classes.w100}>
+                    <Row>
+                    <Col xs="12">
+                    <TextField
+                      id="outlined-multiline-flexible-2"
+                      label="Auto Suggestion Statement"
+                      multiline
+                      rowsMax="8"
+                      value={this.state.autoSuggestion}
+                      onChange={this.handleChange('autoSuggestion')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </Col>
+                  <Col xs="12">
+                  <Row style={{textAlign: 'right'}}>
+                  <Col xs="6" style={{marginRight: 10}}>
+                  <Button
+                      variant="contained"
+                      id='update-auto-suggestion'
+                      onClick={this.onFormSubmit}
+                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
+                        Update auto suggestion
+                      </Button>
+                  </Col>
+                  </Row>
+                  </Col>
+                  </Row>
+              </form>
+            </DialogContent>
+          </Dialog>
+        }
+        {this.state.visibleInfo && 
+          <Dialog
+            open={this.state.visibleInfo}
+            onClose={this.toggleInfo}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Auto Suggestion Instructions"}</DialogTitle>
+            <DialogContent>
             <ol>
             <li>
             Go into some quiet spot <strong>(preferably in bed at night)</strong> where you will not be disturbed or interrupted. 
@@ -110,15 +220,6 @@ class AutoSuggestion extends React.Component {
             As you carry out these instructions, see yourself already in possession of the money. 
             For example: suppose you intend to accumulate $100,000 by the first of June 2019 and you intend to give personal services in return for the money in the capacity of a software developer. 
             Your written statement of your purpose is similar to the following: 
-            <ul>
-            <li>
-            "By June 1st 2019 I have in my possession $100,000.00 in my ICCU checking account which comes to me in various amounts and forms, day by day. In return for this money,
-            I give my best work as a software developer for the purpose of teaching and providing people with the tools to succeed in their goals and to have the self confidence to
-            create software which changes lives! I have this money in my possession now! My trust in myself allows me to see this money before my eyes and touch it with my hands! 
-            It is now awaiting transfer to me in retrun for the gifts I provide for developers and humanity! I am open and gratefully receive a plan by which to accumulate this money, 
-            and I follow the plan I receive now!"
-            </li>
-            </ul>
             </li>
             <li>
             Repeat this program night and morning until you can see (in your imagination) the money you intend to create!
@@ -130,6 +231,30 @@ class AutoSuggestion extends React.Component {
             Read the entire chapter aloud once every night until you become thoroughly convinced that the principle of AUTO-SUGGESTION is sound, that it will accomplish for you all that has been claimed for it. As you read, underline with a pencil every sentence that impresses you favorably!
             </li>
             </ol>
+            </DialogContent>
+          </Dialog>
+        }
+        <SEO title="Auto Suggestion" />
+        <Grid container spacing={16}>
+          <Grid item sm={12}>
+            <h1 style={pageStyles.textCenter}>
+            AUTO-SUGGESTION
+            <IconButton onClick={this.toggleInfo} aria-label="Instructions">
+              <InfoIcon />
+            </IconButton>
+            </h1>
+            
+            <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
+              Add New
+            </Button>
+          </Grid>
+          <Grid item sm={12}>
+          <BasicImageCard 
+            editAutoSuggestion={this.state.editAutoSuggestion} 
+            toggleAutoSuggestion={this.toggleAutoSuggestion} 
+            archive={this.state.archive} 
+            toggleArchive={this.toggleArchive}>
+          </BasicImageCard>
           </Grid>
         </Grid>
       </div>

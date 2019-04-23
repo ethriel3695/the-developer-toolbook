@@ -13,8 +13,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
 import ArchiveIcon from '@material-ui/icons/ArchiveRounded';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/DeleteForever';
 // import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = theme => ({
   card: {
@@ -54,6 +55,11 @@ class BasicImageCard extends React.Component {
 
   render() {
     const { classes } = this.props;
+    let archived = 'default';
+    console.log(this.props.archive);
+    if (this.props.archive === true) {
+      archived = 'primary';
+    }
 
     return (
       <Card className={classes.card}>
@@ -65,7 +71,7 @@ class BasicImageCard extends React.Component {
           }
           action={
             <CardActions className={classes.actions} disableActionSpacing>
-              <IconButton aria-label="Add to favorites">
+              <IconButton onClick={this.props.toggleArchive} aria-label="Archive" color={`${archived}`}>
                 <ArchiveIcon />
               </IconButton>
             </CardActions>
@@ -84,6 +90,14 @@ class BasicImageCard extends React.Component {
             at least 30 minutes daily until the last possible moment.
           </Typography>
         </CardContent>
+        <CardActions className={classes.actions} disableActionSpacing>
+          <IconButton onClick={this.props.toggleAutoSuggestion} aria-label="Edit Card">
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="Delete Card">
+            <DeleteIcon />
+          </IconButton>
+        </CardActions>
       </Card>
     );
   }

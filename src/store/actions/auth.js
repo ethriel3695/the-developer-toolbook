@@ -87,29 +87,30 @@ export const handleAuthentication = () => {
 
 // SETS THE SESSION IF THE PROFILE IS VALID
 const setSession = (authResult) => {
-    return dispatch => {
-        let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-        accessToken = authResult.accessToken;
-        idToken = authResult.idToken;
-        expiresAt = currentExpiresAt;
-        console.log(accessToken);
-        if (!isBrowser) {
-            return;
-        }
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('access_token', accessToken);
-        localStorage.setItem('id_token', idToken);
-        localStorage.setItem('expires_at', expiresAt);
-        auth0.client.userInfo(accessToken, function(err, profile) {
-            localStorage.setItem('profile', JSON.stringify(profile));
-        if(err) {
+    let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+    accessToken = authResult.accessToken;
+    idToken = authResult.idToken;
+    expiresAt = currentExpiresAt;
+    if (!isBrowser) {
+        return;
+    }
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('id_token', idToken);
+    localStorage.setItem('expires_at', expiresAt);
+    auth0.client.userInfo(accessToken, function(err, profile) {
+        localStorage.setItem('profile', JSON.stringify(profile));
+    if(err) {
+        return dispatch => {
             return dispatch(loginError(err));
         }
-        navigate('/');
-        console.log(profile);
-        return dispatch(loginSuccess(profile));
-        })
     }
+    navigate('/');
+    console.log(profile);
+    return dispatch => {
+        return dispatch(loginSuccess(profile));
+    }
+    })  
 }
 
 // RENEWS THE SESSION WHEN THE USER RETURNS TO THE APPLICATION AND IF TOKEN IS NOT EXPIRED

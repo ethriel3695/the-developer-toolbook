@@ -56,14 +56,17 @@ class BasicImageCard extends React.Component {
   render() {
     const { classes } = this.props;
     let archived = 'default';
+    let archiveBackground = 'transparent';
     console.log(this.props.archive);
     if (this.props.archive === true) {
       archived = 'primary';
+      archiveBackground = 'green';
     }
 
     return (
       <Card className={classes.card}>
         <CardHeader
+        style={{background: archiveBackground}}
           avatar={
             <Avatar aria-label="Recipe" className={classes.avatar}>
               R

@@ -2,13 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
-// import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
+
+import Carousel from '../Carousel/Carousel';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import Card from '@material-ui/core/Card';
 // import Image from '../image'
 // import RecipeReviewCard from '../Card/RecipeReviewCard'
 // import { Link } from 'gatsby'
+// import { Carousel } from 'react-responsive-carousel';
+// import TestImage from '../../images/gatsby-astronaut.png';
 
 const styles = theme => ({
   root: {
@@ -48,22 +52,28 @@ class HomepageGrid extends React.Component {
 render () {
   const { classes } = this.props;
   return (
-        // <Grid container>
-        //     <Grid item sm={12} lg={4}>
-        //     <Typography variant='h4'> Redefine your reality </Typography><br/>
-        //     </Grid>
-        //     <Grid item sm={12} lg={4}>
-        //     <Typography variant='h4'>Elevate humanity </Typography><br/>
-        //     </Grid>
-        //     <Grid item sm={12} lg={4}>
-        //     <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
-        //     </Grid>
-        // </Grid>
-        <div className={classes.homeFlex}>
-        <Typography variant='h4'> Redefine your reality </Typography><br/>
-        <Typography variant='h4'>Elevate humanity </Typography><br/>
-        <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
-        </div>
+    
+        <Grid container spacing={24} style={{textAlign: 'center'}}>
+            <Grid item sm={12} lg={4}>
+            <Typography variant='h4'> Redefine your reality </Typography><br/>
+            </Grid>
+            <Grid item sm={12} lg={4}>
+            <Typography variant='h4'>Elevate humanity </Typography><br/>
+            </Grid>
+            <Grid item sm={12} lg={4}>
+            <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
+            </Grid>
+            <Grid item sm={12}>
+              <Carousel />
+            </Grid>
+        </Grid>
+        
+        
+        // <div className={classes.homeFlex}>
+        // <Typography variant='h4'> Redefine your reality </Typography><br/>
+        // <Typography variant='h4'>Elevate humanity </Typography><br/>
+        // <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
+        // </div>
   );
 }
 }

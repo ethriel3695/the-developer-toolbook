@@ -9,6 +9,7 @@ import { Row, Col } from 'reactstrap';
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@material-ui/icons/Add';
 
 import Dialog from '@material-ui/core/Dialog';
 // import DialogActions from '@material-ui/core/DialogActions';
@@ -244,8 +245,11 @@ class AutoSuggestion extends React.Component {
             </IconButton>
             </h1>
             
+            {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
+              <AddIcon />
+            </IconButton> */}
             <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
-              Add New
+            <AddIcon />
             </Button>
           </Grid>
           <Grid item sm={12}>

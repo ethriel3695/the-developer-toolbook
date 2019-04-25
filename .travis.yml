@@ -7,6 +7,8 @@ cache:
     - node_modules
 before_install:
     - sudo apt-get update
+    - sudo pip install --upgrade pip
+    - sudo apt-get install python3.6
 install:
   - sudo pip install pyOpenSSL ndg-httpsclient pyasn1 python-dev libssl-dev libffi-dev
   - sudo pip install awscli
@@ -28,8 +30,3 @@ branches:
   only:
     - master
     - develop
-before_deploy:
-  - aws s3 rm s3://S3_BUCKET --recursive
-after_deploy:
-  - aws configure set preview.cloudfront true
-  - test $TRAVIS_BRANCH = "master" && aws cloudfront create-invalidation --distribution-id CLOUDFRONT_DISTRIBUTION_ID --paths "/*"

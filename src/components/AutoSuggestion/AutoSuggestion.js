@@ -106,7 +106,7 @@ class AutoSuggestion extends React.Component {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Create Auto Suggestion Statement"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{"Auto Suggestion Statement"}</DialogTitle>
             <DialogContent>
               {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
               test

@@ -7,8 +7,8 @@ cache:
     - node_modules
 before_install:
     - sudo apt-get update
-    - sudo apt-get install python3
 install:
+  - sudo pip install pyOpenSSL ndg-httpsclient pyasn1 python-dev libssl-dev libffi-dev
   - sudo pip install awscli
 before_script:
   - npm install

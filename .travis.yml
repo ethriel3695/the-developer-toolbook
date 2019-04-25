@@ -6,7 +6,7 @@ cache:
   directories:
     - node_modules
 install:
-  - sudo pip install awscli -H
+  - sudo pip install awscli
 before_script:
   - npm install
 script:

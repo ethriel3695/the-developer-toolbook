@@ -8,6 +8,7 @@ cache:
 before_install:
     - sudo apt-get update
     - sudo pip install --upgrade pip
+    - sudo pip install python3
 install:
   - sudo pip install awscli
 before_script:

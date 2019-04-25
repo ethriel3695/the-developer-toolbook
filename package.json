@@ -31,7 +31,8 @@
     "react-swipeable-views": "^0.13.1",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rimraf": "^2.6.3"
   },
   "keywords": [
     "gatsby",
@@ -47,6 +48,8 @@
     "push": "git push origin",
     "pull": "git pull origin master",
     "test": "jest",
+    "prebuild": "rimraf ./public && mkdir public",
+    "build": "gatsby build",
     "deploy": "gatsby build && surge ./public"
   },
   "devDependencies": {

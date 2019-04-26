@@ -1,11 +1,12 @@
-### Python is necessary for AWS CLI
+sudo: required
 language: python
 python:
-  - "3.5"
-
+  - '3.4'
+before_install:
+    - sudo apt-get update
 ### Installing pre-requisites
 install:
-    - pip install awscli
+    - sudo pip install awscli
 
 ### Sending newly generated website to S3 bucket
 deploy:
@@ -28,6 +29,9 @@ deploy:
   cache_control: "max-age=21600"
 
 ### Forcing AWS CloudFront to refresh its cache
+before_deploy:
+  - aws s3 rm s3://$S3_BUCKET --recursive
 after_deploy:
   # Invalidate every object in the targeted distribution.
+    - aws configure set preview.cloudfront true
   - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"

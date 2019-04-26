@@ -42,4 +42,3 @@ after_deploy:
   # Invalidate every object in the targeted distribution.
   - aws configure set preview.cloudfront true
   - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-    - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT__SECONDARY_DISTRIBUTION_ID --paths "/*"

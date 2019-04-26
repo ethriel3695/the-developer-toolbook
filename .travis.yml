@@ -33,5 +33,5 @@ before_deploy:
   - aws s3 rm s3://$S3_BUCKET --recursive
 after_deploy:
   # Invalidate every object in the targeted distribution.
-    - aws configure set preview.cloudfront true
+  - aws configure set preview.cloudfront true
   - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"

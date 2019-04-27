@@ -5,11 +5,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 
-import Carousel from '../Carousel/Carousel';
+import BookCard from '../Card/BookCard';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import Card from '@material-ui/core/Card';
 // import Image from '../image'
-// import RecipeReviewCard from '../Card/RecipeReviewCard'
 // import { Link } from 'gatsby'
 // import { Carousel } from 'react-responsive-carousel';
 // import TestImage from '../../images/gatsby-astronaut.png';
@@ -53,7 +52,7 @@ render () {
   const { classes } = this.props;
   return (
     
-        <Grid container spacing={24} style={{textAlign: 'center'}}>
+        <Grid container spacing={24}>
             <Grid item sm={12} lg={4}>
             <Typography variant='h4'> Redefine your reality </Typography><br/>
             </Grid>
@@ -63,8 +62,23 @@ render () {
             <Grid item sm={12} lg={4}>
             <Typography variant='h4'>Love. Joy. Peace. </Typography><br/>
             </Grid>
-            <Grid item sm={12}>
-              <Carousel />
+            <Grid item sm={12} lg={4}>
+              <BookCard 
+                title={'The Miracle Equation'}
+                subHeader={'The Two Decisions That Move Your Biggest Goals from Possible, to Probable, to Inevitable'}
+                author={'Hal Elrod'}/>
+            </Grid>
+            <Grid item sm={12} lg={4}>
+            <BookCard 
+                title={'Think and Grow Rich'}
+                subHeader={'The Secret to Being Successful, Self Confident, and Getting Anything and Everything You Want'}
+                author={'Napoleon Hill'}/>
+            </Grid>
+            <Grid item sm={12} lg={4}>
+            <BookCard 
+                title={'The Miracle Morning'}
+                subHeader={'The Not-So-Obvious Secret Guaranteed to Transform Your Life (Before 8AM)'}
+                author={'Hal Elrod'}/>
             </Grid>
         </Grid>
         

@@ -16,6 +16,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import thinkAndGrow from '../../images/gatsby-astronaut.png';
 
 const styles = theme => ({
   card: {
@@ -74,7 +75,7 @@ class RecipeReviewCard extends React.Component {
         />
         <CardMedia
           className={classes.media}
-          image="/static/images/cards/paella.jpg"
+          image={thinkAndGrow}
           title="Paella dish"
         />
         <CardContent>

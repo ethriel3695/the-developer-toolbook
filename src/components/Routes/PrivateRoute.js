@@ -21,8 +21,9 @@ const loggedIn = () => {
 // const redirect = 'http://tools.spudnik.com';
 
 const PrivateRoute = ({ component: Component, location, ...rest }) => {
-  // isLoggedIn = loggedIn();
-  isLoggedIn = true;
+  console.log(...rest);
+  isLoggedIn = loggedIn();
+  // isLoggedIn = true;
   if (!isLoggedIn && location.pathname !== `/`) {
     // If we’re not logged in, redirect to the home page.
     navigate('/');

@@ -87,6 +87,7 @@ class HeaderAppBar extends React.Component {
   // };
 
   componentDidMount () {
+    console.log(this.props.isAuthenticated);
     //   const { renewSession } = auth;
       // console.log(isLoggedIn());
       // if (this.props.isAuthenticated === true) {
@@ -174,7 +175,7 @@ class HeaderAppBar extends React.Component {
     return (
     <SimpleAppBar className={classes.root} 
       style={pageStyles.headerColor}>
-      {/* {isAuthenticated && */}
+      {isAuthenticated &&
          <HeaderButton 
           className={classes.menuButton} 
           aria-label="Menu"
@@ -185,7 +186,7 @@ class HeaderAppBar extends React.Component {
             <MenuIcon 
               style={pageStyles.foregroundColor} />
         </HeaderButton>
-      {/* } */}
+      }
         <HeaderText className={classes.grow}>
             <Links
             to="/"
@@ -193,7 +194,7 @@ class HeaderAppBar extends React.Component {
                 {siteTitle}
             </Links>
         </HeaderText>
-        {/* {isAuthenticated && */}
+        {isAuthenticated &&
         <SwipeableDrawer
           id="menu-sidebar"
           // anchor="right"
@@ -210,7 +211,7 @@ class HeaderAppBar extends React.Component {
             {sideList}
           </div>
         </SwipeableDrawer>
-         {/* } */}
+         }
          {
               //auth && (
               <div>

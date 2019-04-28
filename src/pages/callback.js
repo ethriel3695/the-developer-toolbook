@@ -4,6 +4,9 @@ import LoadingProgress from '../components/Progress/LoadingProgress';
 import { handleAuthentication } from '../store/actions/index';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
+import { navigate } from 'gatsby';
+
+const isBrowser = typeof window !== 'undefined';
 
 const styles = {
     root: {
@@ -25,6 +28,11 @@ class Callback extends Component {
 
     componentDidMount() {
         this.props.handleAuthentication();
+        console.log(this.props.isAuthenticated);
+        navigate('/');
+        // if(isBrowser) {
+        //   window.location.reload();
+        // }
     }
     render () {
         return (

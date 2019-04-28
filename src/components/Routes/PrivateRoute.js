@@ -1,16 +1,17 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { navigate } from "gatsby"
+import React from "react";
+import PropTypes from "prop-types";
+import { navigate } from "gatsby";
+import { connect } from "react-redux";
 
 const isBrowser = typeof window !== 'undefined';
 let isLoggedIn = true;
-const loggedIn = () => {
+const loggedIn = (auth) => {
   if (isBrowser) {
-    if (localStorage.getItem('isLoggedIn')) {
-      isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (auth === true) {
+      isLoggedIn = auth;
     };
   }
-  if (isLoggedIn === 'true') {
+  if (isLoggedIn === true) {
     isLoggedIn = true;
   } else {
     isLoggedIn = false;
@@ -20,10 +21,8 @@ const loggedIn = () => {
 
 // const redirect = 'http://tools.spudnik.com';
 
-const PrivateRoute = ({ component: Component, location, ...rest }) => {
-  console.log(...rest);
-  isLoggedIn = loggedIn();
-  // isLoggedIn = true;
+const PrivateRoute = ({ component: Component, location, isAuthenticated, ...rest }) => {
+  isLoggedIn = loggedIn(isAuthenticated);
   if (!isLoggedIn && location.pathname !== `/`) {
     // If we’re not logged in, redirect to the home page.
     navigate('/');
@@ -37,4 +36,14 @@ PrivateRoute.propTypes = {
   component: PropTypes.any.isRequired,
 }
 
-export default PrivateRoute;
+const mapStateToProps = (auth) => {
+  const { isAuthenticated, profile } = auth.auth
+  return {
+    isAuthenticated,
+    profile
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(PrivateRoute);

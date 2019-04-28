@@ -6,7 +6,6 @@ import {
 
 import { AUTH_CONFIG } from '../../components/Auth/auth0-variables';
 import authorize0 from 'auth0-js';
-import { navigate } from 'gatsby';
 
 let accessToken = null;
 let idToken = null;
@@ -87,6 +86,7 @@ export const handleAuthentication = () => {
 
 // SETS THE SESSION IF THE PROFILE IS VALID
 const setSession = (authResult) => {
+    console.log(authResult);
     let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     accessToken = authResult.accessToken;
     idToken = authResult.idToken;
@@ -94,7 +94,6 @@ const setSession = (authResult) => {
     if (!isBrowser) {
         return;
     }
-    localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('id_token', idToken);
     localStorage.setItem('expires_at', expiresAt);
@@ -105,8 +104,6 @@ const setSession = (authResult) => {
             return dispatch(loginError(err));
         }
     }
-    navigate('/');
-    console.log(profile);
     return dispatch => {
         return dispatch(loginSuccess(profile));
     }
@@ -132,14 +129,13 @@ export const renewSession = () => {
 // LOGS THE USER OUT, DESTROYS THE SESSION AND RELEASES THE AUTH0 CONNECTION
 export const logout = () => {
     auth0.logout({
-        returnTo: 'http://localhost:8000',
+        returnTo: 'https://www.thedevelopertoolbook.com',
         clientID: AUTH_CONFIG.clientId
     });
     if (isBrowser) {
         localStorage.removeItem('access_token');
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
-        localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('profile');
       }
     return dispatch => {

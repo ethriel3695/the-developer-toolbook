@@ -57,7 +57,6 @@ class BasicImageCard extends React.Component {
     const { classes } = this.props;
     let archived = 'default';
     let archiveBackground = 'transparent';
-    console.log(this.props.archive);
     if (this.props.archive === true) {
       archived = 'primary';
       archiveBackground = 'green';

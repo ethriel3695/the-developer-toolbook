@@ -87,7 +87,6 @@ class HeaderAppBar extends React.Component {
   // };
 
   componentDidMount () {
-    console.log(this.props.isAuthenticated);
     //   const { renewSession } = auth;
       // console.log(isLoggedIn());
       // if (this.props.isAuthenticated === true) {

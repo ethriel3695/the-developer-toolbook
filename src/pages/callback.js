@@ -28,7 +28,6 @@ class Callback extends Component {
 
     componentDidMount() {
         this.props.handleAuthentication();
-        console.log(this.props.isAuthenticated);
         navigate('/');
         // if(isBrowser) {
         //   window.location.reload();

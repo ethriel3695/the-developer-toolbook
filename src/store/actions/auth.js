@@ -86,7 +86,6 @@ export const handleAuthentication = () => {
 
 // SETS THE SESSION IF THE PROFILE IS VALID
 const setSession = (authResult) => {
-    console.log(authResult);
     let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     accessToken = authResult.accessToken;
     idToken = authResult.idToken;

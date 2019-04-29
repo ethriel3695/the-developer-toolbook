@@ -126,6 +126,12 @@ class HeaderAppBar extends React.Component {
               <Link style={{ textDecoration: 'none' }} to="/app/auto-suggestion">Auto Suggestion</Link>
               {/* </ListItemText> */}
         </ListItem>
+        <ListItem button key={'miracle-equation'}>
+              <ListItemIcon><InboxIcon /></ListItemIcon>
+              {/* <ListItemText primary={'Auto Suggestion'}> */}
+              <Link style={{ textDecoration: 'none' }} to="/app/miracle-equation">Miracle Equation</Link>
+              {/* </ListItemText> */}
+        </ListItem>
         <ListItem button key={'self-confidence'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           {/* <ListItemText primary={'Self Confidence'}> */}

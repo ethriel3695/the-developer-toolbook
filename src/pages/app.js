@@ -11,6 +11,7 @@ import SelfImage from '../components/SelfImage/SelfImage';
 import Commitment from '../components/Commitment/Commitment';
 import Faith from '../components/Faith/Faith';
 import PublicRoute from '../components/Routes/PublicRoute';
+import MiracleEquation from '../components/MiracleEquation/MiracleEquation';
 
 const App = () => (
     <Layout>
@@ -19,6 +20,7 @@ const App = () => (
                 {/*<Route path="/" render={(props) => <IndexPage auth={auth} {...props} />} />*/}
                 <PublicRoute path="/" exact component={HomepageGrid} />
                 <PrivateRoute path="/app/auto-suggestion" component={AutoSuggestion} />
+                <PrivateRoute path="/app/miracle-equation" component={MiracleEquation} />
                 <PrivateRoute path="/app/commitment" component={Commitment} />
                 <PrivateRoute path="/app/faith" component={Faith} />
                 <PrivateRoute path="/app/self-confidence" component={SelfConfidence} />

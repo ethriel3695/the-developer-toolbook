@@ -78,18 +78,12 @@ class BasicImageCard extends React.Component {
               </IconButton>
             </CardActions>
           }
-          title="Get 100,000.00 in savings"
-          subheader="June 1st 2019"
+          title={this.props.title}
+          subheader={this.props.subHeader}
         />
         <CardContent>
           <Typography component="p">
-            By the first day of June 2019 I have in my possession $100,000.00 which will come
-            to me in various forms day by day. In return for this money I give this everything I have
-            no matter what until the last possible moment and this is my choice and commitment. I believe 
-            I have this money in my possession. My belief in myself
-            is so strong that I can see this money with my eyes and touch it with my hands! It is now 
-            awaiting transfer to me provided I put forth the extraordinary effort to work towards this goal 
-            at least 30 minutes daily until the last possible moment.
+          {this.props.content}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>

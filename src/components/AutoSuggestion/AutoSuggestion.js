@@ -244,10 +244,6 @@ class AutoSuggestion extends React.Component {
               <InfoIcon />
             </IconButton>
             </h1>
-            
-            {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
-              <AddIcon />
-            </IconButton> */}
             <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
             <AddIcon />
             </Button>

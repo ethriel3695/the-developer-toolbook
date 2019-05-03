@@ -53,12 +53,16 @@ const styles = theme => ({
     overflow: 'hidden'
   }
 });
+
+const apiUrl = 'http://localhost:3030';
+
 class AutoSuggestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      missionTitle: '',
-      autoSuggestion: '',
+      title: '',
+      statement: '',
+      type: 'autoSuggestion',
       archive: false,
       dueDate: new Date(),
       visibleDialog: false,
@@ -95,6 +99,29 @@ class AutoSuggestion extends React.Component {
     });
   }
 
+  onFormSubmit = () => {
+    const url = `${apiUrl}/api/affirmation`;
+    let requestObject = {
+      title: this.state.title,
+      statement: this.state.statement,
+      type: this.state.type,
+      archive: this.state.archive,
+      dueDate: this.state.dueDate
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'post',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        console.log(res);
+      })
+    })
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -119,8 +146,8 @@ class AutoSuggestion extends React.Component {
                       label="Goal/Mission"
                       multiline
                       rowsMax="8"
-                      value={this.state.missionTitle}
-                      onChange={this.handleChange('missionTitle')}
+                      value={this.state.title}
+                      onChange={this.handleChange('title')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -130,8 +157,8 @@ class AutoSuggestion extends React.Component {
                       label="Auto Suggestion Statement"
                       multiline
                       rowsMax="8"
-                      value={this.state.autoSuggestion}
-                      onChange={this.handleChange('autoSuggestion')}
+                      value={this.state.statement}
+                      onChange={this.handleChange('statement')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -244,21 +271,16 @@ class AutoSuggestion extends React.Component {
               <InfoIcon />
             </IconButton>
             </h1>
+            
+            {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
+              <AddIcon />
+            </IconButton> */}
             <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
             <AddIcon />
             </Button>
           </Grid>
           <Grid item sm={12}>
           <BasicImageCard 
-            title={'Get 100,000.00 in savings'}
-            subHeader={'June 1st 2019'}
-            content={`By the first day of June 2019 I have in my possession $100,000.00 which will come
-            to me in various forms day by day. In return for this money I give this everything I have
-            no matter what until the last possible moment and this is my choice and commitment. I believe 
-            I have this money in my possession. My belief in myself
-            is so strong that I can see this money with my eyes and touch it with my hands! It is now 
-            awaiting transfer to me provided I put forth the extraordinary effort to work towards this goal 
-            at least 30 minutes daily until the last possible moment.`}
             editAutoSuggestion={this.state.editAutoSuggestion} 
             toggleAutoSuggestion={this.toggleAutoSuggestion} 
             archive={this.state.archive} 

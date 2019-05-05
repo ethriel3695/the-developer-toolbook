@@ -6,6 +6,7 @@ import SEO from '../seo';
 import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
+import Moment from 'react-moment';
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -53,18 +54,26 @@ const styles = theme => ({
     overflow: 'hidden'
   }
 });
+
+const apiUrl = 'http://localhost:3030';
 class MiracleEquation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      missionTitle: '',
-      miracleEquationMission: '',
+      title: '',
+      statement: '',
+      type: 'miracleEquation',
       archive: false,
       dueDate: new Date(),
       visibleDialog: false,
       visibleInfo: false,
-      editMiracleEquation: false
+      editMiracleEquation: false,
+      affirmations: null
     }
+  }
+
+  componentDidMount() {
+    this.getAffirmations();
   }
 
   toggleDialog = () => {
@@ -95,8 +104,56 @@ class MiracleEquation extends React.Component {
     });
   }
 
+  getAffirmations = () => {
+    const url = `${apiUrl}/api/affirmation`;
+    let requestObject = {
+      type: this.state.type,
+      userId: this.state.userId
+    }
+    fetch(url, {
+      method: 'get',
+      headers: requestObject,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        let data = JSON.parse(res);
+        // data.map(affirmation => {
+        this.setState({affirmations: data});
+        // });
+      });
+    });
+  }
+
+  onFormSubmit = () => {
+    const url = `${apiUrl}/api/affirmation`;
+    let requestObject = {
+      title: this.state.title,
+      statement: this.state.statement,
+      type: this.state.type,
+      archive: this.state.archive,
+      dueDate: this.state.dueDate,
+      userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'post',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        console.log(res);
+      })
+    })
+  }
+
+
   render() {
     const { classes } = this.props;
+    const { affirmations, archive } = this.state;
     return (
       <div>
         {this.state.visibleDialog && 
@@ -119,8 +176,8 @@ class MiracleEquation extends React.Component {
                       label="Goal/Mission"
                       multiline
                       rowsMax="8"
-                      value={this.state.missionTitle}
-                      onChange={this.handleChange('missionTitle')}
+                      value={this.state.title}
+                      onChange={this.handleChange('title')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -130,8 +187,8 @@ class MiracleEquation extends React.Component {
                       label="Miracle Equation Affirmation"
                       multiline
                       rowsMax="8"
-                      value={this.state.miracleEquationMission}
-                      onChange={this.handleChange('miracleEquationMission')}
+                      value={this.state.statement}
+                      onChange={this.handleChange('statement')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -175,8 +232,8 @@ class MiracleEquation extends React.Component {
                       label="Miracle Equation Affirmation"
                       multiline
                       rowsMax="8"
-                      value={this.state.miracleEquationMission}
-                      onChange={this.handleChange('miracleEquationMission')}
+                      value={this.state.statement}
+                      onChange={this.handleChange('statement')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -248,14 +305,34 @@ class MiracleEquation extends React.Component {
             <AddIcon />
             </Button>
           </Grid>
-          <Grid item sm={12}>
+          {affirmations != null && affirmations.length > 0 && affirmations.map((affirmation, index) => {
+            return (
+              <Grid item xs={12} sm={6} lg={4}
+              key={`affirmationMiracleContainer-${index}`}>
+                <BasicImageCard 
+                  key={`affirmationMiracleCard-${index}`}
+                  id={`affirmationMiracleCard-${index}`}
+                  title={affirmation.title}
+                  subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
+                  content={affirmation.statement}
+                  editAutoSuggestion={affirmation.editAutoSuggestion} 
+                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
+                  archive={archive} 
+                  toggleArchive={this.toggleArchive}>
+                </BasicImageCard>
+              </Grid>
+            )
+            })}
+          {/*<Grid item sm={12}>
           <BasicImageCard 
             title={'Miracle Equation Affirmation'}
             subHeader={'June 1st 2019'}
-            content={`My mission is to have my Kickstarter Campaign fully funded at 250% of my goal by June 1st, 2019
-             and $100,000.00 in my ICCU checking account and the Developer Toolbook MVP for early access ready
-             and I put forth Extraordinary Effort until I achieve my mission, no matter what, this is my only option!
-             To achieve my mission I commit to spend at least 30 minutes every single day no matter what and I release
+            content={`My mission is to have $100,000.00 in my ICCU checking account by June 1st, 2019 
+              and the Developer Toolbook MVP for early access ready
+              and I put forth Extraordinary Effort until I achieve my mission
+              , for as long as it takes, no matter what, this is my only option!
+             To achieve my mission I commit to spend at least 30 minutes every single day 
+             , for as long as it takes, no matter what and I release
              myself from being emotionally attached to my results!`}
              editMiracleEquation={this.state.editMiracleEquation} 
             toggleAutoSuggestion={this.toggleAutoSuggestion} 
@@ -263,6 +340,7 @@ class MiracleEquation extends React.Component {
             toggleArchive={this.toggleArchive}>
           </BasicImageCard>
           </Grid>
+          */}
         </Grid>
       </div>
     )

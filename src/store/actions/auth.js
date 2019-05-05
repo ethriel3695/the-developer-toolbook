@@ -97,7 +97,8 @@ const setSession = (authResult) => {
     localStorage.setItem('id_token', idToken);
     localStorage.setItem('expires_at', expiresAt);
     auth0.client.userInfo(accessToken, function(err, profile) {
-        localStorage.setItem('profile', JSON.stringify(profile));
+        let profileName = JSON.stringify(profile);
+        localStorage.setItem('profile', profileName);
     if(err) {
         return dispatch => {
             return dispatch(loginError(err));

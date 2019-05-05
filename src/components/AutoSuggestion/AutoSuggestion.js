@@ -6,6 +6,7 @@ import SEO from '../seo';
 import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
+import Moment from 'react-moment';
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -59,16 +60,53 @@ const apiUrl = 'http://localhost:3030';
 class AutoSuggestion extends React.Component {
   constructor(props) {
     super(props);
+    let missionDate = new Date();
+    missionDate.setDate(missionDate.getDate() + 30);
+    let userId = this.getUserId();
     this.state = {
       title: '',
       statement: '',
       type: 'autoSuggestion',
       archive: false,
-      dueDate: new Date(),
+      dueDate: missionDate,
       visibleDialog: false,
       visibleInfo: false,
-      editAutoSuggestion: false
+      editAutoSuggestion: false,
+      affirmations: null,
+      userId: userId
     }
+  }
+
+  componentDidMount() {
+    this.getAffirmations();
+  }
+
+  getUserId = () => {
+    let value = JSON.parse(localStorage.getItem('profile'));
+    let userId = value.sub.split('|')[1];
+    return userId;
+  }
+
+  getAffirmations = () => {
+    const url = `${apiUrl}/api/affirmation`;
+    let requestObject = {
+      type: this.state.type,
+      userId: this.state.userId
+    }
+    fetch(url, {
+      method: 'get',
+      headers: requestObject,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        let data = JSON.parse(res);
+        // data.map(affirmation => {
+        this.setState({affirmations: data});
+        // });
+      });
+    });
   }
 
   toggleDialog = () => {
@@ -106,7 +144,8 @@ class AutoSuggestion extends React.Component {
       statement: this.state.statement,
       type: this.state.type,
       archive: this.state.archive,
-      dueDate: this.state.dueDate
+      dueDate: this.state.dueDate,
+      userId: this.state.userId
     }
     const formData = JSON.stringify(requestObject);
     fetch(url, {
@@ -124,11 +163,21 @@ class AutoSuggestion extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { title, statement, dueDate
+      , visibleDialog, archive, editAutoSuggestion
+      , autoSuggestion, visibleInfo, affirmations, userId } = this.state;
+      // console.log(affirmations);
+      // console.log(userId);
+      // let affirmationCards = (<div></div>);
+      // if (affirmations != null) {
+      //   affirmationCards = 
+      //     (<div>{console.log(affirmations)}</div>);
+      // }
     return (
       <div>
-        {this.state.visibleDialog && 
+        {visibleDialog && 
           <Dialog
-            open={this.state.visibleDialog}
+            open={visibleDialog}
             onClose={this.toggleDialog}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -146,7 +195,7 @@ class AutoSuggestion extends React.Component {
                       label="Goal/Mission"
                       multiline
                       rowsMax="8"
-                      value={this.state.title}
+                      value={title}
                       onChange={this.handleChange('title')}
                       className={classes.textField}
                       margin="normal"
@@ -157,7 +206,7 @@ class AutoSuggestion extends React.Component {
                       label="Auto Suggestion Statement"
                       multiline
                       rowsMax="8"
-                      value={this.state.statement}
+                      value={statement}
                       onChange={this.handleChange('statement')}
                       className={classes.textField}
                       margin="normal"
@@ -182,9 +231,9 @@ class AutoSuggestion extends React.Component {
             </DialogContent>
           </Dialog>
         }
-        {this.state.editAutoSuggestion && 
+        {editAutoSuggestion && 
           <Dialog
-            open={this.state.editAutoSuggestion}
+            open={editAutoSuggestion}
             onClose={this.toggleAutoSuggestion}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -202,7 +251,7 @@ class AutoSuggestion extends React.Component {
                       label="Auto Suggestion Statement"
                       multiline
                       rowsMax="8"
-                      value={this.state.autoSuggestion}
+                      value={autoSuggestion}
                       onChange={this.handleChange('autoSuggestion')}
                       className={classes.textField}
                       margin="normal"
@@ -227,9 +276,9 @@ class AutoSuggestion extends React.Component {
             </DialogContent>
           </Dialog>
         }
-        {this.state.visibleInfo && 
+        {visibleInfo && 
           <Dialog
-            open={this.state.visibleInfo}
+            open={visibleInfo}
             onClose={this.toggleInfo}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -279,14 +328,36 @@ class AutoSuggestion extends React.Component {
             <AddIcon />
             </Button>
           </Grid>
-          <Grid item sm={12}>
-          <BasicImageCard 
-            editAutoSuggestion={this.state.editAutoSuggestion} 
+          
+          {affirmations != null && affirmations.length > 0 && affirmations.map((affirmation, index) => {
+            return (
+              <Grid item xs={12} sm={6} lg={4}
+              key={`affirmationContainer-${index}`}>
+                <BasicImageCard 
+                  key={`affirmationCard-${index}`}
+                  id={`affirmationCard-${index}`}
+                  title={affirmation.title}
+                  subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
+                  content={affirmation.statement}
+                  editAutoSuggestion={affirmation.editAutoSuggestion} 
+                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
+                  archive={archive} 
+                  toggleArchive={this.toggleArchive}>
+                </BasicImageCard>
+              </Grid>
+            )
+            })}
+          {/*<BasicImageCard 
+            title={title}
+            subHeader={<Moment format="MM/DD/YYYY">{dueDate}</Moment>}
+            content={statement}
+            editAutoSuggestion={editAutoSuggestion} 
             toggleAutoSuggestion={this.toggleAutoSuggestion} 
-            archive={this.state.archive} 
+            archive={archive} 
             toggleArchive={this.toggleArchive}>
           </BasicImageCard>
-          </Grid>
+          */}
+          
         </Grid>
       </div>
     )

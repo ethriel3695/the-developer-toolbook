@@ -19,7 +19,8 @@ import DeleteIcon from '@material-ui/icons/DeleteForever';
 
 const styles = theme => ({
   card: {
-    maxWidth: 400,
+    minWidth: 350,
+    minHeight: 225
   },
   media: {
     height: 0,

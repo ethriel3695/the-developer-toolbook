@@ -56,24 +56,35 @@ const styles = theme => ({
 });
 
 const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+// const apiUrl = 'http://localhost:8080';
 class MiracleEquation extends React.Component {
   constructor(props) {
     super(props);
+    let missionDate = new Date();
+    missionDate.setDate(missionDate.getDate() + 30);
+    let userId = this.getUserId();
     this.state = {
       title: '',
       statement: '',
       type: 'miracleEquation',
       archive: false,
-      dueDate: new Date(),
+      dueDate: missionDate,
       visibleDialog: false,
       visibleInfo: false,
       editMiracleEquation: false,
-      affirmations: null
+      affirmations: null,
+      userId: userId
     }
   }
 
   componentDidMount() {
     this.getAffirmations();
+  }
+
+  getUserId = () => {
+    let value = JSON.parse(localStorage.getItem('profile'));
+    let userId = value.sub.split('|')[1];
+    return userId;
   }
 
   toggleDialog = () => {
@@ -153,7 +164,7 @@ class MiracleEquation extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { affirmations, archive } = this.state;
+    const { affirmations, archive, userId } = this.state;
     return (
       <div>
         {this.state.visibleDialog && 

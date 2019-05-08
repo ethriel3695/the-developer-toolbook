@@ -56,6 +56,7 @@ const styles = theme => ({
 });
 
 const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+// const apiUrl = 'http://localhost:8080';
 
 class AutoSuggestion extends React.Component {
   constructor(props) {

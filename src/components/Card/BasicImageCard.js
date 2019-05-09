@@ -74,7 +74,7 @@ class BasicImageCard extends React.Component {
           }
           action={
             <CardActions className={classes.actions} disableActionSpacing>
-              <IconButton id={this.props.id} onClick={(e) => this.props.toggleArchive(e, this.props.id)} aria-label="Archive" color={`${archived}`}>
+              <IconButton id={this.props.id} onClick={(e) => this.props.toggleArchive(e, this.props.id, this.props.archive)} aria-label="Archive" color={`${archived}`}>
                 <ArchiveIcon />
               </IconButton>
             </CardActions>

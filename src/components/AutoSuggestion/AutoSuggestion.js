@@ -133,13 +133,19 @@ class AutoSuggestion extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  toggleArchive = (e, id) => {
+  toggleArchive = (e, id, archive) => {
     // console.log(id);
-    this.setState({
-      archive: !this.state.archive
-    }, () => {
-      this.onFormUpdate(id);
-    })
+    if (archive === true) {
+      archive = false;
+    } else {
+      archive = true;
+    }
+    this.onFormUpdate(id, archive);
+    // this.setState({
+    //   archive: !this.state.archive
+    // }, () => {
+      
+    // })
   }
 
   onDelete = (e, id) => {
@@ -163,14 +169,14 @@ class AutoSuggestion extends React.Component {
     })
   }
 
-  onFormUpdate = (id) => {
+  onFormUpdate = (id, archive) => {
     console.log(id);
     const url = `${apiUrl}/api/affirmation/${id}`;
     let requestObject = {
       title: this.state.title,
       statement: this.state.statement,
       type: this.state.type,
-      archive: this.state.archive,
+      archive: archive,
       dueDate: this.state.dueDate,
       userId: this.state.userId
     }
@@ -392,7 +398,7 @@ class AutoSuggestion extends React.Component {
                   content={affirmation.statement}
                   editAutoSuggestion={affirmation.editAutoSuggestion} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
-                  archive={archive} 
+                  archive={affirmation.archive} 
                   toggleArchive={this.toggleArchive}
                   onDelete={this.onDelete}>
                 </BasicImageCard>

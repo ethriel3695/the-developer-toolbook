@@ -55,8 +55,8 @@ const styles = theme => ({
   }
 });
 
-const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
-// const apiUrl = 'http://localhost:8080';
+// const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+const apiUrl = 'http://localhost:8080';
 class MiracleEquation extends React.Component {
   constructor(props) {
     super(props);

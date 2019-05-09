@@ -74,7 +74,7 @@ class BasicImageCard extends React.Component {
           }
           action={
             <CardActions className={classes.actions} disableActionSpacing>
-              <IconButton onClick={this.props.toggleArchive} aria-label="Archive" color={`${archived}`}>
+              <IconButton id={this.props.id} onClick={(e) => this.props.toggleArchive(e, this.props.id)} aria-label="Archive" color={`${archived}`}>
                 <ArchiveIcon />
               </IconButton>
             </CardActions>
@@ -91,7 +91,7 @@ class BasicImageCard extends React.Component {
           <IconButton onClick={this.props.toggleAutoSuggestion} aria-label="Edit Card">
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="Delete Card">
+          <IconButton onClick={(e) => this.props.onDelete(e, this.props.id)} aria-label="Delete Card">
             <DeleteIcon />
           </IconButton>
         </CardActions>

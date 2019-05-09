@@ -55,8 +55,8 @@ const styles = theme => ({
   }
 });
 
-const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
-// const apiUrl = 'http://localhost:8080';
+// const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+const apiUrl = 'http://localhost:8080';
 
 class AutoSuggestion extends React.Component {
   constructor(props) {
@@ -103,6 +103,7 @@ class AutoSuggestion extends React.Component {
     .then(response => {
       response.text().then(res => {
         let data = JSON.parse(res);
+        console.log(data);
         // data.map(affirmation => {
         this.setState({affirmations: data});
         // });
@@ -132,10 +133,59 @@ class AutoSuggestion extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  toggleArchive = () => {
+  toggleArchive = (e, id) => {
+    // console.log(id);
     this.setState({
       archive: !this.state.archive
-    });
+    }, () => {
+      this.onFormUpdate(id);
+    })
+  }
+
+  onDelete = (e, id) => {
+    // console.log(e.currentTarget.dataset.id);
+    // const id = e.target.getAttribute('data-id');
+    this.deleteRecord(id);
+  }
+
+  deleteRecord = (id) => {
+    console.log(id);
+    const url = `${apiUrl}/api/affirmation/${id}`;
+    fetch(url, {
+      method: 'delete', 
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        console.log(res);
+      })
+    })
+  }
+
+  onFormUpdate = (id) => {
+    console.log(id);
+    const url = `${apiUrl}/api/affirmation/${id}`;
+    let requestObject = {
+      title: this.state.title,
+      statement: this.state.statement,
+      type: this.state.type,
+      archive: this.state.archive,
+      dueDate: this.state.dueDate,
+      userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'put',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        console.log(res);
+      })
+    })
   }
 
   onFormSubmit = () => {
@@ -336,14 +386,15 @@ class AutoSuggestion extends React.Component {
               key={`affirmationContainer-${index}`}>
                 <BasicImageCard 
                   key={`affirmationCard-${index}`}
-                  id={`affirmationCard-${index}`}
+                  id={affirmation._id}
                   title={affirmation.title}
                   subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
                   content={affirmation.statement}
                   editAutoSuggestion={affirmation.editAutoSuggestion} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
                   archive={archive} 
-                  toggleArchive={this.toggleArchive}>
+                  toggleArchive={this.toggleArchive}
+                  onDelete={this.onDelete}>
                 </BasicImageCard>
               </Grid>
             )

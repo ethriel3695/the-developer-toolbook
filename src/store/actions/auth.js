@@ -130,6 +130,7 @@ export const renewSession = () => {
 export const logout = () => {
     auth0.logout({
         returnTo: 'https://www.thedevelopertoolbook.com',
+        // returnTo: 'http://localhost:8000',
         clientID: AUTH_CONFIG.clientId
     });
     if (isBrowser) {

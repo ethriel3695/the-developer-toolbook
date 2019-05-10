@@ -170,14 +170,9 @@ class AutoSuggestion extends React.Component {
   }
 
   onFormUpdate = (id, archive) => {
-    console.log(id);
     const url = `${apiUrl}/api/affirmation/${id}`;
     let requestObject = {
-      title: this.state.title,
-      statement: this.state.statement,
-      type: this.state.type,
       archive: archive,
-      dueDate: this.state.dueDate,
       userId: this.state.userId
     }
     const formData = JSON.stringify(requestObject);
@@ -189,7 +184,13 @@ class AutoSuggestion extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        console.log(res);
+        let updatedRecord = JSON.parse(res);
+        console.log(JSON.parse(res));
+        // this.state.affirmations.map(affirmation => {
+        //   if (affirmation.id === updatedRecord.id) {
+        //     affirmation = updatedRecord;
+        //   }
+        // })
       })
     })
   }

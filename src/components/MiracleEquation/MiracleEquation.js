@@ -109,10 +109,68 @@ class MiracleEquation extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  toggleArchive = () => {
-    this.setState({
-      archive: !this.state.archive
-    });
+  toggleArchive = (e, id, archive) => {
+    // console.log(id);
+    console.log(archive);
+    console.log(e);
+    if (archive === true) {
+      archive = false;
+    } else {
+      archive = true;
+    }
+    this.onFormUpdate(id, archive);
+    // this.setState({
+    //   archive: !this.state.archive
+    // }, () => {
+      
+    // })
+  }
+
+  onDelete = (e, id) => {
+    // console.log(e.currentTarget.dataset.id);
+    // const id = e.target.getAttribute('data-id');
+    this.deleteRecord(id);
+  }
+
+  deleteRecord = (id) => {
+    console.log(id);
+    const url = `${apiUrl}/api/affirmation/${id}`;
+    fetch(url, {
+      method: 'delete', 
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        console.log(res);
+      })
+    })
+  }
+
+  onFormUpdate = (id, archive) => {
+    const url = `${apiUrl}/api/affirmation/${id}`;
+    let requestObject = {
+      archive: archive,
+      userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'put',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        let updatedRecord = JSON.parse(res);
+        console.log(JSON.parse(res));
+        // this.state.affirmations.map(affirmation => {
+        //   if (affirmation.id === updatedRecord.id) {
+        //     affirmation = updatedRecord;
+        //   }
+        // })
+      })
+    })
   }
 
   getAffirmations = () => {
@@ -322,14 +380,15 @@ class MiracleEquation extends React.Component {
               key={`affirmationMiracleContainer-${index}`}>
                 <BasicImageCard 
                   key={`affirmationMiracleCard-${index}`}
-                  id={`affirmationMiracleCard-${index}`}
+                  id={affirmation._id}
                   title={affirmation.title}
                   subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
                   content={affirmation.statement}
                   editAutoSuggestion={affirmation.editAutoSuggestion} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
-                  archive={archive} 
-                  toggleArchive={this.toggleArchive}>
+                  archive={affirmation.archive} 
+                  toggleArchive={this.toggleArchive}
+                  onDelete={this.onDelete}>
                 </BasicImageCard>
               </Grid>
             )

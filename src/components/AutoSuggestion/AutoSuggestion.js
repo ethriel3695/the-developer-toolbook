@@ -103,7 +103,6 @@ class AutoSuggestion extends React.Component {
     .then(response => {
       response.text().then(res => {
         let data = JSON.parse(res);
-        console.log(data);
         // data.map(affirmation => {
         this.setState({affirmations: data});
         // });
@@ -123,10 +122,36 @@ class AutoSuggestion extends React.Component {
     });
   }
 
-  toggleAutoSuggestion = () => {
+  toggleAutoSuggestion = (e, id) => {
+    console.log(id);
     this.setState({
       editAutoSuggestion: !this.state.editAutoSuggestion
     });
+    if (this.state.editAutoSuggestion) {
+      console.log(e.target);
+      let statement = e.target.value;
+      this.onStatementUpdate(id, statement);
+    }
+  }
+
+  onStatementUpdate = (id, statement) => {
+    const url = `${apiUrl}/api/affirmation/${id}`;
+    let requestObject = {
+      statement: statement,
+      userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'put',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        this.getAffirmations();
+      })
+    })
   }
 
   handleChange = name => event => {
@@ -134,7 +159,6 @@ class AutoSuggestion extends React.Component {
   };
 
   toggleArchive = (e, id, archive) => {
-    // console.log(id);
     if (archive === true) {
       archive = false;
     } else {
@@ -155,7 +179,6 @@ class AutoSuggestion extends React.Component {
   }
 
   deleteRecord = (id) => {
-    console.log(id);
     const url = `${apiUrl}/api/affirmation/${id}`;
     fetch(url, {
       method: 'delete', 
@@ -164,7 +187,7 @@ class AutoSuggestion extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        console.log(res);
+        this.getAffirmations();
       })
     })
   }
@@ -184,13 +207,7 @@ class AutoSuggestion extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        let updatedRecord = JSON.parse(res);
-        console.log(JSON.parse(res));
-        // this.state.affirmations.map(affirmation => {
-        //   if (affirmation.id === updatedRecord.id) {
-        //     affirmation = updatedRecord;
-        //   }
-        // })
+        this.getAffirmations();
       })
     })
   }
@@ -214,16 +231,17 @@ class AutoSuggestion extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        console.log(res);
+        this.getAffirmations();
+        this.toggleDialog();
       })
     })
   }
 
   render() {
     const { classes } = this.props;
-    const { title, statement, dueDate
-      , visibleDialog, archive, editAutoSuggestion
-      , autoSuggestion, visibleInfo, affirmations, userId } = this.state;
+    const { title, statement
+      , visibleDialog, editAutoSuggestion
+      , autoSuggestion, visibleInfo, affirmations } = this.state;
       // console.log(affirmations);
       // console.log(userId);
       // let affirmationCards = (<div></div>);

@@ -49,7 +49,7 @@ class HomepageGrid extends React.Component {
         //     "https://www.youtube.com/embed/BD_wgxl2y2o");
     };
 render () {
-  const { classes } = this.props;
+  // const { classes } = this.props;
   return (
     
         <Grid container spacing={24}>

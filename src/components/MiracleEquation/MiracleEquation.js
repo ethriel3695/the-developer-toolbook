@@ -87,6 +87,28 @@ class MiracleEquation extends React.Component {
     return userId;
   }
 
+  getAffirmations = () => {
+    const url = `${apiUrl}/api/affirmation`;
+    let requestObject = {
+      type: this.state.type,
+      userId: this.state.userId
+    }
+    fetch(url, {
+      method: 'get',
+      headers: requestObject,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        let data = JSON.parse(res);
+        // data.map(affirmation => {
+        this.setState({affirmations: data});
+        // });
+      });
+    });
+  }
+
   toggleDialog = () => {
     this.setState({
         visibleDialog: !this.state.visibleDialog
@@ -110,20 +132,12 @@ class MiracleEquation extends React.Component {
   };
 
   toggleArchive = (e, id, archive) => {
-    // console.log(id);
-    console.log(archive);
-    console.log(e);
     if (archive === true) {
       archive = false;
     } else {
       archive = true;
     }
     this.onFormUpdate(id, archive);
-    // this.setState({
-    //   archive: !this.state.archive
-    // }, () => {
-      
-    // })
   }
 
   onDelete = (e, id) => {
@@ -133,7 +147,6 @@ class MiracleEquation extends React.Component {
   }
 
   deleteRecord = (id) => {
-    console.log(id);
     const url = `${apiUrl}/api/affirmation/${id}`;
     fetch(url, {
       method: 'delete', 
@@ -142,7 +155,7 @@ class MiracleEquation extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        console.log(res);
+        this.getAffirmations();
       })
     })
   }
@@ -162,37 +175,9 @@ class MiracleEquation extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        let updatedRecord = JSON.parse(res);
-        console.log(JSON.parse(res));
-        // this.state.affirmations.map(affirmation => {
-        //   if (affirmation.id === updatedRecord.id) {
-        //     affirmation = updatedRecord;
-        //   }
-        // })
+        this.getAffirmations();
       })
     })
-  }
-
-  getAffirmations = () => {
-    const url = `${apiUrl}/api/affirmation`;
-    let requestObject = {
-      type: this.state.type,
-      userId: this.state.userId
-    }
-    fetch(url, {
-      method: 'get',
-      headers: requestObject,
-      mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
-      response.text().then(res => {
-        let data = JSON.parse(res);
-        // data.map(affirmation => {
-        this.setState({affirmations: data});
-        // });
-      });
-    });
   }
 
   onFormSubmit = () => {
@@ -214,7 +199,8 @@ class MiracleEquation extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
-        console.log(res);
+        this.getAffirmations();
+        this.toggleDialog();
       })
     })
   }
@@ -222,7 +208,7 @@ class MiracleEquation extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { affirmations, archive, userId } = this.state;
+    const { affirmations } = this.state;
     return (
       <div>
         {this.state.visibleDialog && 
@@ -234,9 +220,6 @@ class MiracleEquation extends React.Component {
           >
             <DialogTitle id="alert-dialog-title">{"Miracle Equation Affirmation"}</DialogTitle>
             <DialogContent>
-              {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
-              test
-              </DialogContentText> */}
               <form className={classes.w100}>
                     <Row>
                     <Col xs="12">

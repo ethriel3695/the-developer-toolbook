@@ -88,7 +88,7 @@ class BasicImageCard extends React.Component {
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton onClick={this.props.toggleAutoSuggestion} aria-label="Edit Card">
+          <IconButton onClick={(e) => this.props.toggleAutoSuggestion(e, this.props.id)} aria-label="Edit Card">
             <EditIcon />
           </IconButton>
           <IconButton onClick={(e) => this.props.onDelete(e, this.props.id)} aria-label="Delete Card">

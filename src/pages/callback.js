@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import { navigate } from 'gatsby';
 
-const isBrowser = typeof window !== 'undefined';
+// const isBrowser = typeof window !== 'undefined';
 
 const styles = {
     root: {

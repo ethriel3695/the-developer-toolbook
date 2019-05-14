@@ -55,8 +55,8 @@ const styles = theme => ({
   }
 });
 
-const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
-// const apiUrl = 'http://localhost:8080';
+// const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+const apiUrl = 'http://localhost:8080';
 
 class AutoSuggestion extends React.Component {
   constructor(props) {
@@ -74,7 +74,8 @@ class AutoSuggestion extends React.Component {
       visibleInfo: false,
       editAutoSuggestion: false,
       affirmations: null,
-      userId: userId
+      userId: userId,
+      currentId: null
     }
   }
 
@@ -122,19 +123,17 @@ class AutoSuggestion extends React.Component {
     });
   }
 
-  toggleAutoSuggestion = (e, id) => {
-    console.log(id);
+  toggleAutoSuggestion = (e, id, statement) => {
     this.setState({
-      editAutoSuggestion: !this.state.editAutoSuggestion
+      editAutoSuggestion: !this.state.editAutoSuggestion,
+      currentId: id,
+      currentStatement: statement
     });
-    if (this.state.editAutoSuggestion) {
-      console.log(e.target);
-      let statement = e.target.value;
-      this.onStatementUpdate(id, statement);
-    }
   }
 
-  onStatementUpdate = (id, statement) => {
+  onStatementUpdate = () => {
+    let id = this.state.currentId;
+    let statement = this.state.statement;
     const url = `${apiUrl}/api/affirmation/${id}`;
     let requestObject = {
       statement: statement,
@@ -149,8 +148,11 @@ class AutoSuggestion extends React.Component {
     })
     .then(response => {
       response.text().then(res => {
+        this.setState({
+          editAutoSuggestion: !this.state.editAutoSuggestion
+        });
         this.getAffirmations();
-      })
+      });
     })
   }
 
@@ -241,7 +243,7 @@ class AutoSuggestion extends React.Component {
     const { classes } = this.props;
     const { title, statement
       , visibleDialog, editAutoSuggestion
-      , autoSuggestion, visibleInfo, affirmations } = this.state;
+      , visibleInfo, affirmations } = this.state;
       // console.log(affirmations);
       // console.log(userId);
       // let affirmationCards = (<div></div>);
@@ -327,8 +329,8 @@ class AutoSuggestion extends React.Component {
                       label="Auto Suggestion Statement"
                       multiline
                       rowsMax="8"
-                      value={autoSuggestion}
-                      onChange={this.handleChange('autoSuggestion')}
+                      value={statement}
+                      onChange={this.handleChange('statement')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -340,7 +342,7 @@ class AutoSuggestion extends React.Component {
                   <Button
                       variant="contained"
                       id='update-auto-suggestion'
-                      onClick={this.onFormSubmit}
+                      onClick={this.onStatementUpdate}
                       style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
                         Update auto suggestion
                       </Button>
@@ -415,7 +417,7 @@ class AutoSuggestion extends React.Component {
                   title={affirmation.title}
                   subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
                   content={affirmation.statement}
-                  editAutoSuggestion={affirmation.editAutoSuggestion} 
+                  editAutoSuggestion={editAutoSuggestion} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
                   archive={affirmation.archive} 
                   toggleArchive={this.toggleArchive}

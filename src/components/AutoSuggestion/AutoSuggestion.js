@@ -75,7 +75,8 @@ class AutoSuggestion extends React.Component {
       editAutoSuggestion: false,
       affirmations: null,
       userId: userId,
-      currentId: null
+      currentId: null,
+      currentStatement: null
     }
   }
 
@@ -133,7 +134,7 @@ class AutoSuggestion extends React.Component {
 
   onStatementUpdate = () => {
     let id = this.state.currentId;
-    let statement = this.state.statement;
+    let statement = this.state.currentStatement;
     const url = `${apiUrl}/api/affirmation/${id}`;
     let requestObject = {
       statement: statement,
@@ -329,8 +330,8 @@ class AutoSuggestion extends React.Component {
                       label="Auto Suggestion Statement"
                       multiline
                       rowsMax="8"
-                      value={statement}
-                      onChange={this.handleChange('statement')}
+                      value={this.state.currentStatement}
+                      onChange={this.handleChange('currentStatement')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -417,7 +418,7 @@ class AutoSuggestion extends React.Component {
                   title={affirmation.title}
                   subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
                   content={affirmation.statement}
-                  editAutoSuggestion={editAutoSuggestion} 
+                  editStatement={editAutoSuggestion} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
                   archive={affirmation.archive} 
                   toggleArchive={this.toggleArchive}

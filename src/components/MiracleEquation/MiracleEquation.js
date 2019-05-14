@@ -73,7 +73,9 @@ class MiracleEquation extends React.Component {
       visibleInfo: false,
       editMiracleEquation: false,
       affirmations: null,
-      userId: userId
+      userId: userId,
+      currentId: null,
+      currentStatement: null
     }
   }
 
@@ -121,10 +123,37 @@ class MiracleEquation extends React.Component {
     });
   }
 
-  toggleAutoSuggestion = () => {
+  toggleAutoSuggestion = (e, id, statement) => {
     this.setState({
-        editMiracleEquation: !this.state.editMiracleEquation
+        editMiracleEquation: !this.state.editMiracleEquation,
+        currentId: id,
+        currentStatement: statement
     });
+  }
+
+  onStatementUpdate = () => {
+    let id = this.state.currentId;
+    let statement = this.state.currentStatement;
+    const url = `${apiUrl}/api/affirmation/${id}`;
+    let requestObject = {
+      statement: statement,
+      userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'put',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        this.setState({
+          editMiracleEquation: !this.state.editMiracleEquation
+        });
+        this.getAffirmations();
+      });
+    })
   }
 
   handleChange = name => event => {
@@ -208,12 +237,14 @@ class MiracleEquation extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { affirmations } = this.state;
+    const { title, statement
+      , visibleDialog, editMiracleEquation
+      , visibleInfo, affirmations } = this.state;
     return (
       <div>
-        {this.state.visibleDialog && 
+        {visibleDialog && 
           <Dialog
-            open={this.state.visibleDialog}
+            open={visibleDialog}
             onClose={this.toggleDialog}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -228,7 +259,7 @@ class MiracleEquation extends React.Component {
                       label="Goal/Mission"
                       multiline
                       rowsMax="8"
-                      value={this.state.title}
+                      value={title}
                       onChange={this.handleChange('title')}
                       className={classes.textField}
                       margin="normal"
@@ -239,7 +270,7 @@ class MiracleEquation extends React.Component {
                       label="Miracle Equation Affirmation"
                       multiline
                       rowsMax="8"
-                      value={this.state.statement}
+                      value={statement}
                       onChange={this.handleChange('statement')}
                       className={classes.textField}
                       margin="normal"
@@ -264,9 +295,9 @@ class MiracleEquation extends React.Component {
             </DialogContent>
           </Dialog>
         }
-        {this.state.editMiracleEquation && 
+        {editMiracleEquation && 
           <Dialog
-            open={this.state.editMiracleEquation}
+            open={editMiracleEquation}
             onClose={this.toggleAutoSuggestion}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -284,8 +315,8 @@ class MiracleEquation extends React.Component {
                       label="Miracle Equation Affirmation"
                       multiline
                       rowsMax="8"
-                      value={this.state.statement}
-                      onChange={this.handleChange('statement')}
+                      value={this.state.currentStatement}
+                      onChange={this.handleChange('currentStatement')}
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
@@ -297,7 +328,7 @@ class MiracleEquation extends React.Component {
                   <Button
                       variant="contained"
                       id='update-miracle-equation'
-                      onClick={this.onFormSubmit}
+                      onClick={this.onStatementUpdate}
                       style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
                         Update Miracle Equation
                       </Button>
@@ -309,9 +340,9 @@ class MiracleEquation extends React.Component {
             </DialogContent>
           </Dialog>
         }
-        {this.state.visibleInfo && 
+        {visibleInfo && 
           <Dialog
-            open={this.state.visibleInfo}
+            open={visibleInfo}
             onClose={this.toggleInfo}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -367,7 +398,7 @@ class MiracleEquation extends React.Component {
                   title={affirmation.title}
                   subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
                   content={affirmation.statement}
-                  editAutoSuggestion={affirmation.editAutoSuggestion} 
+                  editStatement={editMiracleEquation} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
                   archive={affirmation.archive} 
                   toggleArchive={this.toggleArchive}

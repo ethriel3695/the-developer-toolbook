@@ -1,357 +1,487 @@
-// import React from 'react';
-// import Layout from '../components/layout';
-// // import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import { withStyles } from '@material-ui/core/styles';
-// import TextField from '@material-ui/core/TextField';
-// // import Grid from '@material-ui/core/Grid';
-// // import { Input } from '@progress/kendo-react-inputs';
-// import { Row, Col } from 'reactstrap';
-// import Button from '@material-ui/core/Button';
-// import pdf from '../images/PDF_icon_sm.png';
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import SEO from '../seo';
+import BasicImageCard from '../Card/BasicImageCard';
+import TextField from '@material-ui/core/TextField';
+import { Row, Col } from 'reactstrap';
+import Moment from 'react-moment';
 
-// import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@material-ui/icons/Add';
+
+import Dialog from '@material-ui/core/Dialog';
 // import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
+import DialogContent from '@material-ui/core/DialogContent';
 // import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import {DateFormatInput} from 'material-ui-next-pickers'
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-// // import { DatePicker } from '@progress/kendo-dateinputs-react-wrapper';
-// // import { Button }from '@progress/kendo-react-buttons';
-// // import { Dialog, DialogActionsBar }from '@progress/kendo-react-dialogs';
+const pageStyles = {
+  textCenter: {
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}
 
-// const isBrowser = typeof window !== 'undefined';
-// // import Button from '@material-ui/core/Button';
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: '95%',
+  },
+  dense: {
+    marginTop: 16,
+  },
+  menu: {
+    width: 200,
+  },
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  w100: {
+    width: '100%',
+    overflow: 'hidden'
+  }
+});
 
-// const styles = theme => ({
-//   container: {
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//   },
-//   textField: {
-//     marginLeft: theme.spacing.unit,
-//     marginRight: theme.spacing.unit,
-//     width: '95%',
-//   },
-//   dense: {
-//     marginTop: 16,
-//   },
-//   menu: {
-//     width: 200,
-//   },
-//   root: {
-//     flexGrow: 1,
-//   },
-//   paper: {
-//     padding: theme.spacing.unit * 2,
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//   },
-//   w100: {
-//     width: '100%',
-//     overflow: 'hidden'
-//   }
-// });
+const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+// const apiUrl = 'http://localhost:8080';
+class SelfAnalysis extends React.Component {
+  constructor(props) {
+    super(props);
+    let missionDate = new Date();
+    missionDate.setDate(missionDate.getDate() + 30);
+    let userId = this.getUserId();
+    this.state = {
+      question: '',
+      answer: '',
+      truth: '',
+      commitment: '',
+      archive: false,
+      dueDate: missionDate,
+      visibleDialog: false,
+      visibleInfo: false,
+      editSelfAnalysis: false,
+      analysis: null,
+      userId: userId,
+      currentId: null,
+      currentAnswer: null,
+      currentTruth: null,
+      currentCommitment: null
+    }
+  }
 
-// class SelfAnalysis extends React.Component {
+  componentDidMount() {
+    this.getAnalysis();
+  }
 
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       request: '',
-//       problemResolution: '',
-//       valueOfRequest: '',
-//       requirements: '',
-//       beneficiaries: '',
-//       additionalComments: '',
-//       dueDate: new Date(),
-//       files: [],
-//       visibleDialog: false,
-//       userMessage: null
-//     }
-//   }
+  getUserId = () => {
+    let value = JSON.parse(localStorage.getItem('profile'));
+    let userId = value.sub.split('|')[1];
+    return userId;
+  }
 
-//   // componentDidMount () {
-//   //   try {
-//   //     require('@progress/kendo-ui');
-//   //   } catch (e) {
-//   //     console.log(e);
-//   //   }
-    
-//   // }
+  getAnalysis = () => {
+    const url = `${apiUrl}/api/analysis`;
+    let requestObject = {
+      userId: this.state.userId
+    }
+    fetch(url, {
+      method: 'get',
+      headers: requestObject,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        let data = JSON.parse(res);
+        // data.map(affirmation => {
+        this.setState({analysis: data});
+        // });
+      });
+    });
+  }
 
-//   toggleDialog = () => {
-//     this.setState({
-//         visibleDialog: !this.state.visibleDialog
-//     });
-//   }
+  toggleDialog = () => {
+    this.setState({
+        visibleDialog: !this.state.visibleDialog
+    });
+  }
 
-//   onFormSubmit = (event) => {
-//     event.preventDefault();
-//     this.handleRequestSubmission();
-//     this.handleFileUpload();
-//   };
+  toggleInfo = () => {
+    this.setState({
+      visibleInfo: !this.state.visibleInfo
+    });
+  }
 
-//   handleRequestSubmission = () => {
-//     const url = 'http://127.0.0.1:3030/api/webRequests';
-//     const formData = JSON.stringify(this.state);
-//     fetch(url, {
-//       method: 'post',
-//       body: formData,
-//       mode: "cors",
-//       credentials: 'omit'
-//     })
-//     .then(response => {
-//       response.text().then(res => {
-//         this.setState({ visibleDialog: true, userMessage: res });
-//         setTimeout(() => {
-//           this.setState({ visibleDialog: false });
-//         }, 2000);
-//       })
-//     })
-//     .catch(error => {
-//       error.text().then(err => {
-//         this.setState({ visibleDialog: true, userMessage: err });
-//       });
-//     });  
-//       // console.log(res.text());
-//       // alert('done');
-//   };
+  toggleAutoSuggestion = (e, id, answer, truth, commitment) => {
+    this.setState({
+        editSelfAnalysis: !this.state.editSelfAnalysis,
+        currentId: id,
+        currentAnswer: answer,
+        currentTruth: truth,
+        currentCommitment: commitment
+    });
+  }
 
-//   // onChange = (event) => {
-//   //   this.setState({
-//   //     file: event.target.files[0]
-//   //   });
-//   // }
-//   handleChange = name => event => {
-//     this.setState({ [name]: event.target.value });
-//   };
+  onStatementUpdate = () => {
+    let id = this.state.currentId;
+    let answer = this.state.currentAnswer;
+    let truth = this.state.currentTruth;
+    let commitment = this.state.currentCommitment;
+    const url = `${apiUrl}/api/analysis/${id}`;
+    let requestObject = {
+        answer: answer,
+        truth: truth,
+        commitment: commitment,
+        userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'put',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        this.setState({
+          editSelfAnalysis: !this.state.editSelfAnalysis
+        });
+        this.getAnalysis();
+      });
+    })
+  }
 
-//   handleFilePreview = event => {
-//     let imageContainer = null;
-//     let data = null;
-//     Object.values(event.target.files).map((file, index) => {
-//       imageContainer = document.createElement('img');
-//       imageContainer.id = `preview-image_${index}`;
-//       imageContainer.alt = file.name;
-//       imageContainer.title = file.name;
-//       imageContainer.setAttribute('height', '100');
-//       imageContainer.setAttribute('width', '100');
-//       imageContainer.setAttribute('style', 'padding: 2px;');
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
 
-//       if (file.type === 'application/pdf') {
-//         data = pdf;
-//       } else {
-//       if(!isBrowser) {
-//           return false;
-//       } else {
-//           data = window.URL.createObjectURL(file);
-//       }
-        
-//       }
-//       imageContainer.src = data;
-//       document.getElementById('blah').append(imageContainer);
-//       setTimeout(function(){
-//         // For Firefox it is necessary to delay revoking the ObjectURL
-//         if(!isBrowser) {
-//           return false;
-//         } else {
-//             window.URL.revokeObjectURL(data);
-//         }
-//       }, 100);
-//       // this.setState({ files: [...this.state.files], file });
-//       this.state.files.push(file);
-//       return true;
-//     });
-//     // document.getElementById('blah').src = window.URL.createObjectURL(event.target.files[0])
-//   }
+  toggleArchive = (e, id, archive) => {
+    if (archive === true) {
+      archive = false;
+    } else {
+      archive = true;
+    }
+    this.onFormUpdate(id, archive);
+  }
 
-//   handleFileUpload = () => {
-//     let formData = new FormData();
-//     const files = this.state.files;
-//     if (files.length > 0) {
-//       files.forEach((file, index) => {
-//         formData.append('files[]', file);
-//       });
-//       formData.append('folderPath', 'web_requests');
-//       formData.append('folderName', this.state.request);
-//       const url = 'http://tools.spudnik.com/implements/PHP/utils/handleUploads.php';
+  onDelete = (e, id) => {
+    // console.log(e.currentTarget.dataset.id);
+    // const id = e.target.getAttribute('data-id');
+    this.deleteRecord(id);
+  }
 
-//       fetch(url, {
-//         method: 'post',
-//         body: formData,
-//       });
-//     }
-//     this.setState({ file: null });
-//   }
+  deleteRecord = (id) => {
+    const url = `${apiUrl}/api/analysis/${id}`;
+    fetch(url, {
+      method: 'delete', 
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        this.getAnalysis();
+      })
+    })
+  }
 
-//   onChangeDate = (date) => {
-//     this.setState({dueDate: date});
-//   } 
-  
-//   render() {
-//     const { classes } = this.props;
-//     // const {date} = this.state;
-//     return (
-//       <Layout>
-//         <h1>Spudnik Web Request</h1>
-//         {this.state.visibleDialog && 
-//             <Dialog
-//               open={this.state.visibleDialog}
-//               onClose={this.toggleDialog}
-//               aria-labelledby="alert-dialog-title"
-//               aria-describedby="alert-dialog-description"
-//             >
-//               <DialogTitle id="alert-dialog-title">{"Request Confirmed"}</DialogTitle>
-//               <DialogContent>
-//                 <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
-//                   {this.state.userMessage}
-//                 </DialogContentText>
-//               </DialogContent>
-//               <DialogActions>
-//                 <Button onClick={this.toggleDialog} color="secondary" autoFocus>
-//                   Ok
-//                 </Button>
-//               </DialogActions>
-//             </Dialog>
-//         }
-//         {  // <Dialog title={"Request Confirmed"} onClose={this.toggleDialog}>
-//           //   <p style={{ margin: "25px", textAlign: "center" }}>{this.state.userMessage}</p>
-//           //   <DialogActionsBar>
-//           //       <button className="k-button" onClick={this.toggleDialog}>OK</button>
-//           //   </DialogActionsBar>
-//           // </Dialog>
-//         }
-//               <form className={classes.w100}>
-//                     <Row>
-//                     <Col xs="12" lg="6">
-//                     <TextField
-//                       id="outlined-multiline-flexible-1"
-//                       label="Request title (Ex: An approval percentage report)"
-//                       multiline
-//                       rowsMax="8"
-//                       value={this.state.request}
-//                       onChange={this.handleChange('request')}
-//                       className={classes.textField}
-//                       margin="normal"
-//                       variant="outlined"
-//                     />
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                     <TextField
-//                       id="outlined-multiline-flexible-2"
-//                       label="What is your request and the problem it solves?"
-//                       multiline
-//                       rowsMax="8"
-//                       value={this.state.problemResolution}
-//                       onChange={this.handleChange('problemResolution')}
-//                       className={classes.textField}
-//                       margin="normal"
-//                       variant="outlined"
-//                     />
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                     <TextField
-//                       id="outlined-multiline-flexible-3"
-//                       label="What value does this request provide?"
-//                       multiline
-//                       rowsMax="8"
-//                       value={this.state.valueOfRequest}
-//                       onChange={this.handleChange('valueOfRequest')}
-//                       className={classes.textField}
-//                       margin="normal"
-//                       variant="outlined"
-//                     />
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                     <TextField
-//                       id="outlined-multiline-flexible-4"
-//                       label="What are the requirements?"
-//                       multiline
-//                       rowsMax="8"
-//                       value={this.state.requirements}
-//                       onChange={this.handleChange('requirements')}
-//                       className={classes.textField}
-//                       margin="normal"
-//                       variant="outlined"
-//                     />
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                     <TextField
-//                       id="outlined-multiline-flexible-5"
-//                       label="Who else is involved or benefits?"
-//                       multiline
-//                       rowsMax="8"
-//                       value={this.state.beneficiaries}
-//                       onChange={this.handleChange('beneficiaries')}
-//                       className={classes.textField}
-//                       margin="normal"
-//                       variant="outlined"
-//                     />
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                     <TextField
-//                       id="outlined-multiline-flexible-6"
-//                       label="Additional Comments"
-//                       multiline
-//                       rowsMax="8"
-//                       value={this.state.additionalComments}
-//                       onChange={this.handleChange('additionalComments')}
-//                       className={classes.textField}
-//                       margin="normal"
-//                       variant="outlined"
-//                     />
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                   <Row>
-//                   <Col xs="12" lg="12" style={{marginLeft: 8, marginBottom: 8}}>
-//                   <label htmlFor='file-upload'>Please upload relevant files</label>
-//                   <br />
-//                   <input id='file-upload' name='file-upload' type='file' multiple onChange={this.handleFilePreview}></input>
-//                   </Col>
-//                   <Col xs="12" lg="12" style={{marginLeft: 8}}>
-//                   <div id='blah'></div>
-//                   </Col>
-//                   </Row>
-//                   </Col>
-//                   <Col xs="12" lg="6">
-//                   <Row>
-//                   <Col xs="12" lg="12" style={{marginLeft: 8, marginBottom: 8}}>
-//                     {/* <label htmlFor='due-date'>Due Date</label>
-//                     <br /> */}
-//                     <DateFormatInput 
-//                       name='date-input' 
-//                       label='Due Date' 
-//                       dateFormat='MM/dd/yyyy' 
-//                       variant='outlined' 
-//                       min={new Date()} 
-//                       value={this.state.dueDate} 
-//                       onChange={this.onChangeDate}
-//                       dialog={true}
-//                       />
-//                     {/* <DatePicker
-//                       id='due-date'
-//                       min={new Date()}
-//                       value={this.state.dueDate}
-//                       onChange={this.handleChange('dueDate')}
-//                        /> */}
-//                   </Col>
-//                   <Col xs="12" lg="12" style={{marginLeft: 8}}>
-//                     <Button
-//                       variant="contained"
-//                       id='submit-web-request'
-//                       onClick={this.onFormSubmit}
-//                       style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
-//                         Submit Request
-//                       </Button>
-//                   </Col>
-//                   </Row>
-//                   </Col>
-//                   </Row>
-//               </form>
-//       </Layout>
-//     );
-//   }
-// } 
+  onFormUpdate = (id, archive) => {
+    const url = `${apiUrl}/api/analysis/${id}`;
+    let requestObject = {
+      archive: archive,
+      userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'put',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        this.getAnalysis();
+      })
+    })
+  }
 
-// export default withStyles(styles)(SelfAnalysis);
+  onFormSubmit = () => {
+    const url = `${apiUrl}/api/analysis`;
+    let requestObject = {
+        question: this.state.question,
+        answer: this.state.answer,
+        truth: this.state.truth,
+        commitment: this.state.commitment,
+        archive: this.state.archive,
+        dueDate: this.state.dueDate,
+        userId: this.state.userId
+    }
+    const formData = JSON.stringify(requestObject);
+    fetch(url, {
+      method: 'post',
+      body: formData,
+      mode: 'cors',
+      credentials: 'omit'
+    })
+    .then(response => {
+      response.text().then(res => {
+        this.getAnalysis();
+        this.toggleDialog();
+      })
+    })
+  }
+
+
+  render() {
+    const { classes } = this.props;
+    const { question, answer, truth, commitment
+      , visibleDialog, editSelfAnalysis
+      , visibleInfo, analysis } = this.state;
+    return (
+      <div>
+        {visibleDialog && 
+          <Dialog
+            open={visibleDialog}
+            onClose={this.toggleDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Self Analysis"}</DialogTitle>
+            <DialogContent>
+              <form className={classes.w100}>
+                    <Row>
+                    <Col xs="12">
+                    <TextField
+                      id="outlined-multiline-flexible-1"
+                      label="Question"
+                      multiline
+                      rowsMax="8"
+                      value={question}
+                      onChange={this.handleChange('question')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      id="outlined-multiline-flexible-2"
+                      label="Answer"
+                      multiline
+                      rowsMax="8"
+                      value={answer}
+                      onChange={this.handleChange('answer')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      id="outlined-multiline-flexible-3"
+                      label="What is the truth once you strip away your limiting beliefs?"
+                      multiline
+                      rowsMax="8"
+                      value={truth}
+                      onChange={this.handleChange('truth')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      id="outlined-multiline-flexible-4"
+                      label="What are you committed to in order to shift your mindset?"
+                      multiline
+                      rowsMax="8"
+                      value={commitment}
+                      onChange={this.handleChange('commitment')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </Col>
+                  <Col xs="12">
+                  <Row style={{textAlign: 'right'}}>
+                  <Col xs="6" style={{marginRight: 16}}>
+                  <Button
+                      variant="contained"
+                      id='submit-self-analysis'
+                      onClick={this.onFormSubmit}
+                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
+                        Clarity
+                      </Button>
+                  </Col>
+                  </Row>
+                  </Col>
+                  </Row>
+              </form>
+            </DialogContent>
+          </Dialog>
+        }
+        {editSelfAnalysis && 
+          <Dialog
+            open={editSelfAnalysis}
+            onClose={this.toggleAutoSuggestion}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Update Miracle Equation Affirmation"}</DialogTitle>
+            <DialogContent>
+              {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
+              test
+              </DialogContentText> */}
+              <form className={classes.w100}>
+                    <Row>
+                    <Col xs="12">
+                    <TextField
+                      id="outlined-multiline-flexible-2"
+                      label="Answer"
+                      multiline
+                      rowsMax="8"
+                      value={this.state.currentAnswer}
+                      onChange={this.handleChange('currentAnswer')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      id="outlined-multiline-flexible-3"
+                      label="What is the truth once you strip away your limiting beliefs?"
+                      multiline
+                      rowsMax="8"
+                      value={this.state.currentTruth}
+                      onChange={this.handleChange('currentTruth')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      id="outlined-multiline-flexible-4"
+                      label="What are you committed to in order to shift your mindset?"
+                      multiline
+                      rowsMax="8"
+                      value={this.state.currentCommitment}
+                      onChange={this.handleChange('currentCommitment')}
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </Col>
+                  <Col xs="12">
+                  <Row style={{textAlign: 'right'}}>
+                  <Col xs="6" style={{marginRight: 10}}>
+                  <Button
+                      variant="contained"
+                      id='update-self-analysis'
+                      onClick={this.onStatementUpdate}
+                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
+                        Update Self Analysis
+                      </Button>
+                  </Col>
+                  </Row>
+                  </Col>
+                  </Row>
+              </form>
+            </DialogContent>
+          </Dialog>
+        }
+        {visibleInfo && 
+          <Dialog
+            open={visibleInfo}
+            onClose={this.toggleInfo}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Self Analysis Instructions"}</DialogTitle>
+            <DialogContent>
+            <div>
+                <strong>{`Answer these questions with Honesty and you will find the
+                truth about yourself and experience growth! `}
+                </strong>
+            </div>
+            <br />
+            <div>
+            <strong>{`Take the time to answer all the questions in full
+                and if you cannot make an honest assessment then find
+                someone you trust and have them complete an honest
+                assessment about you!`}
+            </strong>
+            </div>
+            <br />
+            <div>
+            <strong>{`Only when you look at yourself with introspection can change
+                really begin to happen!`}
+            </strong>
+            </div>
+            </DialogContent>
+          </Dialog>
+        }
+        <SEO title="Self Analysis" />
+        <Grid container spacing={16}>
+          <Grid item sm={12}>
+            <h1 style={pageStyles.textCenter}>
+            SELF ANALYSIS
+            <IconButton onClick={this.toggleInfo} aria-label="Instructions">
+              <InfoIcon />
+            </IconButton>
+            </h1>
+            
+            {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
+              <AddIcon />
+            </IconButton> */}
+            <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
+            <AddIcon />
+            </Button>
+          </Grid>
+          {analysis != null && analysis.length > 0 && analysis.map((analysis, index) => {
+            return (
+              <Grid item xs={12} sm={6} lg={4}
+              key={`selfAnalysisContainer-${index}`}>
+                <BasicImageCard 
+                  key={`selfAnalysisCard-${index}`}
+                  id={analysis._id}
+                  title={analysis.answer}
+                  subHeader={<Moment format="MM/DD/YYYY">{analysis.dueDate}</Moment>}
+                  content={`${analysis.answer} ${analysis.truth} ${analysis.commitment}`}
+                  editStatement={editSelfAnalysis} 
+                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
+                  archive={analysis.archive} 
+                  toggleArchive={this.toggleArchive}
+                  onDelete={this.onDelete}>
+                </BasicImageCard>
+              </Grid>
+            )
+            })}
+          {/*<Grid item sm={12}>
+          <BasicImageCard 
+            title={'Miracle Equation Affirmation'}
+            subHeader={'June 1st 2019'}
+            content={`My mission is to have $100,000.00 in my ICCU checking account by June 1st, 2019 
+              and the Developer Toolbook MVP for early access ready
+              and I put forth Extraordinary Effort until I achieve my mission
+              , for as long as it takes, no matter what, this is my only option!
+             To achieve my mission I commit to spend at least 30 minutes every single day 
+             , for as long as it takes, no matter what and I release
+             myself from being emotionally attached to my results!`}
+             editMiracleEquation={this.state.editMiracleEquation} 
+            toggleAutoSuggestion={this.toggleAutoSuggestion} 
+            archive={this.state.archive} 
+            toggleArchive={this.toggleArchive}>
+          </BasicImageCard>
+          </Grid>
+          */}
+        </Grid>
+      </div>
+    )
+  }
+}
+
+export default withStyles(styles)(SelfAnalysis);

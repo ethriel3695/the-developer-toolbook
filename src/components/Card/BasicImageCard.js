@@ -84,11 +84,15 @@ class BasicImageCard extends React.Component {
         />
         <CardContent>
           <Typography component="p">
-          {this.props.content}
+          {this.props.content ? this.props.content : ''}
+          <br />
+          {this.props.truth ? this.props.truth : ''}
+          <br />
+          {this.props.commitment ? this.props.commitment : ''}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton onClick={(e) => this.props.toggleAutoSuggestion(e, this.props.id, this.props.content)} aria-label="Edit Card">
+          <IconButton onClick={(e) => this.props.toggleAutoSuggestion(e, this.props.id, this.props.content, this.props.truth, this.props.commitment)} aria-label="Edit Card">
             <EditIcon />
           </IconButton>
           <IconButton onClick={(e) => this.props.onDelete(e, this.props.id)} aria-label="Delete Card">

@@ -17,6 +17,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 // import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const pageStyles = {
   textCenter: {
@@ -52,8 +56,18 @@ const styles = theme => ({
   w100: {
     width: '100%',
     overflow: 'hidden'
-  }
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
 });
+
+const names = [
+  'Do you complain often of feeling bad? If so, what is the cause?',
+  'Do you find fault with other people at the slightest provocation?',
+  'Do you frequently make mistakes in your work? If so, why?'
+];
 
 const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
 // const apiUrl = 'http://localhost:8080';
@@ -263,7 +277,26 @@ class SelfAnalysis extends React.Component {
               <form className={classes.w100}>
                     <Row>
                     <Col xs="12">
-                    <TextField
+                    <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="question-select">Question</InputLabel>
+                    <Select
+                      value={this.state.question}
+                      autoWidth={true}
+                      onChange={this.handleChange}
+                      style={{width: '10 !important'}}
+                      inputProps={{
+                        name: 'Question',
+                        id: 'question-select'
+                      }}
+                    >
+                      {names.map((question, index) => (
+                        <MenuItem key={index} value={question}>
+                          {question}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    </FormControl>
+                    {/* <TextField
                       id="outlined-multiline-flexible-1"
                       label="Question"
                       multiline
@@ -273,7 +306,7 @@ class SelfAnalysis extends React.Component {
                       className={classes.textField}
                       margin="normal"
                       variant="outlined"
-                    />
+                    /> */}
                     <TextField
                       id="outlined-multiline-flexible-2"
                       label="Answer"
@@ -450,7 +483,9 @@ class SelfAnalysis extends React.Component {
                   id={analysis._id}
                   title={analysis.answer}
                   subHeader={<Moment format="MM/DD/YYYY">{analysis.dueDate}</Moment>}
-                  content={`${analysis.answer} ${analysis.truth} ${analysis.commitment}`}
+                  content={analysis.answer}
+                  truth={analysis.truth}
+                  commitment={analysis.commitment}
                   editStatement={editSelfAnalysis} 
                   toggleAutoSuggestion={this.toggleAutoSuggestion} 
                   archive={analysis.archive} 

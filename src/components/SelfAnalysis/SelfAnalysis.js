@@ -66,7 +66,21 @@ const styles = theme => ({
 const names = [
   'Do you complain often of feeling bad? If so, what is the cause?',
   'Do you find fault with other people at the slightest provocation?',
-  'Do you frequently make mistakes in your work? If so, why?'
+  'Do you frequently make mistakes in your work? If so, why?',
+  'Are you sarcastic and offensive in your conversation?',
+  'Do you deliberately avoid the association of anyone, and if so, why?',
+  'Do you suffer frequently from indigestion? If so, what is the cause?',
+  'Does life seem futile and the future hopeless to you or bright and hopeful? Why?',
+  'Do you like your occupation? If not, why?',
+  'Do you often feel self-pity, and if so why?',
+  'Are you envious of those who excel you?',
+  'To which do you devote most time, thinking of SUCCESS, or of FAILURE?',
+  'Are you gaining or losing self-confidence as you grow older?',
+  'Do you learn something of value from all mistakes?',
+  `Are you permitting some relative or acquaintance to worry you? If so, why?
+   List each such person and why they bother you. What are you going to do about it?`,
+   'Do you learn something of value from all mistakes?', 
+  'Are you sometimes "in the clouds" and at other times in the depth of despondency?'
 ];
 
 const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
@@ -280,9 +294,9 @@ class SelfAnalysis extends React.Component {
                     <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="question-select">Question</InputLabel>
                     <Select
-                      value={this.state.question}
+                      value={question}
                       autoWidth={true}
-                      onChange={this.handleChange}
+                      onChange={this.handleChange('question')}
                       style={{width: '10 !important'}}
                       inputProps={{
                         name: 'Question',
@@ -481,7 +495,7 @@ class SelfAnalysis extends React.Component {
                 <BasicImageCard 
                   key={`selfAnalysisCard-${index}`}
                   id={analysis._id}
-                  title={analysis.answer}
+                  title={analysis.question}
                   subHeader={<Moment format="MM/DD/YYYY">{analysis.dueDate}</Moment>}
                   content={analysis.answer}
                   truth={analysis.truth}

@@ -122,43 +122,27 @@ class HeaderAppBar extends React.Component {
         <List>
         <ListItem button key={'auto-suggestion'}>
               <ListItemIcon><InboxIcon /></ListItemIcon>
-              {/* <ListItemText primary={'Auto Suggestion'}> */}
               <Link style={{ textDecoration: 'none' }} to="/app/auto-suggestion">Auto Suggestion</Link>
-              {/* </ListItemText> */}
         </ListItem>
         <ListItem button key={'miracle-equation'}>
               <ListItemIcon><InboxIcon /></ListItemIcon>
-              {/* <ListItemText primary={'Auto Suggestion'}> */}
-              <Link style={{ textDecoration: 'none' }} to="/app/miracle-equation">Miracle Equation</Link>
-              {/* </ListItemText> */}
-        </ListItem>
-        <ListItem button key={'self-confidence'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          {/* <ListItemText primary={'Self Confidence'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
-          {/* </ListItemText> */}
+              <Link style={{ textDecoration: 'none' }} to="/app/miracle-equation">Miracle Equation</Link> 
         </ListItem>
         <ListItem button key={'self-analysis'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <Link style={{ textDecoration: 'none' }} to="/app/self-analysis">Self Analysis</Link>
         </ListItem>
-        <ListItem button key={'commitment'}>
+        <ListItem button key={'miracle-morning'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
-          {/* <ListItemText primary={'Commitment'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/app/commitment">Commitment</Link>
-          {/* </ListItemText> */}
+          <Link style={{ textDecoration: 'none' }} to="/app/miracle-morning">Miracle Morning</Link>
+        </ListItem>
+        <ListItem button key={'self-confidence'}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
         </ListItem>
         <ListItem button key={'faith'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
-          {/* <ListItemText primary={'Faith'}> */}
           <Link style={{ textDecoration: 'none' }} to="/app/faith">Faith</Link>
-          {/* </ListItemText> */}
-        </ListItem>
-        <ListItem button key={'self-image'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          {/* <ListItemText primary={'Faith'}> */}
-          <Link style={{ textDecoration: 'none' }} to="/app/self-image">Self Image</Link>
-          {/* </ListItemText> */}
         </ListItem>
           {/* {['Auto Suggestion', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>

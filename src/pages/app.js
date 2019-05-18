@@ -7,11 +7,10 @@ import HomepageGrid from '../components/Grid/HomepageGrid';
 
 import AutoSuggestion from '../components/AutoSuggestion/AutoSuggestion';
 import SelfConfidence from '../components/SelfConfidence/SelfConfidence';
-import SelfImage from '../components/SelfImage/SelfImage';
-import Commitment from '../components/Commitment/Commitment';
 import Faith from '../components/Faith/Faith';
 import PublicRoute from '../components/Routes/PublicRoute';
 import MiracleEquation from '../components/MiracleEquation/MiracleEquation';
+import MiracleMorning from '../components/MiracleMorning/MiracleMorning';
 import SelfAnalysis from '../components/SelfAnalysis/SelfAnalysis';
 
 const App = () => (
@@ -22,11 +21,11 @@ const App = () => (
                 <PublicRoute path="/" exact component={HomepageGrid} />
                 <PrivateRoute path="/app/auto-suggestion" component={AutoSuggestion} />
                 <PrivateRoute path="/app/miracle-equation" component={MiracleEquation} />
+                <PrivateRoute path="/app/miracle-morning" component={MiracleMorning} />
                 <PrivateRoute path="/app/self-analysis" component={SelfAnalysis} />
-                <PrivateRoute path="/app/commitment" component={Commitment} />
                 <PrivateRoute path="/app/faith" component={Faith} />
                 <PrivateRoute path="/app/self-confidence" component={SelfConfidence} />
-                <PrivateRoute path="/app/self-image" component={SelfImage} />
+                
             {/* </div> */}
         </Router>
     </Layout>

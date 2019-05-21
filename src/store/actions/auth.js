@@ -128,6 +128,9 @@ export const renewSession = () => {
 
 // LOGS THE USER OUT, DESTROYS THE SESSION AND RELEASES THE AUTH0 CONNECTION
 export const logout = () => {
+    if (!isBrowser) {
+        return;
+    }
     auth0.logout({
         returnTo: 'https://www.thedevelopertoolbook.com',
         // returnTo: 'http://localhost:8000',

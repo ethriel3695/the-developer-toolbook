@@ -8,7 +8,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 // import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
@@ -67,11 +67,6 @@ class BasicImageCard extends React.Component {
       <Card className={classes.card}>
         <CardHeader
         style={{background: archiveBackground}}
-          avatar={
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
-            </Avatar>
-          }
           action={
             <CardActions className={classes.actions} disableActionSpacing>
               <IconButton id={this.props.id} onClick={(e) => this.props.toggleArchive(e, this.props.id, this.props.archive)} aria-label="Archive" color={`${archived}`}>

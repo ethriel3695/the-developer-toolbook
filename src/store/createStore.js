@@ -2,11 +2,9 @@ import { createStore as reduxCreateStore, applyMiddleware, combineReducers } fro
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import counter from './reducers/ui';
 import auth from './reducers/auth';
 
 const rootReducer = combineReducers({
-  counter: counter,
   auth: auth
 });
 

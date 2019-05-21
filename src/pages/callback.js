@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Layout from '../components/layout';
 import LoadingProgress from '../components/Progress/LoadingProgress';
-import { handleAuthentication } from '../store/actions/index';
+import { handleAuthentication, logout } from '../store/actions/index';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import { navigate } from 'gatsby';
@@ -53,7 +53,8 @@ const mapStateToProps = (auth) => {
   }
 
 const mapDispatchToProps = dispatch => {
-    return { handleAuthentication: () => dispatch(handleAuthentication()) }
+    return { handleAuthentication: () => dispatch(handleAuthentication()),
+      logout: () => dispatch(logout()) }
   }
   
   export default connect(

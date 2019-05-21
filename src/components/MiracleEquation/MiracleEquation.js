@@ -7,6 +7,7 @@ import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
 import Moment from 'react-moment';
+import { connect } from "react-redux";
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -62,7 +63,7 @@ class MiracleEquation extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = this.getUserId();
+    let userId = this.getUserId(props);
     this.state = {
       title: '',
       statement: '',
@@ -75,7 +76,9 @@ class MiracleEquation extends React.Component {
       affirmations: null,
       userId: userId,
       currentId: null,
-      currentStatement: null
+      currentStatement: null,
+      isAuthenticated: props.isAuthenticated,
+      profile: props.profile
     }
   }
 
@@ -83,8 +86,8 @@ class MiracleEquation extends React.Component {
     this.getAffirmations();
   }
 
-  getUserId = () => {
-    let value = JSON.parse(localStorage.getItem('profile'));
+  getUserId = (props) => {
+    let value = props.profile;
     let userId = value.sub.split('|')[1];
     return userId;
   }
@@ -407,6 +410,28 @@ class MiracleEquation extends React.Component {
               </Grid>
             )
             })}
+            {(affirmations == null || affirmations.length === 0)  &&
+              <Grid item xs={12} sm={6} lg={4}
+              key={`affirmationMiracleContainer-0`}>
+                <BasicImageCard 
+                  key={`affirmationMiracleCard-0`}
+                  id={0}
+                  title={`Example Miracle Equation`}
+                  subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
+                  content={`My mission is to run a 5k by August 1st 2019 and take 
+                  1st place. This is important to me because I want to take care 
+                  of my body and I want to meet the person that I would have to be
+                  in order to complete a 5k in 1st place. I will put forth the 
+                  extraordinary effort of spending at least 30 minutes every single
+                  day training for the 5k and giving it everything I have, for as
+                  long as it takes, no matter what this is my only option!`}
+                  editStatement={editMiracleEquation} 
+                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
+                  archive={this.state.archive} 
+                  toggleArchive={this.toggleArchive}
+                  onDelete={this.onDelete}>
+                </BasicImageCard>
+              </Grid>}
           {/*<Grid item sm={12}>
           <BasicImageCard 
             title={'Miracle Equation Affirmation'}
@@ -431,4 +456,14 @@ class MiracleEquation extends React.Component {
   }
 }
 
-export default withStyles(styles)(MiracleEquation);
+const mapStateToProps = (auth) => {
+  const { isAuthenticated, profile } = auth.auth
+  return {
+    isAuthenticated,
+    profile
+  }
+}
+
+export default connect(
+  mapStateToProps
+) (withStyles(styles)(MiracleEquation));

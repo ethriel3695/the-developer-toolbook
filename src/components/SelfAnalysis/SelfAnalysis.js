@@ -7,6 +7,7 @@ import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
 import Moment from 'react-moment';
+import { connect } from "react-redux";
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -147,7 +148,7 @@ class SelfAnalysis extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = this.getUserId();
+    let userId = this.getUserId(props);
     this.state = {
       question: '',
       answer: '',
@@ -163,7 +164,9 @@ class SelfAnalysis extends React.Component {
       currentId: null,
       currentAnswer: null,
       currentTruth: null,
-      currentCommitment: null
+      currentCommitment: null,
+      isAuthenticated: props.isAuthenticated,
+      profile: props.profile
     }
   }
 
@@ -171,8 +174,8 @@ class SelfAnalysis extends React.Component {
     this.getAnalysis();
   }
 
-  getUserId = () => {
-    let value = JSON.parse(localStorage.getItem('profile'));
+  getUserId = (props) => {
+    let value = props.profile;
     let userId = value.sub.split('|')[1];
     return userId;
   }
@@ -569,6 +572,29 @@ class SelfAnalysis extends React.Component {
               </Grid>
             )
             })}
+            {(analysis == null || analysis.length === 0)  &&
+              <Grid item xs={12} sm={6} lg={4}
+              key={`selfAnalysisContainer-0`}>
+                <BasicImageCard 
+                  key={`selfAnalysisCard-0`}
+                  id={0}
+                  title={`Example: Why do I shy away from stressful situations?`}
+                  subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
+                  content={`I take things personally when people say something 
+                  and I start to shut down.`}
+                  truth={`The reality is that the stress is normal and I can handle
+                  anything that comes my way. The proof is the fact that I am alive
+                  and willing to move forward with the life I have had thus far.`}
+                  commitment={`I am going to place myself in uneasy and stressful
+                  situations so that I can learn to process and handle stress
+                  and be a better person for it!`}
+                  editStatement={editSelfAnalysis} 
+                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
+                  archive={this.state.archive} 
+                  toggleArchive={this.toggleArchive}
+                  onDelete={this.onDelete}>
+                </BasicImageCard>
+              </Grid>}
           {/*<Grid item sm={12}>
           <BasicImageCard 
             title={'Miracle Equation Affirmation'}
@@ -593,4 +619,14 @@ class SelfAnalysis extends React.Component {
   }
 }
 
-export default withStyles(styles)(SelfAnalysis);
+const mapStateToProps = (auth) => {
+  const { isAuthenticated, profile } = auth.auth
+  return {
+    isAuthenticated,
+    profile
+  }
+}
+
+export default connect(
+  mapStateToProps
+) (withStyles(styles)(SelfAnalysis));

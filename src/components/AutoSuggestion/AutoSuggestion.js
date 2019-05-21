@@ -7,15 +7,14 @@ import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
 import Moment from 'react-moment';
+import { connect } from "react-redux";
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import AddIcon from '@material-ui/icons/Add';
 
 import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const pageStyles = {
@@ -63,7 +62,7 @@ class AutoSuggestion extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = this.getUserId();
+    let userId = this.getUserId(props);
     this.state = {
       title: '',
       statement: '',
@@ -76,7 +75,9 @@ class AutoSuggestion extends React.Component {
       affirmations: null,
       userId: userId,
       currentId: null,
-      currentStatement: null
+      currentStatement: null,
+      isAuthenticated: props.isAuthenticated,
+      profile: props.profile
     }
   }
 
@@ -84,8 +85,8 @@ class AutoSuggestion extends React.Component {
     this.getAffirmations();
   }
 
-  getUserId = () => {
-    let value = JSON.parse(localStorage.getItem('profile'));
+  getUserId = (props) => {
+    let value = props.profile;
     let userId = value.sub.split('|')[1];
     return userId;
   }
@@ -105,9 +106,7 @@ class AutoSuggestion extends React.Component {
     .then(response => {
       response.text().then(res => {
         let data = JSON.parse(res);
-        // data.map(affirmation => {
         this.setState({affirmations: data});
-        // });
       });
     });
   }
@@ -168,16 +167,9 @@ class AutoSuggestion extends React.Component {
       archive = true;
     }
     this.onFormUpdate(id, archive);
-    // this.setState({
-    //   archive: !this.state.archive
-    // }, () => {
-      
-    // })
   }
 
   onDelete = (e, id) => {
-    // console.log(e.currentTarget.dataset.id);
-    // const id = e.target.getAttribute('data-id');
     this.deleteRecord(id);
   }
 
@@ -245,13 +237,6 @@ class AutoSuggestion extends React.Component {
     const { title, statement
       , visibleDialog, editAutoSuggestion
       , visibleInfo, affirmations } = this.state;
-      // console.log(affirmations);
-      // console.log(userId);
-      // let affirmationCards = (<div></div>);
-      // if (affirmations != null) {
-      //   affirmationCards = 
-      //     (<div>{console.log(affirmations)}</div>);
-      // }
     return (
       <div>
         {visibleDialog && 
@@ -263,9 +248,6 @@ class AutoSuggestion extends React.Component {
           >
             <DialogTitle id="alert-dialog-title">{"Auto Suggestion Statement"}</DialogTitle>
             <DialogContent>
-              {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
-              test
-              </DialogContentText> */}
               <form className={classes.w100}>
                     <Row>
                     <Col xs="12">
@@ -319,9 +301,6 @@ class AutoSuggestion extends React.Component {
           >
             <DialogTitle id="alert-dialog-title">{"Update Auto Suggestion Statement"}</DialogTitle>
             <DialogContent>
-              {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
-              test
-              </DialogContentText> */}
               <form className={classes.w100}>
                     <Row>
                     <Col xs="12">
@@ -399,10 +378,6 @@ class AutoSuggestion extends React.Component {
               <InfoIcon />
             </IconButton>
             </h1>
-            
-            {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
-              <AddIcon />
-            </IconButton> */}
             <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
             <AddIcon />
             </Button>
@@ -427,21 +402,41 @@ class AutoSuggestion extends React.Component {
               </Grid>
             )
             })}
-          {/*<BasicImageCard 
-            title={title}
-            subHeader={<Moment format="MM/DD/YYYY">{dueDate}</Moment>}
-            content={statement}
-            editAutoSuggestion={editAutoSuggestion} 
-            toggleAutoSuggestion={this.toggleAutoSuggestion} 
-            archive={archive} 
-            toggleArchive={this.toggleArchive}>
-          </BasicImageCard>
-          */}
-          
+          {(affirmations == null || affirmations.length === 0)  &&
+            <Grid item xs={12} sm={6} lg={4}
+            key={`affirmationContainer-0`}>
+              <BasicImageCard 
+                key={`affirmationCard-0`}
+                id={0}
+                title={`Example Auto Suggestion`}
+                subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
+                content={`I have $100,000.00 in my bank account by June 1st 2020
+                and I put forth the effort of working every single day at least 30
+                minutes to achieve my goal and I will also give the best service
+                that I am able as a Software Developer to achieve my goal. I am
+                in possession and can touch the money now and I am open to receiving 
+                a plan on how to accept the money that is already mine!`}
+                editStatement={editAutoSuggestion} 
+                toggleAutoSuggestion={this.toggleAutoSuggestion} 
+                archive={this.state.archive} 
+                toggleArchive={this.toggleArchive}
+                onDelete={this.onDelete}>
+              </BasicImageCard>
+            </Grid>}
         </Grid>
       </div>
     )
   }
 }
 
-export default withStyles(styles)(AutoSuggestion);
+const mapStateToProps = (auth) => {
+  const { isAuthenticated, profile } = auth.auth
+  return {
+    isAuthenticated,
+    profile
+  }
+}
+
+export default connect(
+  mapStateToProps
+) (withStyles(styles)(AutoSuggestion));

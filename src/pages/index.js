@@ -7,15 +7,7 @@ import { handleAuthentication, renewSession, logout } from '../store/actions/ind
 import { connect } from "react-redux";
 
 class IndexPage extends Component {
-
-  componentDidMount() {
-    // this.props.logout();
-    // this.props.renewSession();
-      // this.props.handleAuthentication();
-      // if(isBrowser) {
-      //   window.location.reload();
-      // }
-  }
+  
   render () {
       return (
         <Layout>

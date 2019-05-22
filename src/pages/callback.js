@@ -6,8 +6,6 @@ import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import { navigate } from 'gatsby';
 
-// const isBrowser = typeof window !== 'undefined';
-
 const styles = {
     root: {
       flexGrow: 1
@@ -29,9 +27,6 @@ class Callback extends Component {
     componentDidMount() {
         this.props.handleAuthentication();
         navigate('/');
-        // if(isBrowser) {
-        //   window.location.reload();
-        // }
     }
     render () {
         return (

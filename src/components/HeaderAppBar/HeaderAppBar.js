@@ -25,9 +25,7 @@ import { Link } from 'gatsby';
 
 import { connect } from "react-redux";
 
-import { login } from '../../store/actions/index';
-import { logout } from '../../store/actions/index';
-import { renewSession } from '../../store/actions/index';
+import { renewSession, handleAuthentication, login, logout } from '../../store/actions/index';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -89,9 +87,9 @@ class HeaderAppBar extends React.Component {
   componentDidMount () {
     //   const { renewSession } = auth;
       // console.log(isLoggedIn());
-      // if (this.props.isAuthenticated === true) {
-      //   renewSession();
-      // }
+      if (this.props.isAuthenticated === true) {
+        this.props.renewSession();
+      }
       // if(localStorage.getItem('isLoggedIn') === 'true') {
       //   renewSession();
       // }
@@ -120,6 +118,10 @@ class HeaderAppBar extends React.Component {
     const sideList = (
       <div className={classes.list}>
         <List>
+        <ListItem button key={'self-confidence'}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
+        </ListItem>
         <ListItem button key={'auto-suggestion'}>
               <ListItemIcon><InboxIcon /></ListItemIcon>
               <Link style={{ textDecoration: 'none' }} to="/app/auto-suggestion">Auto Suggestion</Link>
@@ -135,10 +137,6 @@ class HeaderAppBar extends React.Component {
         <ListItem button key={'miracle-morning'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <Link style={{ textDecoration: 'none' }} to="/app/miracle-morning">Miracle Morning</Link>
-        </ListItem>
-        <ListItem button key={'self-confidence'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
         </ListItem>
         <ListItem button key={'faith'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>

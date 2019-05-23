@@ -8,6 +8,7 @@ import { AUTH_CONFIG } from '../../components/Auth/auth0-variables';
 import authorize0 from 'auth0-js';
 
 let accessToken = null;
+let expiresAt = null;
 const isBrowser = typeof window !== 'undefined';
 
 let auth0 = isBrowser
@@ -64,26 +65,30 @@ export const login = () => {
 // DETERMINES IF THE AUTH0 PROFILE IS VALID
 export const handleAuthentication = () => {
     return dispatch => {
-    if (!isBrowser) {
-        return;
-    }
-    auth0.parseHash((err, authResult) => {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-            setSession(authResult, dispatch);
-        } else if (err) {
-            console.log(err);
-            alert(`Error ${err.error}. Check console for further details.`);
+        if (!isBrowser) {
+            return;
         }
-    });
-}
+        auth0.parseHash((err, authResult) => {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                setSession(authResult, dispatch);
+            } else if (err) {
+                console.log(err);
+                alert(`Error ${err.error}. Check console for further details.`);
+            }
+        });
+    }
 }
 
 // SETS THE SESSION IF THE PROFILE IS VALID
 const setSession = (authResult, dispatch) => {
+    let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     accessToken = authResult.accessToken;
+    expiresAt = currentExpiresAt;
     if (!isBrowser) {
         return;
     }
+    localStorage.setItem('loggedIn', true);
+    localStorage.setItem('expires_at', expiresAt);
     auth0.client.userInfo(accessToken, function(err, profile) {
         if(err) {
             dispatch(loginError(err));
@@ -94,18 +99,20 @@ const setSession = (authResult, dispatch) => {
 
 // RENEWS THE SESSION WHEN THE USER RETURNS TO THE APPLICATION AND IF TOKEN IS NOT EXPIRED
 export const renewSession = () => {
-    if (!isBrowser) {
-        return;
-    }
-    auth0.checkSession({}, (err, authResult) => {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-            setSession(authResult);
-        } else if (err) {
-            logout();
-            console.log(err);
-            alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+    return dispatch => {
+        if (!isBrowser) {
+            return;
         }
-    });
+        auth0.checkSession({}, (err, authResult) => {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                setSession(authResult, dispatch);
+            } else if (err) {
+                logout();
+                console.log(err);
+                alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+            }
+        });
+    }
 }
 
 // LOGS THE USER OUT, DESTROYS THE SESSION AND RELEASES THE AUTH0 CONNECTION
@@ -118,6 +125,10 @@ export const logout = () => {
         // returnTo: 'http://localhost:8000',
         clientID: AUTH_CONFIG.clientId
     });
+    if (isBrowser) {
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('expires_at');
+      }
     return dispatch => {
         return dispatch(logoutSuccess());
     }

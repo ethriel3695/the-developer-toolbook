@@ -83,16 +83,14 @@ class HeaderAppBar extends React.Component {
   // handleDrawerClose = () => {
   //   this.setState({ open: false });
   // };
+  componentWillMount () {
+    if (this.props.isAuthenticated === true) {
+      this.props.renewSession();
+    }
+  }
 
   componentDidMount () {
-    //   const { renewSession } = auth;
-      // console.log(isLoggedIn());
-      if (this.props.isAuthenticated === true) {
-        this.props.renewSession();
-      }
-      // if(localStorage.getItem('isLoggedIn') === 'true') {
-      //   renewSession();
-      // }
+
     }
 
   handleMenu = event => {

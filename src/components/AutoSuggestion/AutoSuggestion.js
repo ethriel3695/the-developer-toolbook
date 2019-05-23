@@ -62,7 +62,7 @@ class AutoSuggestion extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = this.getUserId(props);
+    let userId = props.profile !== null ? this.getUserId(props) : null;
     this.state = {
       title: '',
       statement: '',
@@ -85,10 +85,19 @@ class AutoSuggestion extends React.Component {
     this.getAffirmations();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.profile !== this.props.profile) {
+      let userId = this.getUserId(this.props);
+      this.setState({userId: userId}, () => {
+        this.getAffirmations();
+      });
+    }
+  }
+
   getUserId = (props) => {
-    let value = props.profile;
-    let userId = value.sub.split('|')[1];
-    return userId;
+      let value = props.profile;
+      let userId = value.sub.split('|')[1];
+      return userId;
   }
 
   getAffirmations = () => {

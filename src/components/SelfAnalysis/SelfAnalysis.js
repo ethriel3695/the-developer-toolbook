@@ -101,13 +101,11 @@ const names = [
   'Do you neglect internal bathing until autointoxication makes you ill tempered?',
   'How many preventable disturbances annoy you, and why do you tolerate them?',
   'Do you resort to liquor, narcotics or cigarettes to "quiet your nerves"? If so why?',
-  'Does anyone "nag" at you, and if so, for what reason?',
   'Do you have a DEFINITE MAJOR PURPOSE, and if so, what is it, and what plan have you for achieving it?',
   'Do you suffer from any of the Six Basic Fears? If so, which ones?',
   'Have you a method by which you can shield yourself against the negative influence of others?',
   'Do you make deliberate use of autosuggestion to make your mind positive?',
   'Which do you value most, your material possessions or the privilege of controlling your own thoughts?',
-  'Do others easily influence you, against your own judgement?',
   'Has today added anything of value to your stock of knowledge or state of mind?',
   'Do you face squarely the circumstances that make you unhappy, or sidestep the responsibility?',
   'Do you analyze all mistakes and failures and do what it takes to profit by them?',
@@ -115,9 +113,7 @@ const names = [
   'Do you encourage other people to bring their worries to you for sympathy?',
   'Do you choose, from your daily experiences, lessons or influences that aid in your personal advancement?',
   'Does your presence have a negative influence on other people as a rule?',
-  'What habits of other people annoy you the most?',
   'Do you form your own opions or permit yourself to be influenced by others?',
-  'Have you learned how to create a mental state of mind with which you can shield yourself against all discouraging influences?',
   'Does your occupation inspire you with faith and desire?',
   'Are you conscious of possessing spiritual forces of sufficient power to enable you to keep your mind free from all forms of FEAR?',
   'Does your spirituality assist you to keep your own mind positive?',
@@ -148,7 +144,7 @@ class SelfAnalysis extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = this.getUserId(props);
+    let userId = props.profile !== null ? this.getUserId(props) : null;
     this.state = {
       question: '',
       answer: '',
@@ -172,6 +168,15 @@ class SelfAnalysis extends React.Component {
 
   componentDidMount() {
     this.getAnalysis();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.profile !== this.props.profile) {
+      let userId = this.getUserId(this.props);
+      this.setState({userId: userId}, () => {
+        this.getAnalysis();
+      });
+    }
   }
 
   getUserId = (props) => {

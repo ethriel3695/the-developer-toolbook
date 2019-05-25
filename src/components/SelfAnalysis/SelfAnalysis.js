@@ -166,9 +166,9 @@ class SelfAnalysis extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.getAnalysis();
-  }
+  // componentDidMount() {
+  //   this.getAnalysis();
+  // }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.profile !== this.props.profile) {

@@ -81,11 +81,14 @@ class AutoSuggestion extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.getAffirmations();
-  }
+  // componentDidMount() {
+  //   this.getAffirmations();
+  // }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('Component is updating');
+    console.log(prevProps.profile);
+    console.log(this.props.profile);
     if (prevProps.profile !== this.props.profile) {
       let userId = this.getUserId(this.props);
       this.setState({userId: userId}, () => {
@@ -95,6 +98,8 @@ class AutoSuggestion extends React.Component {
   }
 
   getUserId = (props) => {
+    console.log('User Id happens');
+    console.log(props);
       let value = props.profile;
       let userId = value.sub.split('|')[1];
       return userId;

@@ -82,9 +82,9 @@ class MiracleEquation extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.getAffirmations();
-  }
+  // componentDidMount() {
+  //   this.getAffirmations();
+  // }
 
 
   componentDidUpdate(prevProps, prevState) {

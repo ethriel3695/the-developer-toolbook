@@ -84,6 +84,7 @@ class HeaderAppBar extends React.Component {
   //   this.setState({ open: false });
   // };
   componentWillMount () {
+    console.log(this.props.isAuthenticated);
     if (this.props.isAuthenticated === true) {
       this.props.renewSession();
     }

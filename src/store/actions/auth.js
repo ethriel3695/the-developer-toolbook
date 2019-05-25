@@ -103,15 +103,8 @@ export const renewSession = () => {
         if (!isBrowser) {
             return;
         }
-        let auth0 = isBrowser
-            ? new authorize0.WebAuth({
-            domain: AUTH_CONFIG.domain,
-            clientID: AUTH_CONFIG.clientId,
-            redirectUri: AUTH_CONFIG.callbackUrl,
-            responseType: 'token id_token',
-            scope: 'openid'
-        }) : {};
         auth0.checkSession({}, (err, authResult) => {
+            console.log('renew session is running');
             if (authResult && authResult.accessToken && authResult.idToken) {
                 setSession(authResult, dispatch);
             } else if (err) {

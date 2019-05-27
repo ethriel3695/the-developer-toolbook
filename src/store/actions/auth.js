@@ -104,7 +104,6 @@ export const renewSession = () => {
             return;
         }
         auth0.checkSession({}, (err, authResult) => {
-            console.log('renew session is running');
             if (authResult && authResult.accessToken && authResult.idToken) {
                 setSession(authResult, dispatch);
             } else if (err) {

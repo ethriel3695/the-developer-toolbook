@@ -174,10 +174,10 @@ class SelfAnalysis extends React.Component {
       if (!this.state.userId) {
         let userId = this.getUserId(this.props);
         this.setState({userId: userId}, () => {
-          this.getAffirmations();
+          this.getAnalysis();
         });
       } else {
-        this.getAffirmations();
+        this.getAnalysis();
       }
       
     }

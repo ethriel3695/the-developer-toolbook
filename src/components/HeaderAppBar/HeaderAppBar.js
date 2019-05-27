@@ -90,9 +90,11 @@ class HeaderAppBar extends React.Component {
     }
   }
 
-  componentDidMount () {
-
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
+      this.props.renewSession();
     }
+  }
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });

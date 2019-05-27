@@ -4,7 +4,7 @@ import {
     , LOGOUT_SUCCESS
 } from './actionTypes';
 
-import { AUTH_CONFIG } from '../../components/Auth/auth0-variables';
+// import { AUTH_CONFIG } from '../../components/Auth/auth0-variables';
 import authorize0 from 'auth0-js';
 
 let accessToken = null;
@@ -13,9 +13,9 @@ const isBrowser = typeof window !== 'undefined';
 
 let auth0 = isBrowser
     ? new authorize0.WebAuth({
-    domain: AUTH_CONFIG.domain,
-    clientID: AUTH_CONFIG.clientId,
-    redirectUri: AUTH_CONFIG.callbackUrl,
+    domain: 'devellistech.auth0.com',
+    clientID: 'HeKKgZWsqsHxcPYSs46pB09U06JA4ySN',
+    redirectUri: 'http://localhost:8000/callback',
     responseType: 'token id_token',
     scope: 'openid'
 }) : {};
@@ -124,7 +124,7 @@ export const logout = () => {
     auth0.logout({
         returnTo: 'https://www.thedevelopertoolbook.com',
         // returnTo: 'http://localhost:8000',
-        clientID: AUTH_CONFIG.clientId
+        clientID: 'HeKKgZWsqsHxcPYSs46pB09U06JA4ySN'
     });
     if (isBrowser) {
         localStorage.removeItem('loggedIn');

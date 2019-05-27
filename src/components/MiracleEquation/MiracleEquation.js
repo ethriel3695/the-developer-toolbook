@@ -86,6 +86,20 @@ class MiracleEquation extends React.Component {
   //   this.getAffirmations();
   // }
 
+  componentDidMount() {
+    if(this.props.profile) {
+      if (!this.state.userId) {
+        let userId = this.getUserId(this.props);
+        this.setState({userId: userId}, () => {
+          this.getAffirmations();
+        });
+      } else {
+        this.getAffirmations();
+      }
+      
+    }
+  }
+
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.profile !== this.props.profile) {

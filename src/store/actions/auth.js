@@ -15,7 +15,7 @@ let auth0 = isBrowser
     ? new authorize0.WebAuth({
     domain: 'devellistech.auth0.com',
     clientID: 'HeKKgZWsqsHxcPYSs46pB09U06JA4ySN',
-    redirectUri: 'http://localhost:8000/callback',
+    redirectUri: 'https://www.thedevelopertoolbook.com/callback',
     responseType: 'token id_token',
     scope: 'openid'
 }) : {};

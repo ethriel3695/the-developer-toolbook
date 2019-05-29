@@ -12,6 +12,7 @@ import PublicRoute from '../components/Routes/PublicRoute';
 import MiracleEquation from '../components/MiracleEquation/MiracleEquation';
 import MiracleMorning from '../components/MiracleMorning/MiracleMorning';
 import SelfAnalysis from '../components/SelfAnalysis/SelfAnalysis';
+import Meditation from '../components/Meditation/Meditation';
 
 const App = () => (
     <Layout>
@@ -25,6 +26,7 @@ const App = () => (
                 <PrivateRoute path="/app/self-analysis" component={SelfAnalysis} />
                 <PrivateRoute path="/app/faith" component={Faith} />
                 <PrivateRoute path="/app/self-confidence" component={SelfConfidence} />
+                <PrivateRoute path="/app/meditation" component={Meditation} />
                 
             {/* </div> */}
         </Router>

@@ -142,6 +142,10 @@ class HeaderAppBar extends React.Component {
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <Link style={{ textDecoration: 'none' }} to="/app/faith">Faith</Link>
         </ListItem>
+        <ListItem button key={'meditation'}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <Link style={{ textDecoration: 'none' }} to="/app/meditation">Meditation</Link>
+        </ListItem>
           {/* {['Auto Suggestion', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon><InboxIcon /></ListItemIcon>

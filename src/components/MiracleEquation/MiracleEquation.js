@@ -63,7 +63,7 @@ class MiracleEquation extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = props.profile !== null ? this.getUserId(props) : null;
+    let userId = localStorage.getItem('profile') ? localStorage.getItem('profile') : null;
     this.state = {
       title: '',
       statement: '',
@@ -87,34 +87,34 @@ class MiracleEquation extends React.Component {
   // }
 
   componentDidMount() {
-    if(this.props.profile) {
-      if (!this.state.userId) {
-        let userId = this.getUserId(this.props);
-        this.setState({userId: userId}, () => {
-          this.getAffirmations();
-        });
-      } else {
+  //   if(this.props.profile) {
+  //     if (!this.state.userId) {
+  //       let userId = this.getUserId(this.props);
+  //       this.setState({userId: userId}, () => {
+  //         this.getAffirmations();
+  //       });
+  //     } else {
         this.getAffirmations();
-      }
+  //     }
       
-    }
+  //   }
   }
 
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.profile !== this.props.profile) {
-      let userId = this.getUserId(this.props);
-      this.setState({userId: userId}, () => {
-        this.getAffirmations();
-      });
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.profile !== this.props.profile) {
+  //     let userId = this.getUserId(this.props);
+  //     this.setState({userId: userId}, () => {
+  //       this.getAffirmations();
+  //     });
+  //   }
+  // }
 
-  getUserId = (props) => {
-    let value = props.profile;
-    let userId = value.sub.split('|')[1];
-    return userId;
-  }
+  // getUserId = (props) => {
+  //   let value = props.profile;
+  //   let userId = value.sub.split('|')[1];
+  //   return userId;
+  // }
 
   getAffirmations = () => {
     const url = `${apiUrl}/api/affirmation`;

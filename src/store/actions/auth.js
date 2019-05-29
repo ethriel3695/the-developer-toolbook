@@ -4,18 +4,19 @@ import {
     , LOGOUT_SUCCESS
 } from './actionTypes';
 
-// import { AUTH_CONFIG } from '../../components/Auth/auth0-variables';
+import { AUTH_CONFIG } from '../../components/Auth/auth0-variables';
 import authorize0 from 'auth0-js';
 
 let accessToken = null;
+let idToken = null;
 let expiresAt = null;
 const isBrowser = typeof window !== 'undefined';
 
 let auth0 = isBrowser
     ? new authorize0.WebAuth({
-    domain: 'devellistech.auth0.com',
-    clientID: 'HeKKgZWsqsHxcPYSs46pB09U06JA4ySN',
-    redirectUri: 'https://www.thedevelopertoolbook.com/callback',
+    domain: AUTH_CONFIG.domain,
+    clientID: AUTH_CONFIG.clientId,
+    redirectUri: AUTH_CONFIG.callbackUrl,
     responseType: 'token id_token',
     scope: 'openid'
 }) : {};
@@ -83,13 +84,19 @@ export const handleAuthentication = () => {
 const setSession = (authResult, dispatch) => {
     let currentExpiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     accessToken = authResult.accessToken;
+    idToken = authResult.idToken;
     expiresAt = currentExpiresAt;
     if (!isBrowser) {
         return;
     }
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('id_token', idToken);
     localStorage.setItem('loggedIn', true);
     localStorage.setItem('expires_at', expiresAt);
     auth0.client.userInfo(accessToken, function(err, profile) {
+        let profileName = profile;
+        let userId = profileName.sub.split('|')[1];
+        localStorage.setItem('profile', userId);
         if(err) {
             dispatch(loginError(err));
         }
@@ -123,11 +130,14 @@ export const logout = () => {
     auth0.logout({
         returnTo: 'https://www.thedevelopertoolbook.com',
         // returnTo: 'http://localhost:8000',
-        clientID: 'HeKKgZWsqsHxcPYSs46pB09U06JA4ySN'
+        clientID: AUTH_CONFIG.clientId
     });
     if (isBrowser) {
+        localStorage.removeItem('access_token');
         localStorage.removeItem('loggedIn');
         localStorage.removeItem('expires_at');
+        localStorage.removeItem('profile');
+        localStorage.removeItem('id_token');
       }
     return dispatch => {
         return dispatch(logoutSuccess());

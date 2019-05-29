@@ -144,7 +144,7 @@ class SelfAnalysis extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = props.profile !== null ? this.getUserId(props) : null;
+    let userId = localStorage.getItem('profile') ? localStorage.getItem('profile') : null;
     this.state = {
       question: '',
       answer: '',
@@ -170,33 +170,33 @@ class SelfAnalysis extends React.Component {
   //   this.getAnalysis();
   // }
   componentDidMount() {
-    if(this.props.profile) {
-      if (!this.state.userId) {
-        let userId = this.getUserId(this.props);
-        this.setState({userId: userId}, () => {
-          this.getAnalysis();
-        });
-      } else {
+    // if(this.props.profile) {
+    //   if (!this.state.userId) {
+    //     let userId = this.getUserId(this.props);
+    //     this.setState({userId: userId}, () => {
+    //       this.getAnalysis();
+    //     });
+    //   } else {
         this.getAnalysis();
-      }
+    //   }
       
-    }
+    // }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.profile !== this.props.profile) {
-      let userId = this.getUserId(this.props);
-      this.setState({userId: userId}, () => {
-        this.getAnalysis();
-      });
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.profile !== this.props.profile) {
+  //     let userId = this.getUserId(this.props);
+  //     this.setState({userId: userId}, () => {
+  //       this.getAnalysis();
+  //     });
+  //   }
+  // }
 
-  getUserId = (props) => {
-    let value = props.profile;
-    let userId = value.sub.split('|')[1];
-    return userId;
-  }
+  // getUserId = (props) => {
+  //   let value = props.profile;
+  //   let userId = value.sub.split('|')[1];
+  //   return userId;
+  // }
 
   getAnalysis = () => {
     const url = `${apiUrl}/api/analysis`;

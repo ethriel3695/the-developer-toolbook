@@ -85,13 +85,13 @@ class HeaderAppBar extends React.Component {
   // };
   componentWillMount () {
     if (this.props.isAuthenticated === true) {
-      this.props.renewSession();
+      this.props.handleAuthentication();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
-      this.props.renewSession();
+      this.props.handleAuthentication();
     }
   }
 
@@ -285,7 +285,8 @@ const mapStateToProps = (auth) => {
 const mapDispatchToProps = dispatch => {
   return { login: () => dispatch(login()),
     logout: () => dispatch(logout()),
-    renewSession: () => dispatch(renewSession()) }
+    renewSession: () => dispatch(renewSession()),
+    handleAuthentication: () => dispatch(handleAuthentication()) }
 }
 
 export default connect(

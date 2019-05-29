@@ -1,33 +1,42 @@
 import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT_SUCCESS } from '../actions/actionTypes';
-// import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 const isBrowser = typeof window !== 'undefined';
+
 const initialState = {
     isAuthenticated: checkTokenExpiry(),
-    profile: null,
+    profile: getProfile(),
     error: ''
 }
 
 function checkTokenExpiry() {
-    // let jwt = null;
-    let expiresAt = null;
+    let jwt = null;
     if(!isBrowser) {
         return false;
     } else {
-        expiresAt = localStorage.getItem('expires_at');
+        jwt = localStorage.getItem('id_token');
     }
-    // if(jwt) {
-        // let jwtExp = jwtDecode(jwt).exp;
+    if(jwt) {
+        let jwtExp = jwtDecode(jwt).exp;
         let expiryDate = new Date(0);
-        expiryDate.setUTCSeconds(expiresAt);
+        expiryDate.setUTCSeconds(jwtExp);
 
-        if(new Date() < expiresAt) {
+        if(new Date() < expiryDate) {
         return true;
         }
-    // }
+    }
     return false;  
 }
 
+function getProfile() {
+    if(!isBrowser) {
+        return null;
+    } else if (localStorage.getItem('profile') !== 'undefined') {
+        return localStorage.getItem('profile');
+    } else {
+        return null;
+    }
+}
 
 const auth = (state = initialState, action) => {
 switch (action.type) {

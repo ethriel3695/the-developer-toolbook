@@ -26,7 +26,7 @@ class Callback extends Component {
 
     componentDidMount() {
         this.props.handleAuthentication();
-        navigate('/');
+        navigate('/app/instruction');
     }
     render () {
         return (

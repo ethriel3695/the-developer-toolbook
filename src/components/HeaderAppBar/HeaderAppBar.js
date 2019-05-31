@@ -118,6 +118,10 @@ class HeaderAppBar extends React.Component {
     const sideList = (
       <div className={classes.list}>
         <List>
+        <ListItem button key={'instruction'}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <Link style={{ textDecoration: 'none' }} to="/app/instruction">Instruction</Link>
+        </ListItem>
         <ListItem button key={'self-confidence'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>

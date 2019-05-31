@@ -120,7 +120,7 @@ class HeaderAppBar extends React.Component {
         <List>
         <ListItem button key={'instruction'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/instruction">Instruction</Link>
+          <Link style={{ textDecoration: 'none' }} to="/app/instruction">Getting Started</Link>
         </ListItem>
         <ListItem button key={'self-confidence'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
@@ -149,6 +149,10 @@ class HeaderAppBar extends React.Component {
         <ListItem button key={'meditation'}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
           <Link style={{ textDecoration: 'none' }} to="/app/meditation">Meditation</Link>
+        </ListItem>
+        <ListItem button key={'habits'}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <Link style={{ textDecoration: 'none' }} to="/app/habits">Habits</Link>
         </ListItem>
           {/* {['Auto Suggestion', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>

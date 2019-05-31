@@ -3,6 +3,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 // import Layout from '../layout';
 import SEO from '../seo';
+import InfoIcon from '@material-ui/icons/Info';
 
 const pageStyles = {
   textCenter: {
@@ -16,41 +17,71 @@ const Instruction = () => (
     <SEO title="Welcome Instructions" />
     <Grid container>
       <Grid item sm={12}>
-        <h1 style={pageStyles.textCenter}>How to use The Developer Toolbook</h1>
-        <h4 style={pageStyles.textCenter}>The principle of the S.A.V.E.R.S is
-        to wake up early and start taking control and bring purpose to your mornings!</h4>
+        <h1 style={pageStyles.textCenter}>Getting Started</h1>
+        <h4 style={pageStyles.textCenter}>The purpose of this tool is to assist you in waking yourself
+        up and realizing that you are able to do so much more than you think you can. Life is not
+        about the cards you are dealt. It is your responsibility to create the life you want and this 
+        tool will assist in realizing your true abilities!</h4>
       </Grid>
       <Grid item sm={12}>
+        <strong>Self Confidence:</strong> is knowing what you can do, having belief
+        you can achieve all your dreams, goals, ambitions, mission and loving who you are. <br/>
+        This tool is an affirmation which you say daily with the purpose of empowering yourself with,
+        belief, desire and love.
+        <br/>
+        <br/>
+        <strong>Auto Suggestion:</strong> is the act of training your brain to view things differently
+        and rewiring your brain to focus on a success and happiness mindset for whatever you desire. <br/>
+        <span style={{marginLeft: '5em'}}>
+          This tool allows for the creation, editing, completion and deletion of auto suggestion statements.
+        </span>
         <ol>
-        <li>
-        <strong>S - Silence:</strong> Meditate and clear your space and energy. However you do this is perfect
-        there is no correct way to meditate. The important part is to relax and experience peace.
-        </li>
-        <li>
-        <strong>A - Affirmations:</strong> The affirmations will only work if they have purpose and emotion behind them. 
-        Affirmations that state "I am rich now" do not have any action and are just words.
-        A better affirmation would be "I have $100,000.00 in my bank account by December 19, 20**" and
-        I am committed to spending 30 minutes every single day [insert action here] until I achieve my results.
-        </li>
-        <li>
-        <strong>V - Visualization:</strong> The visualization step is where you envision yourself in the life you want and 
-        the goals you are stating with your affirmations. Visualize yourself in your new house, or driving your
-        new car, or with $100,000.00 in your bank account.
-        </li>
-        <li>
-        <strong>E - Exercise:</strong> This is self explanitory. Spend some time taking care of your body and trust yourself
-        on how much or how little exercise you want to do.
-        </li>
-        <li>
-        <strong>R - Reading:</strong> This step is crucial because reading leads to knowledge and perspective and opens up
-        new thoughts. Reading expands your mind and inspires creativity.
-        </li>
-        <li>
-        <strong>S - Scribing:</strong> This step is journaling and journaling can look many different ways. You can write 
-        in a journal traditionally, brainstorm ideas, task manage, answer questions about yourself through 
-        introspection and reflection, creating affirmations, and infinite other posibilities.
-        </li>
+          <li>Assign a title to your auto suggestion statement</li>
+          <li>Fill out your auto suggestion statement and reference the sample card and the information icon<InfoIcon/> <br/> 
+            next to the title for guidance on how to structure your auto suggestion statement
+          </li>
         </ol>
+        <strong>Miracle Equation:</strong> This is your current main mission in life which will have the most
+        benefit on your character and on the rest of your life. There are many important goals, this mission 
+        is different because it is what will fuel you to do things differently and live a life of purpose.
+        <br/>
+        <span style={{marginLeft: '5em'}}>
+          This tool allows for the creation, editing, completion and deletion of miracle equation statements.
+        </span>
+        <ol>
+          <li>Assign a title to your miracle equation statement</li>
+          <li>Fill out your miracle equation statement and reference the sample card and the information icon<InfoIcon/> <br/> 
+            next to the title for guidance on how to structure your miracle equation statement
+          </li>
+        </ol>
+        <strong>Self Analysis:</strong> The best thing you can do for yourself is to take the time and perform
+        an honest assessment of yourself and how you interact and live your life. This tool provides questions
+        to ask yourself. The key is to be honest with yourself with the purpose of experiencing growth and 
+        learning about yourself.
+        <ol>
+          <li>Select a question to answer</li>
+          <li>The answer is your honest assessment of where you are currently at and your current beliefs</li>
+          <li>The truth is what you can see about the situation when you look at it from a different perspective</li>
+          <li>The last step is to make a commitment on what you are going to do about your current mindset and 
+            how you are going to change it.
+          </li>
+        </ol>
+        <strong>Miracle Morning:</strong> This tool is an explanation of a way to structure your morning 
+        through meditation, affirmations, visualization, exercise, reading and journaling. You will be focused
+        and at peace if you follow this morning routine, I guarantee it.<br/>
+        <strong>NOTE:</strong> You do not have to practice this routine in the morning the goal is to wake up an hour
+        earlier than you usually do and give yourself structure and purpose with your morning
+        <br/>
+        <br/>
+        <strong>Meditation:</strong> will bring you peace and provide clarity in your life. The tool provides
+        guides to three different meditations each for a different purpose. Meditation does not look a certain
+        way so have fun and remember the overall goal is peace and clarity.
+        <br/>
+        <br/>
+        <strong>7 Habits:</strong> These habits are a list of characteristics to strive for and choose for 
+        yourself. Credit goes to <i>Stephen Covey</i> and his book <i>7 Habits of Highly Effective People</i>
+        <br/>
+        <br/>
       </Grid>
     </Grid>
   </div>

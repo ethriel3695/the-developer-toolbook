@@ -14,6 +14,7 @@ import MiracleMorning from '../components/MiracleMorning/MiracleMorning';
 import SelfAnalysis from '../components/SelfAnalysis/SelfAnalysis';
 import Meditation from '../components/Meditation/Meditation';
 import Instruction from '../components/Instruction/Instruction';
+import Habits from '../components/Habits/Habits';
 
 const App = () => (
     <Layout>
@@ -21,6 +22,7 @@ const App = () => (
             {/* <div> */}
                 {/*<Route path="/" render={(props) => <IndexPage auth={auth} {...props} />} />*/}
                 <PublicRoute path="/" exact component={HomepageGrid} />
+                <PrivateRoute path="/app/instruction" component={Instruction} />
                 <PrivateRoute path="/app/auto-suggestion" component={AutoSuggestion} />
                 <PrivateRoute path="/app/miracle-equation" component={MiracleEquation} />
                 <PrivateRoute path="/app/miracle-morning" component={MiracleMorning} />
@@ -28,7 +30,7 @@ const App = () => (
                 <PrivateRoute path="/app/faith" component={Faith} />
                 <PrivateRoute path="/app/self-confidence" component={SelfConfidence} />
                 <PrivateRoute path="/app/meditation" component={Meditation} />
-                <PrivateRoute path="/app/instruction" component={Instruction} />
+                <PrivateRoute path="/app/habits" component={Habits} />
                 
             {/* </div> */}
         </Router>

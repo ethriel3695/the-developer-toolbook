@@ -4,7 +4,7 @@ import { navigate } from "gatsby";
 import { connect } from "react-redux";
 
 const isBrowser = typeof window !== 'undefined';
-let isLoggedIn = true;
+let isLoggedIn = false;
 const loggedIn = (auth) => {
   if (isBrowser) {
     if (auth === true) {

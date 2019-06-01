@@ -24,7 +24,7 @@ const SelfConfidence = () => (
         I know that I have the ability to achieve the object of my Definite Purpose in life. Therefore I demand of myself persistent, continuous action towards its attainment, and I here and now promise to take such action!
         </li>
         <li>
-        I realize the dominating thoughts of my mind reproduce themselves in outward, physical action and transform themselves into physical reality. Therefore I am concentrating my thoughts for 30 minutes daily upon a task of thinking of the being of light I Am, thereby creating in my mind a clear and mental picture of me!
+        I realize the dominating thoughts of my mind reproduce themselves in outward, physical action and transform themselves into physical reality. Therefore I am concentrating my thoughts for 30 minutes daily of envisioning who I want to be, thereby creating in my mind a clear and mental picture of me!
         </li>
         <li>
         I know through the principle of autosuggestion that any desire I persistently hold in my mind will eventually seek expression through some practical means of attaining the object. Therefore I am devoting 10 minutes daily to demanding of myself the development of self confidence!

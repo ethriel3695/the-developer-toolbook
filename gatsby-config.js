@@ -34,13 +34,11 @@ module.exports = {
       options: {
         trackingId: "UA-132836178-3",
         // Defines where to place the tracking script - `true` in the head and `false` in the body
-        head: false,
+        head: true,
         // Setting this parameter is optional
         anonymize: true,
         // Setting this parameter is also optional
         respectDNT: true,
-        // Avoids sending pageview hits from custom paths
-        exclude: ["/localhost:8000/**"],
         // Any additional create only fields (optional)
         sampleRate: 5,
         siteSpeedSampleRate: 10,

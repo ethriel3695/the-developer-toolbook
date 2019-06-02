@@ -11,7 +11,7 @@ const loggedIn = (auth) => {
       isLoggedIn = auth;
     };
   }
-  if (isLoggedIn === true) {
+  if (auth === true) {
     isLoggedIn = true;
   } else {
     isLoggedIn = false;

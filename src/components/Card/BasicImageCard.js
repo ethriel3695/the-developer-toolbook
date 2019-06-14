@@ -12,7 +12,7 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
-import ArchiveIcon from '@material-ui/icons/ArchiveRounded';
+import ArchiveIcon from '@material-ui/icons/CheckRounded';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
 // import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -45,6 +45,20 @@ const styles = theme => ({
   avatar: {
     backgroundColor: red[500],
   },
+  banner: {
+    '&::after': {
+      content: "",
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      opacity: .7,
+    },
+    '& > *': {
+      zIndex: 100
+    }
+  }
 });
 
 class BasicImageCard extends React.Component {
@@ -57,16 +71,15 @@ class BasicImageCard extends React.Component {
   render() {
     const { classes } = this.props;
     let archived = 'default';
-    let archiveBackground = 'transparent';
+    let archiveBackground = 'black';
     if (this.props.archive === true) {
       archived = 'primary';
-      archiveBackground = 'green';
+      archiveBackground = '#22BB33';
     }
 
     return (
       <Card className={classes.card}>
         <CardHeader
-        style={{background: archiveBackground}}
           action={
             <CardActions className={classes.actions} disableActionSpacing>
               <IconButton id={this.props.id} onClick={(e) => this.props.toggleArchive(e, this.props.id, this.props.archive)} aria-label="Archive" color={`${archived}`}>
@@ -78,6 +91,9 @@ class BasicImageCard extends React.Component {
           subheader={this.props.subHeader}
         />
         <CardContent>
+        {this.props.archive && 
+          <h1 style={{color: archiveBackground}}>Completed</h1>
+        }
           <Typography component="p">
           {this.props.content ? this.props.content : ''}
           <br />
@@ -90,7 +106,7 @@ class BasicImageCard extends React.Component {
           <IconButton onClick={(e) => this.props.toggleAutoSuggestion(e, this.props.id, this.props.content, this.props.truth, this.props.commitment)} aria-label="Edit Card">
             <EditIcon />
           </IconButton>
-          <IconButton onClick={(e) => this.props.onDelete(e, this.props.id)} aria-label="Delete Card">
+          <IconButton onClick={(e) => window.confirm("Are you sure you want to delete this entry?") && this.props.onDelete(e, this.props.id)} aria-label="Delete Card">
             <DeleteIcon />
           </IconButton>
         </CardActions>

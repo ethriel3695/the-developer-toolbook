@@ -137,8 +137,13 @@ const names = [
   'How much time have you devoted to studying and answering these questions?(At least one day is necessary for analyzing and answering the entire list.)',
 ];
 
-const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
-// const apiUrl = 'http://localhost:8080';
+let apiUrl = '';
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  apiUrl = 'http://localhost:8080';
+} else {
+  apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+}
 class SelfAnalysis extends React.Component {
   constructor(props) {
     super(props);

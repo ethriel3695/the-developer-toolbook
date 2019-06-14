@@ -56,8 +56,13 @@ const styles = theme => ({
   }
 });
 
-const apiUrl = 'https://the-developer-toolbook-api.appspot.com';
-// const apiUrl = 'http://localhost:8080';
+let apiUrl = '';
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  apiUrl = 'http://localhost:8080';
+} else {
+  apiUrl = 'https://the-developer-toolbook-api.appspot.com';
+}
 class MiracleEquation extends React.Component {
   constructor(props) {
     super(props);
@@ -131,9 +136,7 @@ class MiracleEquation extends React.Component {
     .then(response => {
       response.text().then(res => {
         let data = JSON.parse(res);
-        // data.map(affirmation => {
         this.setState({affirmations: data});
-        // });
       });
     });
   }

@@ -127,9 +127,17 @@ export const logout = () => {
     if (!isBrowser) {
         return;
     }
+
+    let returnTo = '';
+
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        returnTo = 'http://localhost:8000';
+    } else {
+        returnTo = 'https://www.thedevelopertoolbook.com';
+    }
+
     auth0.logout({
-        returnTo: 'https://www.thedevelopertoolbook.com',
-        // returnTo: 'http://localhost:8000',
+        returnTo: returnTo,
         clientID: AUTH_CONFIG.clientId
     });
     if (isBrowser) {

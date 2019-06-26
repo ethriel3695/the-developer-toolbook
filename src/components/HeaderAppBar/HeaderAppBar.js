@@ -21,11 +21,11 @@ import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import { isAuthenticated, login, logout } from '../Auth/Auth';
+
 import { Link } from 'gatsby';
 
 import { connect } from "react-redux";
-
-import { renewSession, handleAuthentication, login, logout } from '../../store/actions/index';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -83,17 +83,17 @@ class HeaderAppBar extends React.Component {
   // handleDrawerClose = () => {
   //   this.setState({ open: false });
   // };
-  componentWillMount () {
-    if (this.props.isAuthenticated === true) {
-      this.props.handleAuthentication();
-    }
-  }
+  // componentWillMount () {
+  //   if (isAuthenticated() === true) {
+  //     handleAuthentication();
+  //   }
+  // }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
-      this.props.handleAuthentication();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
+  //     this.props.handleAuthentication();
+  //   }
+  // }
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -110,7 +110,7 @@ class HeaderAppBar extends React.Component {
   };
 
   render() {
-    const { classes, siteTitle, isAuthenticated } = this.props;
+    const { classes, siteTitle } = this.props;
     const { anchorEl } = this.state;
 
     const open = Boolean(anchorEl);
@@ -178,7 +178,7 @@ class HeaderAppBar extends React.Component {
     return (
     <SimpleAppBar className={classes.root} 
       style={pageStyles.headerColor}>
-      {isAuthenticated &&
+      {isAuthenticated() &&
          <HeaderButton 
           className={classes.menuButton} 
           aria-label="Menu"
@@ -197,7 +197,7 @@ class HeaderAppBar extends React.Component {
                 {siteTitle}
             </Links>
         </HeaderText>
-        {isAuthenticated &&
+        {isAuthenticated() &&
         <SwipeableDrawer
           id="menu-sidebar"
           // anchor="right"
@@ -241,17 +241,17 @@ class HeaderAppBar extends React.Component {
               onClose={this.handleClose}
             >
             {
-              !isAuthenticated && (
+              !isAuthenticated() && (
             <MenuItem
-              onClick={() => {this.props.login()}}>
+              onClick={() => {login()}}>
               <Link to="/">Log In</Link>
             </MenuItem>
               )
             }
             {
-              isAuthenticated && (
+              isAuthenticated() && (
                   <MenuItem
-                    onClick={() => {this.props.logout()}}
+                    onClick={() => {logout()}}
                   >
                   <Link to="/">Log Out</Link>
                   </MenuItem>
@@ -286,22 +286,5 @@ HeaderAppBar.defaultProps = {
     siteTitle: ``,
 }
 
-const mapStateToProps = (auth) => {
-  const { isAuthenticated, profile } = auth.auth
-  return {
-    isAuthenticated,
-    profile
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return { login: () => dispatch(login()),
-    logout: () => dispatch(logout()),
-    renewSession: () => dispatch(renewSession()),
-    handleAuthentication: () => dispatch(handleAuthentication()) }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-) (withStyles(styles)(HeaderAppBar));
+export default 
+withStyles(styles)(HeaderAppBar);

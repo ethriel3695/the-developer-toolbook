@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import Layout from '../components/layout';
 import LoadingProgress from '../components/Progress/LoadingProgress';
-import { handleAuthentication, logout } from '../store/actions/index';
-import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
-import { navigate } from 'gatsby';
+import { handleAuthentication } from '../components/Auth/Auth';
 
 const styles = {
     root: {
@@ -23,36 +21,16 @@ const styles = {
   };
 
 class Callback extends Component {
-
-    componentDidMount() {
-        this.props.handleAuthentication();
-        navigate('/app/instruction');
-    }
-    render () {
-        return (
-        <Layout>
-            <div>
-                <LoadingProgress />
-            </div>
-        </Layout>
-        )
-    }
+  render () {
+    handleAuthentication();
+      return (
+      <Layout>
+          <div>
+              <LoadingProgress />
+          </div>
+      </Layout>
+      )
+  }
 }
-
-const mapStateToProps = (auth) => {
-    const { isAuthenticated, profile } = auth.auth
-    return {
-      isAuthenticated,
-      profile
-    }
-  }
-
-const mapDispatchToProps = dispatch => {
-    return { handleAuthentication: () => dispatch(handleAuthentication()),
-      logout: () => dispatch(logout()) }
-  }
   
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ) (withStyles(styles)(Callback));
+  export default withStyles(styles)(Callback);

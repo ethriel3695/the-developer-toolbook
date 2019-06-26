@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import SEO from '../seo';
-import BasicImageCard from '../Card/BasicImageCard';
+
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
 import Moment from 'react-moment';
@@ -16,6 +16,9 @@ import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import BasicImageCard from '../Card/BasicImageCard';
+import { isAuthenticated } from '../Auth/Auth';
 
 const pageStyles = {
     textCenter: {
@@ -82,7 +85,6 @@ const pageStyles = {
         userId: userId,
         currentId: null,
         currentStatement: null,
-        isAuthenticated: props.isAuthenticated,
         profile: props.profile
       }
     }

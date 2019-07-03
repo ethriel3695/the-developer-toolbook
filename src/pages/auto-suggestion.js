@@ -1,22 +1,20 @@
 import React from 'react';
+import { Row, Col } from 'reactstrap';
+import Moment from 'react-moment';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import SEO from '../seo';
-
 import TextField from '@material-ui/core/TextField';
-import { Row, Col } from 'reactstrap';
-import Moment from 'react-moment';
-
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import AddIcon from '@material-ui/icons/Add';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import BasicImageCard from '../Card/BasicImageCard';
+import { isAuthenticated } from '../components/Auth/Auth';
+import SEO from '../components/seo';
+import BasicImageCard from '../components/Card/BasicImageCard';
 
 const pageStyles = {
   textCenter: {
@@ -47,7 +45,7 @@ const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.common.secondary,
+    color: theme.palette.text.secondary,
   },
   w100: {
     width: '100%',
@@ -63,7 +61,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   apiUrl = 'https://the-developer-toolbook-api.appspot.com';
 }
 
-class Affirmation extends React.Component {
+class AutoSuggestion extends React.Component {
   constructor(props) {
     super(props);
     let missionDate = new Date();
@@ -84,12 +82,23 @@ class Affirmation extends React.Component {
       userId: userId,
       currentId: null,
       currentStatement: null,
-      profile: userId,
+      isAuthenticated: isAuthenticated(),
+      profile: props.profile,
     };
   }
 
   componentDidMount() {
+    // if(this.props.profile) {
+    //   if (!this.state.userId) {
+    //     let userId = this.getUserId(this.props);
+    //     this.setState({userId: userId}, () => {
+    //       this.getAffirmations();
+    //     });
+    //   } else {
     this.getAffirmations();
+    //   }
+
+    // }
   }
 
   // componentDidUpdate(prevProps, prevState) {
@@ -474,11 +483,11 @@ class Affirmation extends React.Component {
                 title={`Example Auto Suggestion`}
                 subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
                 content={`I have $100,000.00 in my bank account by June 1st 2020
-                  and I put forth the effort of working every single day at least 30
-                  minutes to achieve my goal and I will also give the best service
-                  that I am able as a Software Developer to achieve my goal. I am
-                  in possession and can touch the money now and I am open to receiving 
-                  a plan on how to accept the money that is already mine!`}
+                and I put forth the effort of working every single day at least 30
+                minutes to achieve my goal and I will also give the best service
+                that I am able as a Software Developer to achieve my goal. I am
+                in possession and can touch the money now and I am open to receiving 
+                a plan on how to accept the money that is already mine!`}
                 editStatement={editAutoSuggestion}
                 toggleAutoSuggestion={this.toggleAutoSuggestion}
                 archive={this.state.archive}
@@ -493,4 +502,4 @@ class Affirmation extends React.Component {
   }
 }
 
-export default withStyles(styles)(Affirmation);
+export default withStyles(styles)(AutoSuggestion);

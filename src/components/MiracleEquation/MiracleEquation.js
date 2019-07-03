@@ -7,7 +7,6 @@ import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
 import Moment from 'react-moment';
-import { connect } from "react-redux";
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -18,13 +17,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 // import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { isAuthenticated } from '../Auth/Auth';
 
 const pageStyles = {
   textCenter: {
     display: 'flex',
-    justifyContent: 'center'
-  }
-}
+    justifyContent: 'center',
+  },
+};
 
 const styles = theme => ({
   container: {
@@ -32,8 +32,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: '95%',
   },
   dense: {
@@ -46,14 +46,14 @@ const styles = theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
   w100: {
     width: '100%',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
 });
 
 let apiUrl = '';
@@ -68,7 +68,9 @@ class MiracleEquation extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = localStorage.getItem('profile') ? localStorage.getItem('profile') : null;
+    let userId = localStorage.getItem('profile')
+      ? localStorage.getItem('profile')
+      : null;
     this.state = {
       title: '',
       statement: '',
@@ -82,9 +84,9 @@ class MiracleEquation extends React.Component {
       userId: userId,
       currentId: null,
       currentStatement: null,
-      isAuthenticated: props.isAuthenticated,
-      profile: props.profile
-    }
+      isAuthenticated: isAuthenticated(),
+      profile: userId,
+    };
   }
 
   // componentDidMount() {
@@ -92,19 +94,18 @@ class MiracleEquation extends React.Component {
   // }
 
   componentDidMount() {
-  //   if(this.props.profile) {
-  //     if (!this.state.userId) {
-  //       let userId = this.getUserId(this.props);
-  //       this.setState({userId: userId}, () => {
-  //         this.getAffirmations();
-  //       });
-  //     } else {
-        this.getAffirmations();
-  //     }
-      
-  //   }
-  }
+    //   if(this.props.profile) {
+    //     if (!this.state.userId) {
+    //       let userId = this.getUserId(this.props);
+    //       this.setState({userId: userId}, () => {
+    //         this.getAffirmations();
+    //       });
+    //     } else {
+    this.getAffirmations();
+    //     }
 
+    //   }
+  }
 
   // componentDidUpdate(prevProps, prevState) {
   //   if (prevProps.profile !== this.props.profile) {
@@ -125,41 +126,40 @@ class MiracleEquation extends React.Component {
     const url = `${apiUrl}/api/affirmation`;
     let requestObject = {
       type: this.state.type,
-      userId: this.state.userId
-    }
+      userId: this.state.userId,
+    };
     fetch(url, {
       method: 'get',
       headers: requestObject,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         let data = JSON.parse(res);
-        this.setState({affirmations: data});
+        this.setState({ affirmations: data });
       });
     });
-  }
+  };
 
   toggleDialog = () => {
     this.setState({
-        visibleDialog: !this.state.visibleDialog
+      visibleDialog: !this.state.visibleDialog,
     });
-  }
+  };
 
   toggleInfo = () => {
     this.setState({
-      visibleInfo: !this.state.visibleInfo
+      visibleInfo: !this.state.visibleInfo,
     });
-  }
+  };
 
   toggleAutoSuggestion = (e, id, statement) => {
     this.setState({
-        editMiracleEquation: !this.state.editMiracleEquation,
-        currentId: id,
-        currentStatement: statement
+      editMiracleEquation: !this.state.editMiracleEquation,
+      currentId: id,
+      currentStatement: statement,
     });
-  }
+  };
 
   onStatementUpdate = () => {
     let id = this.state.currentId;
@@ -167,24 +167,23 @@ class MiracleEquation extends React.Component {
     const url = `${apiUrl}/api/affirmation/${id}`;
     let requestObject = {
       statement: statement,
-      userId: this.state.userId
-    }
+      userId: this.state.userId,
+    };
     const formData = JSON.stringify(requestObject);
     fetch(url, {
       method: 'put',
       body: formData,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.setState({
-          editMiracleEquation: !this.state.editMiracleEquation
+          editMiracleEquation: !this.state.editMiracleEquation,
         });
         this.getAffirmations();
       });
-    })
-  }
+    });
+  };
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -197,47 +196,45 @@ class MiracleEquation extends React.Component {
       archive = true;
     }
     this.onFormUpdate(id, archive);
-  }
+  };
 
   onDelete = (e, id) => {
     // console.log(e.currentTarget.dataset.id);
     // const id = e.target.getAttribute('data-id');
     this.deleteRecord(id);
-  }
+  };
 
-  deleteRecord = (id) => {
+  deleteRecord = id => {
     const url = `${apiUrl}/api/affirmation/${id}`;
     fetch(url, {
-      method: 'delete', 
+      method: 'delete',
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.getAffirmations();
-      })
-    })
-  }
+      });
+    });
+  };
 
   onFormUpdate = (id, archive) => {
     const url = `${apiUrl}/api/affirmation/${id}`;
     let requestObject = {
       archive: archive,
-      userId: this.state.userId
-    }
+      userId: this.state.userId,
+    };
     const formData = JSON.stringify(requestObject);
     fetch(url, {
       method: 'put',
       body: formData,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.getAffirmations();
-      })
-    })
-  }
+      });
+    });
+  };
 
   onFormSubmit = () => {
     const url = `${apiUrl}/api/affirmation`;
@@ -247,43 +244,48 @@ class MiracleEquation extends React.Component {
       type: this.state.type,
       archive: this.state.archive,
       dueDate: this.state.dueDate,
-      userId: this.state.userId
-    }
+      userId: this.state.userId,
+    };
     const formData = JSON.stringify(requestObject);
     fetch(url, {
       method: 'post',
       body: formData,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.getAffirmations();
         this.toggleDialog();
-      })
-    })
-  }
-
+      });
+    });
+  };
 
   render() {
     const { classes } = this.props;
-    const { title, statement
-      , visibleDialog, editMiracleEquation
-      , visibleInfo, affirmations } = this.state;
+    const {
+      title,
+      statement,
+      visibleDialog,
+      editMiracleEquation,
+      visibleInfo,
+      affirmations,
+    } = this.state;
     return (
       <div>
-        {visibleDialog && 
+        {visibleDialog && (
           <Dialog
             open={visibleDialog}
             onClose={this.toggleDialog}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Miracle Equation Affirmation"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {'Miracle Equation Affirmation'}
+            </DialogTitle>
             <DialogContent>
               <form className={classes.w100}>
-                    <Row>
-                    <Col xs="12">
+                <Row>
+                  <Col xs="12">
                     <TextField
                       id="outlined-multiline-flexible-1"
                       label="Goal/Mission"
@@ -308,38 +310,45 @@ class MiracleEquation extends React.Component {
                     />
                   </Col>
                   <Col xs="12">
-                  <Row style={{textAlign: 'right'}}>
-                  <Col xs="6" style={{marginRight: 16}}>
-                  <Button
-                      variant="contained"
-                      id='submit-miracle-equation'
-                      onClick={this.onFormSubmit}
-                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
-                        Success is mine!
-                      </Button>
+                    <Row style={{ textAlign: 'right' }}>
+                      <Col xs="6" style={{ marginRight: 16 }}>
+                        <Button
+                          variant="contained"
+                          id="submit-miracle-equation"
+                          onClick={this.onFormSubmit}
+                          style={{
+                            backgroundColor: '#c31924',
+                            color: '#fff',
+                            borderColor: '#c33424',
+                          }}
+                        >
+                          Success is mine!
+                        </Button>
+                      </Col>
+                    </Row>
                   </Col>
-                  </Row>
-                  </Col>
-                  </Row>
+                </Row>
               </form>
             </DialogContent>
           </Dialog>
-        }
-        {editMiracleEquation && 
+        )}
+        {editMiracleEquation && (
           <Dialog
             open={editMiracleEquation}
             onClose={this.toggleAutoSuggestion}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Update Miracle Equation Affirmation"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {'Update Miracle Equation Affirmation'}
+            </DialogTitle>
             <DialogContent>
               {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
               test
               </DialogContentText> */}
               <form className={classes.w100}>
-                    <Row>
-                    <Col xs="12">
+                <Row>
+                  <Col xs="12">
                     <TextField
                       id="outlined-multiline-flexible-2"
                       label="Miracle Equation Affirmation"
@@ -353,112 +362,138 @@ class MiracleEquation extends React.Component {
                     />
                   </Col>
                   <Col xs="12">
-                  <Row style={{textAlign: 'right'}}>
-                  <Col xs="6" style={{marginRight: 10}}>
-                  <Button
-                      variant="contained"
-                      id='update-miracle-equation'
-                      onClick={this.onStatementUpdate}
-                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
-                        Update Miracle Equation
-                      </Button>
+                    <Row style={{ textAlign: 'right' }}>
+                      <Col xs="6" style={{ marginRight: 10 }}>
+                        <Button
+                          variant="contained"
+                          id="update-miracle-equation"
+                          onClick={this.onStatementUpdate}
+                          style={{
+                            backgroundColor: '#c31924',
+                            color: '#fff',
+                            borderColor: '#c33424',
+                          }}
+                        >
+                          Update Miracle Equation
+                        </Button>
+                      </Col>
+                    </Row>
                   </Col>
-                  </Row>
-                  </Col>
-                  </Row>
+                </Row>
               </form>
             </DialogContent>
           </Dialog>
-        }
-        {visibleInfo && 
+        )}
+        {visibleInfo && (
           <Dialog
             open={visibleInfo}
             onClose={this.toggleInfo}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Miracle Equation Instructions"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {'Miracle Equation Instructions'}
+            </DialogTitle>
             <DialogContent>
-            <div>
-                <strong>{`The Miracle Equation consists of two parts: `}
+              <div>
+                <strong>
+                  {`The Miracle Equation consists of two parts: `}
                 </strong>
                 {`Unwavering Belief in yourself and that you
                 can achieve your mission and Extraordinary Effort to continue until the last moment 
                 no matter what this is my only option!`}
-            </div>
-            <div>
-            <strong>{`Unwavering Belief template: `}
-            </strong>
+              </div>
+              <div>
+                <strong>{`Unwavering Belief template: `}</strong>
                 {`I am committed to maintaining Unwavering Belief that I [insert your mission below]
                 and put forth Extraordinary Effort until I do, no matter what, this is my only option!`}
-            </div>
-            <div>
-            <strong>{`Extraordinary Effort template: `}
-            </strong>
+              </div>
+              <div>
+                <strong>{`Extraordinary Effort template: `}</strong>
                 {`To achieve my mission I commit to [insert plan of action and time commitment]
                 no matter what and I release myself from being emotionally attached to my results.`}
-            </div>
+              </div>
             </DialogContent>
           </Dialog>
-        }
+        )}
         <SEO title="Auto Suggestion" />
         <Grid container spacing={16}>
           <Grid item sm={12}>
             <h1 style={pageStyles.textCenter}>
-            MIRACLE EQUATION
-            <IconButton onClick={this.toggleInfo} aria-label="Instructions">
-              <InfoIcon />
-            </IconButton>
+              MIRACLE EQUATION
+              <IconButton onClick={this.toggleInfo} aria-label="Instructions">
+                <InfoIcon />
+              </IconButton>
             </h1>
-            
+
             {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
               <AddIcon />
             </IconButton> */}
-            <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
-            <AddIcon />
+            <Button
+              onClick={this.toggleDialog}
+              variant="contained"
+              color="primary"
+              autoFocus
+            >
+              <AddIcon />
             </Button>
           </Grid>
-          {affirmations != null && affirmations.length > 0 && affirmations.map((affirmation, index) => {
-            return (
-              <Grid item xs={12} sm={6} lg={4}
-              key={`affirmationMiracleContainer-${index}`}>
-                <BasicImageCard 
-                  key={`affirmationMiracleCard-${index}`}
-                  id={affirmation._id}
-                  title={affirmation.title}
-                  subHeader={<Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>}
-                  content={affirmation.statement}
-                  editStatement={editMiracleEquation} 
-                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
-                  archive={affirmation.archive} 
-                  toggleArchive={this.toggleArchive}
-                  onDelete={this.onDelete}>
-                </BasicImageCard>
-              </Grid>
-            )
+          {affirmations != null &&
+            affirmations.length > 0 &&
+            affirmations.map((affirmation, index) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  lg={4}
+                  key={`affirmationMiracleContainer-${index}`}
+                >
+                  <BasicImageCard
+                    key={`affirmationMiracleCard-${index}`}
+                    id={affirmation._id}
+                    title={affirmation.title}
+                    subHeader={
+                      <Moment format="MM/DD/YYYY">{affirmation.dueDate}</Moment>
+                    }
+                    content={affirmation.statement}
+                    editStatement={editMiracleEquation}
+                    toggleAutoSuggestion={this.toggleAutoSuggestion}
+                    archive={affirmation.archive}
+                    toggleArchive={this.toggleArchive}
+                    onDelete={this.onDelete}
+                  />
+                </Grid>
+              );
             })}
-            {(affirmations == null || affirmations.length === 0)  &&
-              <Grid item xs={12} sm={6} lg={4}
-              key={`affirmationMiracleContainer-0`}>
-                <BasicImageCard 
-                  key={`affirmationMiracleCard-0`}
-                  id={0}
-                  title={`Example Miracle Equation`}
-                  subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
-                  content={`My mission is to run a 5k by August 1st 2019 and take 
+          {(affirmations == null || affirmations.length === 0) && (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              lg={4}
+              key={`affirmationMiracleContainer-0`}
+            >
+              <BasicImageCard
+                key={`affirmationMiracleCard-0`}
+                id={0}
+                title={`Example Miracle Equation`}
+                subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
+                content={`My mission is to run a 5k by August 1st 2019 and take 
                   1st place. This is important to me because I want to take care 
                   of my body and I want to meet the person that I would have to be
                   in order to complete a 5k in 1st place. I will put forth the 
                   extraordinary effort of spending at least 30 minutes every single
                   day training for the 5k and giving it everything I have, for as
                   long as it takes, no matter what this is my only option!`}
-                  editStatement={editMiracleEquation} 
-                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
-                  archive={this.state.archive} 
-                  toggleArchive={this.toggleArchive}
-                  onDelete={this.onDelete}>
-                </BasicImageCard>
-              </Grid>}
+                editStatement={editMiracleEquation}
+                toggleAutoSuggestion={this.toggleAutoSuggestion}
+                archive={this.state.archive}
+                toggleArchive={this.toggleArchive}
+                onDelete={this.onDelete}
+              />
+            </Grid>
+          )}
           {/*<Grid item sm={12}>
           <BasicImageCard 
             title={'Miracle Equation Affirmation'}
@@ -479,18 +514,8 @@ class MiracleEquation extends React.Component {
           */}
         </Grid>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (auth) => {
-  const { isAuthenticated, profile } = auth.auth
-  return {
-    isAuthenticated,
-    profile
-  }
-}
-
-export default connect(
-  mapStateToProps
-) (withStyles(styles)(MiracleEquation));
+export default withStyles(styles)(MiracleEquation);

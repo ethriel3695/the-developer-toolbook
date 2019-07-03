@@ -1,99 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'gatsby';
 import { withStyles } from '@material-ui/core/styles';
-import HeaderText from '../Text/TypographyH6';
-import Links from '../Link/Links';
-import SimpleAppBar from './SimpleAppBar';
-import HeaderButton from '../Button/HeaderButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
-import Divider from '@material-ui/core/Divider';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-
+import HeaderText from '../Text/TypographyH6';
+import SimpleAppBar from './SimpleAppBar';
+import HeaderButton from '../Button/HeaderButton';
+import SwipeDrawer from '../Menu/SwipeDrawer';
+import UserMenu from '../Menu/UserMenu';
+import NavigationList from '../Menu/NavigationList';
 import { isAuthenticated, login, logout } from '../Auth/Auth';
-
-import { Link } from 'gatsby';
-
-import { connect } from "react-redux";
-
-const isBrowser = typeof window !== 'undefined';
-
-if (isBrowser) {
-  window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-}
 
 const styles = {
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    background:
+      'linear-gradient(to bottom, #ffcc00 0%, #FFD700 35%, #ffe066 68%, #fff5cc 100%)',
+    boxShadow: 'inset 0px 1px 6px 0px #ffe066',
+    margin: 'auto 0px',
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20
+    marginRight: 20,
   },
-  list: {
-    width: 250,
+  plainLink: {
+    color: '#7b1bb3',
+    textDecoration: 'none',
+  },
+  foregroundColor: {
+    color: '#7b1bb3',
   },
 };
 
-const pageStyles = {
-  plainLink: {
-    color: '#7b1bb3',
-    textDecoration: 'none'
-  },
-  foregroundColor: {
-    color: '#7b1bb3'
-  },
-  headerColor: {
-    background: 'linear-gradient(to bottom, #ffcc00 0%, #FFD700 35%, #ffe066 68%, #fff5cc 100%)',
-    boxShadow: 'inset 0px 1px 6px 0px #ffe066',
-	  margin: 'auto 0px',
-    // background: '#FFD700'
-  }
-}
-
 class HeaderAppBar extends React.Component {
-
   state = {
     anchorEl: null,
-    left: false
+    left: false,
   };
-
-  // handleDrawerOpen = () => {
-  //   if (this.state.open) {
-  //     this.setState({ open: false });
-  //   } else {
-  //     this.setState({ open: true });
-  //   }
-  // };
-
-  // handleDrawerClose = () => {
-  //   this.setState({ open: false });
-  // };
-  // componentWillMount () {
-  //   if (isAuthenticated() === true) {
-  //     handleAuthentication();
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.isAuthenticated !== this.props.isAuthenticated) {
-  //     this.props.handleAuthentication();
-  //   }
-  // }
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -111,180 +59,61 @@ class HeaderAppBar extends React.Component {
 
   render() {
     const { classes, siteTitle } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, left } = this.state;
 
     const open = Boolean(anchorEl);
 
-    const sideList = (
-      <div className={classes.list}>
-        <List>
-        <ListItem button key={'instruction'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/instruction">Getting Started</Link>
-        </ListItem>
-        <ListItem button key={'self-confidence'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/self-confidence">Self Confidence</Link>
-        </ListItem>
-        <ListItem button key={'auto-suggestion'}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <Link style={{ textDecoration: 'none' }} to="/app/auto-suggestion">Auto Suggestion</Link>
-        </ListItem>
-        <ListItem button key={'miracle-equation'}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <Link style={{ textDecoration: 'none' }} to="/app/miracle-equation">Miracle Equation</Link> 
-        </ListItem>
-        <ListItem button key={'self-analysis'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/self-analysis">Self Analysis</Link>
-        </ListItem>
-        <ListItem button key={'miracle-morning'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/miracle-morning">Miracle Morning</Link>
-        </ListItem>
-        <ListItem button key={'faith'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/faith">Faith</Link>
-        </ListItem>
-        <ListItem button key={'meditation'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/meditation">Meditation</Link>
-        </ListItem>
-        <ListItem button key={'habits'}>
-          <ListItemIcon><InboxIcon /></ListItemIcon>
-          <Link style={{ textDecoration: 'none' }} to="/app/habits">Habits</Link>
-        </ListItem>
-          {/* {['Auto Suggestion', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary={text}><Link style={{ textDecoration: 'none' }} to="/auto-suggestion"/></ListItemText>
-            </ListItem>
-          ))} */}
-        </List>
-        <Divider />
-        {/* <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List> */}
-      </div>
-    );
-   
-    // const { open } = this.state;
-
     return (
-    <SimpleAppBar className={classes.root} 
-      style={pageStyles.headerColor}>
-      {isAuthenticated() &&
-         <HeaderButton 
-          className={classes.menuButton} 
-          aria-label="Menu"
-          aria-owns={anchorEl ? 'menu-sidebar' : undefined}
-              aria-haspopup="true"
-              onClick={this.toggleDrawer('left', true)}
-        >
-            <MenuIcon 
-              style={pageStyles.foregroundColor} />
-        </HeaderButton>
-      }
-        <HeaderText className={classes.grow}>
-            <Links
-            to="/"
-            style={pageStyles.plainLink}>
-                {siteTitle}
-            </Links>
-        </HeaderText>
-        {isAuthenticated() &&
-        <SwipeableDrawer
-          id="menu-sidebar"
-          // anchor="right"
-          open={this.state.left}
-          onClose={this.toggleDrawer('left', false)}
-          onOpen={this.toggleDrawer('left', true)}
-        >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('left', false)}
-            onKeyDown={this.toggleDrawer('left', false)}
+      <SimpleAppBar className={classes.root}>
+        {isAuthenticated() && (
+          <HeaderButton
+            className={classes.menuButton}
+            aria-label="Menu"
+            aria-owns={anchorEl ? 'menu-sidebar' : undefined}
+            onClick={this.toggleDrawer('left', true)}
           >
-            {sideList}
-          </div>
-        </SwipeableDrawer>
-         }
-         {
-              //auth && (
-              <div>
-                <HeaderButton
-                  aria-owns={open ? 'menu-appbar' : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                >
-                  <AccountCircle style={pageStyles.foregroundColor} />
-                </HeaderButton>
-            {    
-            <Menu
-              id="menu-appbar"
+            <MenuIcon className={classes.foregroundColor} />
+          </HeaderButton>
+        )}
+        <HeaderText className={classes.grow}>
+          <Link to="/" className={classes.plainLink}>
+            {siteTitle}
+          </Link>
+        </HeaderText>
+        {isAuthenticated() && (
+          <SwipeDrawer left={left} toggleDrawer={this.toggleDrawer}>
+            <NavigationList />
+          </SwipeDrawer>
+        )}
+        <div>
+          <HeaderButton
+            aria-owns={open ? 'menu-appbar' : undefined}
+            onClick={this.handleMenu}
+          >
+            <AccountCircle className={classes.foregroundColor} />
+          </HeaderButton>
+          {
+            <UserMenu
               anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
               open={open}
-              onClose={this.handleClose}
-            >
-            {
-              !isAuthenticated() && (
-            <MenuItem
-              onClick={() => {login()}}>
-              <Link to="/">Log In</Link>
-            </MenuItem>
-              )
-            }
-            {
-              isAuthenticated() && (
-                  <MenuItem
-                    onClick={() => {logout()}}
-                  >
-                  <Link to="/">Log Out</Link>
-                  </MenuItem>
-                )
-            }
-            </Menu>
-            }
-            </div>
-                }
-        {
-        //   <Button style={pageStyles.foregroundColor}>
-        //   <Links to="/auto-suggestion" style={pageStyles.plainLink}>
-        //     Auto Suggestion
-        //   </Links>
-        // </Button>
-        // <Button style={pageStyles.foregroundColor}>
-        //   <Links to="/self-confidence" style={pageStyles.plainLink}>
-        //     Confidence
-        //   </Links>
-        // </Button>
-      }
-    </SimpleAppBar>
+              handleClose={this.handleClose}
+              login={login}
+              logout={logout}
+              isAuthenticated={isAuthenticated}
+            />
+          }
+        </div>
+      </SimpleAppBar>
     );
   }
 }
 
 HeaderAppBar.propTypes = {
-    siteTitle: PropTypes.string,
-}
-  
-HeaderAppBar.defaultProps = {
-    siteTitle: ``,
-}
+  siteTitle: PropTypes.string,
+};
 
-export default 
-withStyles(styles)(HeaderAppBar);
+HeaderAppBar.defaultProps = {
+  siteTitle: ``,
+};
+
+export default withStyles(styles)(HeaderAppBar);

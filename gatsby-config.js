@@ -34,14 +34,14 @@ module.exports = {
       options: {
         // You can add multiple tracking ids and a pageview event will be fired for all of them.
         trackingIds: [
-          "UA-132836178-3", // Google Analytics / GA
+          'UA-132836178-3', // Google Analytics / GA
           // "AW-CONVERSION_ID", // Google Ads / Adwords / AW
           // "DC-FLOODIGHT_ID", // Marketing Platform advertising products (Display & Video 360, Search Ads 360, and Campaign Manager)
         ],
         // This object gets passed directly to the gtag config command
         // This config will be shared accross all trackingIds
         gtagConfig: {
-          optimize_id: "GTM-W8VCD4Q",
+          optimize_id: 'GTM-W8VCD4Q',
           anonymize_ip: true,
           cookie_expires: 0,
         },
@@ -55,6 +55,19 @@ module.exports = {
           // exclude: ["/preview/**", "/do-not-track/me/too/"],
         },
       },
-    }
+    },
+    {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'Affirmation',
+        fieldName: 'title',
+        url: 'https://the-developer-toolbook-api.appspot.com:4000/graphql',
+        refetchInterval: 180,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/app/*`] },
+    },
   ],
-}
+};

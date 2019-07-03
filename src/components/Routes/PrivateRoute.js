@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { navigate } from "gatsby";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { navigate } from 'gatsby';
 
 const isBrowser = typeof window !== 'undefined';
 let isLoggedIn = false;
-const loggedIn = (auth) => {
+const loggedIn = auth => {
   if (isBrowser) {
     if (auth === true) {
       isLoggedIn = true;
-    };
+    }
   }
   if (auth === true) {
     isLoggedIn = true;
@@ -16,7 +16,7 @@ const loggedIn = (auth) => {
     isLoggedIn = false;
   }
   return isLoggedIn;
-}
+};
 
 // const redirect = 'http://tools.spudnik.com';
 
@@ -29,14 +29,14 @@ const PrivateRoute = ({ component: Component, location, props, ...rest }) => {
   if (!isLoggedIn && location.pathname !== `/`) {
     // If we’re not logged in, redirect to the home page.
     navigate('/');
-    return null
+    return null;
   }
 
-  return <Component {...rest} />
-}
+  return <Component {...rest} />;
+};
 
 PrivateRoute.propTypes = {
   component: PropTypes.any.isRequired,
-}
+};
 
 export default PrivateRoute;

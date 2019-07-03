@@ -1,29 +1,62 @@
 {
-    "root": true,
-    "extends": ["airbnb", "prettier", "react-app"],
-    "settings": {
-      "import/core-modules": ["gatsby"]
-    },
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true,
-        "modules": true
-      }
-    },
-    "globals": {
-      "graphql": true,
-      "jsx": true
-    },
-    "rules": {
-      "jsx-a11y/anchor-is-valid": [
-        "error",
-        {
-          "components": ["Link"],
-          "specialLink": ["to"],
-          "aspects": ["noHref", "invalidHref", "preferButton"]
-        }
-      ]
+  "root": true,
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jquery": true
+  },
+  "extends": ["airbnb", "prettier", "react-app"],
+  "settings": {
+    "import/core-modules": ["gatsby"]
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
     }
+  },
+  "globals": {
+    "graphql": true,
+    "jsx": true
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["to"],
+        "aspects": ["noHref", "invalidHref", "preferButton"]
+      }
+    ],
+    "allowForLoopAfterthoughts": true,
+    "array-callback-return": "off",
+    "default-case": "off",
+    "func-names": "off",
+    "no-plusplus": "off",
+    "no-prototype-builtins": "off",
+    "no-restricted-globals": "off",
+    "no-restricted-syntax": "off",
+    "no-useless-escape": "warn",
+    "prefer-destructuring": [
+      "error",
+      {
+        "AssignmentExpression": {
+          "array": false,
+          "object": false
+        },
+        "VariableDeclarator": {
+          "array": false,
+          "object": false
+        }
+      },
+      {
+        "enforceForRenamedProperties": false
+      }
+    ],
+    "prettier/prettier": ["error"]
   }
+}

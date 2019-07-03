@@ -12,7 +12,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-
 // const isBrowser = typeof window !== 'undefined';
 
 const styles = theme => ({
@@ -21,8 +20,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: '95%',
   },
   dense: {
@@ -35,18 +34,17 @@ const styles = theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
   w100: {
     width: '100%',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
 });
 
 class SelfImage extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -59,17 +57,17 @@ class SelfImage extends React.Component {
       dueDate: new Date(),
       files: [],
       visibleDialog: false,
-      userMessage: null
-    }
+      userMessage: null,
+    };
   }
 
   toggleDialog = () => {
     this.setState({
-        visibleDialog: !this.state.visibleDialog
+      visibleDialog: !this.state.visibleDialog,
     });
-  }
+  };
 
-  onFormSubmit = (event) => {
+  onFormSubmit = event => {
     event.preventDefault();
     this.handleRequestSubmission();
     // this.handleFileUpload();
@@ -81,22 +79,22 @@ class SelfImage extends React.Component {
     fetch(url, {
       method: 'post',
       body: formData,
-      mode: "cors",
-      credentials: 'omit'
+      mode: 'cors',
+      credentials: 'omit',
     })
-    .then(response => {
-      response.text().then(res => {
-        this.setState({ visibleDialog: true, userMessage: res });
-        setTimeout(() => {
-          this.setState({ visibleDialog: false });
-        }, 2000);
+      .then(response => {
+        response.text().then(res => {
+          this.setState({ visibleDialog: true, userMessage: res });
+          setTimeout(() => {
+            this.setState({ visibleDialog: false });
+          }, 2000);
+        });
       })
-    })
-    .catch(error => {
-      error.text().then(err => {
-        this.setState({ visibleDialog: true, userMessage: err });
+      .catch(error => {
+        error.text().then(err => {
+          this.setState({ visibleDialog: true, userMessage: err });
+        });
       });
-    });  
   };
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -122,7 +120,7 @@ class SelfImage extends React.Component {
   //     } else {
   //         data = window.URL.createObjectURL(file);
   //     }
-        
+
   //     }
   //     imageContainer.src = data;
   //     document.getElementById('blah').append(imageContainer);
@@ -158,69 +156,79 @@ class SelfImage extends React.Component {
   //   this.setState({ file: null });
   // }
 
-  onChangeDate = (date) => {
-    this.setState({dueDate: date});
-  } 
-  
+  onChangeDate = date => {
+    this.setState({ dueDate: date });
+  };
+
   render() {
     const { classes } = this.props;
     // const {date} = this.state;
     return (
       <div>
         <h1>Self Image Vision</h1>
-        {this.state.visibleDialog && 
-            <Dialog
-              open={this.state.visibleDialog}
-              onClose={this.toggleDialog}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">{"Request Confirmed"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
-                  {this.state.userMessage}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.toggleDialog} color="secondary" autoFocus>
-                  Ok
-                </Button>
-              </DialogActions>
-            </Dialog>
-        }
-              <form className={classes.w100}>
-                    <Row>
-                    <Col xs="12" lg="6">
-                    <TextField
-                      id="outlined-multiline-flexible-1"
-                      label="What is your vision for your self image?"
-                      multiline
-                      rowsMax="8"
-                      value={this.state.request}
-                      onChange={this.handleChange('request')}
-                      className={classes.textField}
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  </Col>
-                  <Col xs="12" lg="6">
-                  <Row>
-                  <Col xs="12" lg="12" style={{marginLeft: 8}}>
-                    <Button
-                      variant="contained"
-                      id='submit-web-request'
-                      onClick={this.onFormSubmit}
-                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
-                        The Real You!
-                      </Button>
-                  </Col>
-                  </Row>
-                  </Col>
-                  </Row>
-              </form>
+        {this.state.visibleDialog && (
+          <Dialog
+            open={this.state.visibleDialog}
+            onClose={this.toggleDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {'Request Confirmed'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText
+                id="alert-dialog-description"
+                style={{ color: '#000' }}
+              >
+                {this.state.userMessage}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.toggleDialog} color="secondary" autoFocus>
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        <form className={classes.w100}>
+          <Row>
+            <Col xs="12" lg="6">
+              <TextField
+                id="outlined-multiline-flexible-1"
+                label="What is your vision for your self image?"
+                multiline
+                rowsMax="8"
+                value={this.state.request}
+                onChange={this.handleChange('request')}
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+              />
+            </Col>
+            <Col xs="12" lg="6">
+              <Row>
+                <Col xs="12" lg="12" style={{ marginLeft: 8 }}>
+                  <Button
+                    variant="contained"
+                    id="submit-web-request"
+                    onClick={this.onFormSubmit}
+                    style={{
+                      backgroundColor: '#c31924',
+                      color: '#fff',
+                      borderColor: '#c33424',
+                    }}
+                  >
+                    The Real You!
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </form>
       </div>
     );
   }
-} 
+}
 
 export default withStyles(styles)(SelfImage);

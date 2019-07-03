@@ -1,1 +1,0 @@
-export { login, logout, renewSession, handleAuthentication } from './auth';

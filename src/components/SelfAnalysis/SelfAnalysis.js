@@ -1,5 +1,9 @@
 import React from 'react';
-import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {
+  withStyles,
+  MuiThemeProvider,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import SEO from '../seo';
@@ -7,7 +11,6 @@ import BasicImageCard from '../Card/BasicImageCard';
 import TextField from '@material-ui/core/TextField';
 import { Row, Col } from 'reactstrap';
 import Moment from 'react-moment';
-import { connect } from "react-redux";
 
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -23,23 +26,24 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
+import { isAuthenticated } from '../Auth/Auth';
 
 const theme = createMuiTheme({
   overrides: {
     MuiSelect: {
       selectMenu: {
         whiteSpace: 'normal',
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 const pageStyles = {
   textCenter: {
     display: 'flex',
-    justifyContent: 'center'
-  }
-}
+    justifyContent: 'center',
+  },
+};
 
 const styles = theme => ({
   container: {
@@ -47,8 +51,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: '95%',
   },
   dense: {
@@ -61,16 +65,16 @@ const styles = theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
   w100: {
     width: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     minWidth: 120,
   },
 });
@@ -91,7 +95,7 @@ const names = [
   'Do you learn something of value from all mistakes?',
   `Are you permitting someone to worry you? If so, why?
    List each person and why they bother you and what you are going to do about it?`,
-   'Do you learn something of value from all mistakes?', 
+  'Do you learn something of value from all mistakes?',
   'Are you sometimes "in the clouds" and at other times in the depth of despondency?',
   'Who has the most inspiring influence on you? What is the cause?',
   'Do you tolerate negative or discouraging influences that you can avoid?',
@@ -117,7 +121,7 @@ const names = [
   'Does your occupation inspire you with faith and desire?',
   'Are you conscious of possessing spiritual forces of sufficient power to enable you to keep your mind free from all forms of FEAR?',
   'Does your spirituality assist you to keep your own mind positive?',
-  'Do you feel it your duty to share other people\'s worries? If so why?',
+  "Do you feel it your duty to share other people's worries? If so why?",
   'If you believe that "birds of a feather flock together", what have you learned about yourself by studying the friends you attract?',
   'What connection, if any, do you see between the people whom you associate most closely, and any unhappiness you may experience?',
   'Could it be possible that some person you consider to be a friend is, in reality, your worst enemy because of their negative influence on your mind?',
@@ -130,7 +134,7 @@ const names = [
   'What, above all else, do you most desire and are you willing to subordinate all other desires for this one? How much time daily do you devote to acquiring it?',
   'Do you change your mind often? If so why?',
   'Do you usually finish everything you begin?',
-  'Are you easily impressed by other people\'s business or professional titles, university degrees or wealth?',
+  "Are you easily impressed by other people's business or professional titles, university degrees or wealth?",
   'Are you easily influenced by what other people think or say of you?',
   'Do you cater to people because of their social or financial status?',
   'Whom do you believe to be the greatest person living? In what respect is this person superior to you?',
@@ -149,7 +153,9 @@ class SelfAnalysis extends React.Component {
     super(props);
     let missionDate = new Date();
     missionDate.setDate(missionDate.getDate() + 30);
-    let userId = localStorage.getItem('profile') ? localStorage.getItem('profile') : null;
+    let userId = localStorage.getItem('profile')
+      ? localStorage.getItem('profile')
+      : null;
     this.state = {
       question: '',
       answer: '',
@@ -166,9 +172,9 @@ class SelfAnalysis extends React.Component {
       currentAnswer: null,
       currentTruth: null,
       currentCommitment: null,
-      isAuthenticated: props.isAuthenticated,
-      profile: props.profile
-    }
+      isAuthenticated: isAuthenticated(),
+      profile: userId,
+    };
   }
 
   // componentDidMount() {
@@ -182,9 +188,9 @@ class SelfAnalysis extends React.Component {
     //       this.getAnalysis();
     //     });
     //   } else {
-        this.getAnalysis();
+    this.getAnalysis();
     //   }
-      
+
     // }
   }
 
@@ -206,45 +212,44 @@ class SelfAnalysis extends React.Component {
   getAnalysis = () => {
     const url = `${apiUrl}/api/analysis`;
     let requestObject = {
-      userId: this.state.userId
-    }
+      userId: this.state.userId,
+    };
     fetch(url, {
       method: 'get',
       headers: requestObject,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         let data = JSON.parse(res);
         // data.map(affirmation => {
-        this.setState({analysis: data});
+        this.setState({ analysis: data });
         // });
       });
     });
-  }
+  };
 
   toggleDialog = () => {
     this.setState({
-        visibleDialog: !this.state.visibleDialog
+      visibleDialog: !this.state.visibleDialog,
     });
-  }
+  };
 
   toggleInfo = () => {
     this.setState({
-      visibleInfo: !this.state.visibleInfo
+      visibleInfo: !this.state.visibleInfo,
     });
-  }
+  };
 
   toggleAutoSuggestion = (e, id, answer, truth, commitment) => {
     this.setState({
-        editSelfAnalysis: !this.state.editSelfAnalysis,
-        currentId: id,
-        currentAnswer: answer,
-        currentTruth: truth,
-        currentCommitment: commitment
+      editSelfAnalysis: !this.state.editSelfAnalysis,
+      currentId: id,
+      currentAnswer: answer,
+      currentTruth: truth,
+      currentCommitment: commitment,
     });
-  }
+  };
 
   onStatementUpdate = () => {
     let id = this.state.currentId;
@@ -253,27 +258,26 @@ class SelfAnalysis extends React.Component {
     let commitment = this.state.currentCommitment;
     const url = `${apiUrl}/api/analysis/${id}`;
     let requestObject = {
-        answer: answer,
-        truth: truth,
-        commitment: commitment,
-        userId: this.state.userId
-    }
+      answer: answer,
+      truth: truth,
+      commitment: commitment,
+      userId: this.state.userId,
+    };
     const formData = JSON.stringify(requestObject);
     fetch(url, {
       method: 'put',
       body: formData,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.setState({
-          editSelfAnalysis: !this.state.editSelfAnalysis
+          editSelfAnalysis: !this.state.editSelfAnalysis,
         });
         this.getAnalysis();
       });
-    })
-  }
+    });
+  };
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -286,83 +290,86 @@ class SelfAnalysis extends React.Component {
       archive = true;
     }
     this.onFormUpdate(id, archive);
-  }
+  };
 
   onDelete = (e, id) => {
     // console.log(e.currentTarget.dataset.id);
     // const id = e.target.getAttribute('data-id');
     this.deleteRecord(id);
-  }
+  };
 
-  deleteRecord = (id) => {
+  deleteRecord = id => {
     const url = `${apiUrl}/api/analysis/${id}`;
     fetch(url, {
-      method: 'delete', 
+      method: 'delete',
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.getAnalysis();
-      })
-    })
-  }
+      });
+    });
+  };
 
   onFormUpdate = (id, archive) => {
     const url = `${apiUrl}/api/analysis/${id}`;
     let requestObject = {
       archive: archive,
-      userId: this.state.userId
-    }
+      userId: this.state.userId,
+    };
     const formData = JSON.stringify(requestObject);
     fetch(url, {
       method: 'put',
       body: formData,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.getAnalysis();
-      })
-    })
-  }
+      });
+    });
+  };
 
   onFormSubmit = () => {
     const url = `${apiUrl}/api/analysis`;
     let requestObject = {
-        question: this.state.question,
-        answer: this.state.answer,
-        truth: this.state.truth,
-        commitment: this.state.commitment,
-        archive: this.state.archive,
-        dueDate: this.state.dueDate,
-        userId: this.state.userId
-    }
+      question: this.state.question,
+      answer: this.state.answer,
+      truth: this.state.truth,
+      commitment: this.state.commitment,
+      archive: this.state.archive,
+      dueDate: this.state.dueDate,
+      userId: this.state.userId,
+    };
     const formData = JSON.stringify(requestObject);
     fetch(url, {
       method: 'post',
       body: formData,
       mode: 'cors',
-      credentials: 'omit'
-    })
-    .then(response => {
+      credentials: 'omit',
+    }).then(response => {
       response.text().then(res => {
         this.getAnalysis();
         this.toggleDialog();
-      })
-    })
-  }
-
+      });
+    });
+  };
 
   render() {
     const { classes } = this.props;
-    const { question, answer, truth, commitment
-      , visibleDialog, editSelfAnalysis
-      , visibleInfo, analysis } = this.state;
+    const {
+      question,
+      answer,
+      truth,
+      commitment,
+      visibleDialog,
+      editSelfAnalysis,
+      visibleInfo,
+      analysis,
+    } = this.state;
     return (
       <div>
-        {visibleDialog && 
+        {visibleDialog && (
           <Dialog
             // fullScreen={true}
             open={visibleDialog}
@@ -370,31 +377,37 @@ class SelfAnalysis extends React.Component {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Self Analysis"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{'Self Analysis'}</DialogTitle>
             <DialogContent>
               <form className={classes.w100}>
-                    <Row>
-                    <Col xs="12">
+                <Row>
+                  <Col xs="12">
                     <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="question-select">Question</InputLabel>
-                    <MuiThemeProvider theme={theme}>
-                    <Select
-                      style={{whiteSpace: 'normal'}}
-                      value={question}
-                      autoWidth={true}
-                      onChange={this.handleChange('question')}
-                      inputProps={{
-                        name: 'Question',
-                        id: 'question-select'
-                      }}
-                    >
-                      {names.map((question, index) => (
-                        <MenuItem style={{whiteSpace: 'normal', height: '72px'}} key={index} value={question}>
-                          {question}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    </MuiThemeProvider>
+                      <InputLabel htmlFor="question-select">
+                        Question
+                      </InputLabel>
+                      <MuiThemeProvider theme={theme}>
+                        <Select
+                          style={{ whiteSpace: 'normal' }}
+                          value={question}
+                          autoWidth={true}
+                          onChange={this.handleChange('question')}
+                          inputProps={{
+                            name: 'Question',
+                            id: 'question-select',
+                          }}
+                        >
+                          {names.map((question, index) => (
+                            <MenuItem
+                              style={{ whiteSpace: 'normal', height: '72px' }}
+                              key={index}
+                              value={question}
+                            >
+                              {question}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </MuiThemeProvider>
                     </FormControl>
                     {/* <TextField
                       id="outlined-multiline-flexible-1"
@@ -442,38 +455,45 @@ class SelfAnalysis extends React.Component {
                     />
                   </Col>
                   <Col xs="12">
-                  <Row style={{textAlign: 'right'}}>
-                  <Col xs="6" style={{marginRight: 16}}>
-                  <Button
-                      variant="contained"
-                      id='submit-self-analysis'
-                      onClick={this.onFormSubmit}
-                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
-                        Clarity
-                      </Button>
+                    <Row style={{ textAlign: 'right' }}>
+                      <Col xs="6" style={{ marginRight: 16 }}>
+                        <Button
+                          variant="contained"
+                          id="submit-self-analysis"
+                          onClick={this.onFormSubmit}
+                          style={{
+                            backgroundColor: '#c31924',
+                            color: '#fff',
+                            borderColor: '#c33424',
+                          }}
+                        >
+                          Clarity
+                        </Button>
+                      </Col>
+                    </Row>
                   </Col>
-                  </Row>
-                  </Col>
-                  </Row>
+                </Row>
               </form>
             </DialogContent>
           </Dialog>
-        }
-        {editSelfAnalysis && 
+        )}
+        {editSelfAnalysis && (
           <Dialog
             open={editSelfAnalysis}
             onClose={this.toggleAutoSuggestion}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Update Miracle Equation Affirmation"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {'Update Miracle Equation Affirmation'}
+            </DialogTitle>
             <DialogContent>
               {/* <DialogContentText id="alert-dialog-description" style={{color: '#000'}}>
               test
               </DialogContentText> */}
               <form className={classes.w100}>
-                    <Row>
-                    <Col xs="12">
+                <Row>
+                  <Col xs="12">
                     <TextField
                       id="outlined-multiline-flexible-2"
                       label="Answer"
@@ -509,115 +529,139 @@ class SelfAnalysis extends React.Component {
                     />
                   </Col>
                   <Col xs="12">
-                  <Row style={{textAlign: 'right'}}>
-                  <Col xs="6" style={{marginRight: 10}}>
-                  <Button
-                      variant="contained"
-                      id='update-self-analysis'
-                      onClick={this.onStatementUpdate}
-                      style={{backgroundColor: '#c31924', color: '#fff', borderColor: '#c33424'}}>
-                        Update Self Analysis
-                      </Button>
+                    <Row style={{ textAlign: 'right' }}>
+                      <Col xs="6" style={{ marginRight: 10 }}>
+                        <Button
+                          variant="contained"
+                          id="update-self-analysis"
+                          onClick={this.onStatementUpdate}
+                          style={{
+                            backgroundColor: '#c31924',
+                            color: '#fff',
+                            borderColor: '#c33424',
+                          }}
+                        >
+                          Update Self Analysis
+                        </Button>
+                      </Col>
+                    </Row>
                   </Col>
-                  </Row>
-                  </Col>
-                  </Row>
+                </Row>
               </form>
             </DialogContent>
           </Dialog>
-        }
-        {visibleInfo && 
+        )}
+        {visibleInfo && (
           <Dialog
             open={visibleInfo}
             onClose={this.toggleInfo}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Self Analysis Instructions"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {'Self Analysis Instructions'}
+            </DialogTitle>
             <DialogContent>
-            <div>
-                <strong>{`Answer these questions with Honesty and you will find the
+              <div>
+                <strong>
+                  {`Answer these questions with Honesty and you will find the
                 truth about yourself and experience growth! `}
                 </strong>
-            </div>
-            <br />
-            <div>
-            <strong>{`Take the time to answer all the questions in full
+              </div>
+              <br />
+              <div>
+                <strong>
+                  {`Take the time to answer all the questions in full
                 and if you cannot make an honest assessment then find
                 someone you trust and have them complete an honest
                 assessment about you!`}
-            </strong>
-            </div>
-            <br />
-            <div>
-            <strong>{`Only when you look at yourself with introspection can change
+                </strong>
+              </div>
+              <br />
+              <div>
+                <strong>
+                  {`Only when you look at yourself with introspection can change
                 really begin to happen!`}
-            </strong>
-            </div>
+                </strong>
+              </div>
             </DialogContent>
           </Dialog>
-        }
+        )}
         <SEO title="Self Analysis" />
         <Grid container spacing={16}>
           <Grid item sm={12}>
             <h1 style={pageStyles.textCenter}>
-            SELF ANALYSIS
-            <IconButton onClick={this.toggleInfo} aria-label="Instructions">
-              <InfoIcon />
-            </IconButton>
+              SELF ANALYSIS
+              <IconButton onClick={this.toggleInfo} aria-label="Instructions">
+                <InfoIcon />
+              </IconButton>
             </h1>
-            
+
             {/* <IconButton onClick={this.toggleDialog}  aria-label="Instructions">
               <AddIcon />
             </IconButton> */}
-            <Button onClick={this.toggleDialog} variant="contained" color="primary" autoFocus>
-            <AddIcon />
+            <Button
+              onClick={this.toggleDialog}
+              variant="contained"
+              color="primary"
+              autoFocus
+            >
+              <AddIcon />
             </Button>
           </Grid>
-          {analysis != null && analysis.length > 0 && analysis.map((analysis, index) => {
-            return (
-              <Grid item xs={12} sm={6} lg={4}
-              key={`selfAnalysisContainer-${index}`}>
-                <BasicImageCard 
-                  key={`selfAnalysisCard-${index}`}
-                  id={analysis._id}
-                  title={analysis.question}
-                  subHeader={<Moment format="MM/DD/YYYY">{analysis.dueDate}</Moment>}
-                  content={analysis.answer}
-                  truth={analysis.truth}
-                  commitment={analysis.commitment}
-                  editStatement={editSelfAnalysis} 
-                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
-                  archive={analysis.archive} 
-                  toggleArchive={this.toggleArchive}
-                  onDelete={this.onDelete}>
-                </BasicImageCard>
-              </Grid>
-            )
+          {analysis != null &&
+            analysis.length > 0 &&
+            analysis.map((analysis, index) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  lg={4}
+                  key={`selfAnalysisContainer-${index}`}
+                >
+                  <BasicImageCard
+                    key={`selfAnalysisCard-${index}`}
+                    id={analysis._id}
+                    title={analysis.question}
+                    subHeader={
+                      <Moment format="MM/DD/YYYY">{analysis.dueDate}</Moment>
+                    }
+                    content={analysis.answer}
+                    truth={analysis.truth}
+                    commitment={analysis.commitment}
+                    editStatement={editSelfAnalysis}
+                    toggleAutoSuggestion={this.toggleAutoSuggestion}
+                    archive={analysis.archive}
+                    toggleArchive={this.toggleArchive}
+                    onDelete={this.onDelete}
+                  />
+                </Grid>
+              );
             })}
-            {(analysis == null || analysis.length === 0)  &&
-              <Grid item xs={12} sm={6} lg={4}
-              key={`selfAnalysisContainer-0`}>
-                <BasicImageCard 
-                  key={`selfAnalysisCard-0`}
-                  id={0}
-                  title={`Example: Why do I shy away from stressful situations?`}
-                  subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
-                  content={`I take things personally when people say something 
+          {(analysis == null || analysis.length === 0) && (
+            <Grid item xs={12} sm={6} lg={4} key={`selfAnalysisContainer-0`}>
+              <BasicImageCard
+                key={`selfAnalysisCard-0`}
+                id={0}
+                title={`Example: Why do I shy away from stressful situations?`}
+                subHeader={<Moment format="MM/DD/YYYY">{new Date()}</Moment>}
+                content={`I take things personally when people say something 
                   and I start to shut down.`}
-                  truth={`The reality is that the stress is normal and I can handle
+                truth={`The reality is that the stress is normal and I can handle
                   anything that comes my way. The proof is the fact that I am alive
                   and willing to move forward with the life I have had thus far.`}
-                  commitment={`I am going to place myself in uneasy and stressful
+                commitment={`I am going to place myself in uneasy and stressful
                   situations so that I can learn to process and handle stress
                   and be a better person for it!`}
-                  editStatement={editSelfAnalysis} 
-                  toggleAutoSuggestion={this.toggleAutoSuggestion} 
-                  archive={this.state.archive} 
-                  toggleArchive={this.toggleArchive}
-                  onDelete={this.onDelete}>
-                </BasicImageCard>
-              </Grid>}
+                editStatement={editSelfAnalysis}
+                toggleAutoSuggestion={this.toggleAutoSuggestion}
+                archive={this.state.archive}
+                toggleArchive={this.toggleArchive}
+                onDelete={this.onDelete}
+              />
+            </Grid>
+          )}
           {/*<Grid item sm={12}>
           <BasicImageCard 
             title={'Miracle Equation Affirmation'}
@@ -638,18 +682,8 @@ class SelfAnalysis extends React.Component {
           */}
         </Grid>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (auth) => {
-  const { isAuthenticated, profile } = auth.auth
-  return {
-    isAuthenticated,
-    profile
-  }
-}
-
-export default connect(
-  mapStateToProps
-) (withStyles(styles)(SelfAnalysis));
+export default withStyles(styles)(SelfAnalysis);
